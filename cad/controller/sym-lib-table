@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name w5500)(type Legacy)(uri "C:/Users/Jonno/Documents/weather_logger/cad/custom symbols/w5500.lib")(options "")(descr ""))
+  (lib (name custom)(type Legacy)(uri ${KIPRJMOD}/custom.lib)(options "")(descr ""))
+)
