@@ -123,6 +123,11 @@ The AMS magnetic rotary encoders have digital outputs
   - Anemometer
   - Wind vane
   - Rain gauge
+***** Network
+- RJ45 jack
+  - 100 base-T with POE and integrated magnetics
+  - [[https://www.digikey.com.au/en/products/detail/abracon-llc/ARJM11C7-114-BA-EW2/7675237][ARJM11C7-114-BA-EW2]]
+  - [[https://abracon.com/Magnetics/ARJM11.pdf][Datasheet]]
   
 **** IN-PROGRESS Choose microcontroller
 :LOGBOOK:
@@ -159,6 +164,9 @@ The AMS magnetic rotary encoders have digital outputs
 - [[https://www.digikey.com.au/en/products/detail/wiznet/W5500/4425702][Digikey page]]
 - [[http://wizwiki.net/wiki/lib/exe/fetch.php?media=products:w5500:w5500_ds_v108e.pdf][datasheet]]
 - Hardware implementation of TCP/IP stack
+- [[http://wizwiki.net/wiki/lib/exe/fetch.php/products:w5500:w5500_sch_v110_use_mag_.png?cache=][Wiznet W5500 reference design]]
+- [[https://wizwiki.net/wiki/doku.php/design_guide:hardware:start][W5100 - 5500 hardware design guide]]
+  
 **** IN-PROGRESS Design power supply
 :LOGBOOK:
 - State "IN-PROGRESS" from "TODO"       [2022-01-31 Mon 20:42] \\
@@ -177,10 +185,14 @@ Power budget
 |           |      |                   158 |                                   |
 |-----------+------+-----------------------+-----------------------------------|
 #+TBLFM: @7$3=vsum(@2..@6)
+
+Power over ethernet guides:
+- [[https://www.freetronics.com.au/pages/power-over-ethernet-for-arduino][Freetronics article on POE for arduino]]
+
 ***** NCP1117
 - 5V fixed, 20V at the input
 - SOT223
-- 800 mA output
+- 800 mA output  
 ***** AZ1117IH-3.3TRG1
 - [[https://www.diodes.com/assets/Datasheets/AZ1117I.pdf][Datasheet]]
 - 1117 series
