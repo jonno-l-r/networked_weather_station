@@ -123,6 +123,15 @@ The AMS magnetic rotary encoders have digital outputs
   - Anemometer
   - Wind vane
   - Rain gauge
+
+    I2C addresses
+    | Device  | Address     | Config bits |
+    |---------+-------------+-------------|
+    | PCFB547 | 0x40-0x4F   | A2,A1,A0    |
+    | TCA9555 | 0x20-0x27   | A2,A1,A0    |
+    | AS5601  | 0x36        |             |
+    | BME280  | 0x76 / 0x77 |             |
+    
 ***** Network
 - RJ45 jack
   - 100 base-T with POE and integrated magnetics

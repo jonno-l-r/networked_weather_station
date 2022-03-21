@@ -1056,58 +1056,58 @@ NoConn ~ 4800 3250
 $Comp
 L Logic_LevelTranslator:TXB0104D U?
 U 1 1 622E9253
-P 2050 6800
-F 0 "U?" H 2050 6011 50  0000 C CNN
-F 1 "TXB0104D" H 2050 5920 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 2050 6050 50  0001 C CNN
-F 3 "http://www.ti.com/lit/ds/symlink/txb0104.pdf" H 2160 6895 50  0001 C CNN
-	1    2050 6800
+P 1600 6700
+F 0 "U?" H 1600 5911 50  0000 C CNN
+F 1 "TXB0104D" H 1600 5820 50  0000 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 1600 5950 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/txb0104.pdf" H 1710 6795 50  0001 C CNN
+	1    1600 6700
 	-1   0    0    -1  
 $EndComp
 Wire Wire Line
-	2150 6100 2150 5950
+	1700 6000 1700 5850
 Wire Wire Line
-	2150 5950 2350 5950
+	1700 5850 1900 5850
 Wire Wire Line
-	1950 6100 1950 5950
+	1500 6000 1500 5850
 Wire Wire Line
-	1950 5950 1750 5950
-Text Label 1750 5950 2    50   ~ 0
+	1500 5850 1300 5850
+Text Label 1300 5850 2    50   ~ 0
 5V0
-Text Label 2350 5950 0    50   ~ 0
+Text Label 1900 5850 0    50   ~ 0
 3V3
 Wire Wire Line
-	1650 6500 1500 6500
+	1200 6400 1050 6400
 Wire Wire Line
-	1650 6900 1500 6900
+	1200 6800 1050 6800
 Wire Wire Line
-	1650 7100 1500 7100
-Text Label 1500 6500 2    50   ~ 0
+	1200 7000 1050 7000
+Text Label 1050 6400 2    50   ~ 0
 SCLK_5V
-Text Label 1500 7100 2    50   ~ 0
+Text Label 1050 7000 2    50   ~ 0
 CS_5V
-Text Label 1500 6900 2    50   ~ 0
+Text Label 1050 6800 2    50   ~ 0
 MOSI_5V
-Text Label 1500 6700 2    50   ~ 0
+Text Label 1050 6600 2    50   ~ 0
 MISO_5V
 Wire Wire Line
-	1650 6700 1500 6700
+	1200 6600 1050 6600
 Wire Wire Line
-	2450 6900 2600 6900
+	2000 6800 2150 6800
 Wire Wire Line
-	2450 6500 2600 6500
+	2000 6400 2150 6400
 Wire Wire Line
-	2450 7100 2600 7100
-Text Label 2600 6500 0    50   ~ 0
+	2000 7000 2150 7000
+Text Label 2150 6400 0    50   ~ 0
 SCLK
-Text Label 2600 7100 0    50   ~ 0
+Text Label 2150 7000 0    50   ~ 0
 CS
-Text Label 2600 6900 0    50   ~ 0
+Text Label 2150 6800 0    50   ~ 0
 MOSI
-Text Label 2600 6700 0    50   ~ 0
+Text Label 2150 6600 0    50   ~ 0
 MISO
 Wire Wire Line
-	2450 6700 2600 6700
+	2000 6600 2150 6600
 $Comp
 L Device:Jumper JP?
 U 1 1 622D94C3
