@@ -497,4 +497,6 @@ F 3 "~" H 2950 1500 50  0001 C CNN
 	1    2950 1500
 	1    0    0    -1  
 $EndComp
+Text Notes 7400 7500 0    50   ~ 0
+Wind vane & anemometer sensors
 $EndSCHEMATC
