@@ -71,8 +71,6 @@ F 3 "" H 7700 5600 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	7700 5450 7700 5600
-Wire Wire Line
-	7200 4350 7200 5500
 Text Label 7500 3300 1    50   ~ 0
 3V3
 Wire Wire Line
@@ -158,34 +156,34 @@ $EndComp
 $Comp
 L Connector_Generic:Conn_01x02 J7
 U 1 1 6232698D
-P 6450 1500
-F 0 "J7" H 6368 1175 50  0000 C CNN
-F 1 "Conn_01x02" H 6368 1266 50  0000 C CNN
-F 2 "" H 6450 1500 50  0001 C CNN
-F 3 "~" H 6450 1500 50  0001 C CNN
-	1    6450 1500
+P 6000 1500
+F 0 "J7" H 5918 1175 50  0000 C CNN
+F 1 "Conn_01x02" H 5918 1266 50  0000 C CNN
+F 2 "" H 6000 1500 50  0001 C CNN
+F 3 "~" H 6000 1500 50  0001 C CNN
+	1    6000 1500
 	-1   0    0    1   
 $EndComp
 $Comp
 L power:GND #PWR015
 U 1 1 62326995
-P 6650 2300
-F 0 "#PWR015" H 6650 2050 50  0001 C CNN
-F 1 "GND" H 6655 2127 50  0000 C CNN
-F 2 "" H 6650 2300 50  0001 C CNN
-F 3 "" H 6650 2300 50  0001 C CNN
-	1    6650 2300
+P 6200 2300
+F 0 "#PWR015" H 6200 2050 50  0001 C CNN
+F 1 "GND" H 6205 2127 50  0000 C CNN
+F 2 "" H 6200 2300 50  0001 C CNN
+F 3 "" H 6200 2300 50  0001 C CNN
+	1    6200 2300
 	1    0    0    -1  
 $EndComp
 $Comp
 L Device:R R28
 U 1 1 6232699B
-P 6950 1100
-F 0 "R28" H 7020 1146 50  0000 L CNN
-F 1 "10k" H 7020 1055 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric" V 6880 1100 50  0001 C CNN
-F 3 "~" H 6950 1100 50  0001 C CNN
-	1    6950 1100
+P 6350 1100
+F 0 "R28" H 6420 1146 50  0000 L CNN
+F 1 "10k" H 6420 1055 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 6280 1100 50  0001 C CNN
+F 3 "~" H 6350 1100 50  0001 C CNN
+	1    6350 1100
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -241,7 +239,6 @@ Wire Wire Line
 	8250 5250 8500 5250
 Wire Wire Line
 	8250 5350 8500 5350
-Connection ~ 7200 1400
 Wire Wire Line
 	7200 1400 7250 1400
 Wire Wire Line
@@ -253,12 +250,10 @@ NoConn ~ 8200 2300
 NoConn ~ 8200 2400
 NoConn ~ 8200 2500
 Wire Wire Line
-	7200 1700 7200 2800
-Wire Wire Line
-	7200 2800 6650 2800
-Text Label 6650 2800 2    50   ~ 0
+	7200 1700 7200 2650
+Text Label 6950 2650 2    50   ~ 0
 RG_CLR
-Text Label 6950 5500 2    50   ~ 0
+Text Label 7050 5200 2    50   ~ 0
 AN_CLR
 Wire Wire Line
 	8250 5350 8250 5850
@@ -542,8 +537,6 @@ Wire Wire Line
 Wire Wire Line
 	6000 4150 5750 4150
 Wire Wire Line
-	7200 5500 6950 5500
-Wire Wire Line
 	7200 4050 7050 4050
 Wire Wire Line
 	7050 4050 7050 5000
@@ -613,18 +606,9 @@ Anemometer AMR sensor\ninput
 Text Notes 6000 750  0    50   ~ 0
 Rain gauge relay\ninput\n
 Wire Wire Line
-	6650 1500 6650 2300
+	6350 1250 6350 1400
 Wire Wire Line
-	6650 1400 6800 1400
-Wire Wire Line
-	6950 1250 6950 1400
-Connection ~ 6950 1400
-Wire Wire Line
-	6950 1400 7200 1400
-Wire Wire Line
-	6950 950  6950 850 
-Wire Wire Line
-	6950 850  7500 850 
+	6350 950  6350 850 
 Wire Wire Line
 	1250 2200 1300 2200
 Wire Wire Line
@@ -1455,14 +1439,7 @@ Wire Wire Line
 	4850 6500 5100 6500
 Text Notes 7400 7500 0    50   ~ 0
 remote sensors
-Wire Wire Line
-	6800 1400 6800 1000
-Wire Wire Line
-	6800 1000 6350 1000
-Connection ~ 6800 1400
-Wire Wire Line
-	6800 1400 6950 1400
-Text Label 6350 1000 2    50   ~ 0
+Text Label 6950 2550 2    50   ~ 0
 RAIN_TRG
 $Comp
 L Device:R R2
@@ -2003,4 +1980,63 @@ Wire Wire Line
 	5600 3100 5600 3250
 Wire Wire Line
 	5150 3100 5150 3250
+$Comp
+L Device:R R?
+U 1 1 625AA245
+P 6600 1400
+F 0 "R?" H 6670 1446 50  0000 L CNN
+F 1 "100k" H 6670 1355 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 6530 1400 50  0001 C CNN
+F 3 "~" H 6600 1400 50  0001 C CNN
+	1    6600 1400
+	0    1    1    0   
+$EndComp
+Connection ~ 7200 1400
+Wire Wire Line
+	6200 1400 6350 1400
+$Comp
+L Device:C C?
+U 1 1 6268216E
+P 6800 1800
+F 0 "C?" H 6685 1754 50  0000 R CNN
+F 1 "100nF" H 6685 1845 50  0000 R CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 6838 1650 50  0001 C CNN
+F 3 "~" H 6800 1800 50  0001 C CNN
+	1    6800 1800
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	6350 850  7500 850 
+Wire Wire Line
+	6350 1400 6450 1400
+Connection ~ 6350 1400
+Wire Wire Line
+	6750 1400 6800 1400
+Wire Wire Line
+	6800 1400 6800 1650
+Connection ~ 6800 1400
+Wire Wire Line
+	6800 1950 6800 2150
+Wire Wire Line
+	6200 1500 6200 2150
+Wire Wire Line
+	6800 2150 6200 2150
+Connection ~ 6200 2150
+Wire Wire Line
+	6200 2150 6200 2300
+Wire Wire Line
+	6950 2650 7200 2650
+Wire Wire Line
+	7200 4350 7200 5200
+Wire Wire Line
+	7200 5200 7050 5200
+Wire Wire Line
+	7150 2550 7150 1400
+Connection ~ 7150 1400
+Wire Wire Line
+	7150 1400 7200 1400
+Wire Wire Line
+	6800 1400 7150 1400
+Wire Wire Line
+	6950 2550 7150 2550
 $EndSCHEMATC
