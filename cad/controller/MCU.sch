@@ -767,7 +767,7 @@ Wire Wire Line
 Text Label 8100 1700 2    50   ~ 0
 INT_SPARE
 $Comp
-L custom:PCA9517A U6
+L custom_digital:PCA9517A U6
 U 1 1 624DB520
 P 4950 1700
 F 0 "U6" H 4925 1775 50  0000 C CNN

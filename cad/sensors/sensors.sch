@@ -1521,7 +1521,7 @@ Wire Wire Line
 Wire Wire Line
 	1750 4250 1750 4850
 $Comp
-L custom:PCA9517A U2
+L custom_digital:PCA9517A U2
 U 1 1 62DAA650
 P 4400 1500
 F 0 "U2" H 4375 1575 50  0000 C CNN

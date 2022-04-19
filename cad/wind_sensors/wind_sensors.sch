@@ -46,7 +46,7 @@ Text Label 3100 1550 0    50   ~ 0
 Text Label 1950 2300 0    50   ~ 0
 SDA_REM
 $Comp
-L custom:HMC1501 U2
+L custom_analogue:HMC1501 U2
 U 1 1 6350E9DD
 P 4950 3400
 F 0 "U2" H 4925 3575 50  0000 C CNN
@@ -203,7 +203,7 @@ F 3 "~" H 5800 1500 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L custom:AS5601 U3
+L custom_digital:AS5601 U3
 U 1 1 63518BD0
 P 5000 1700
 F 0 "U3" H 4975 1825 50  0000 C CNN

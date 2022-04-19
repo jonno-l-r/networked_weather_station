@@ -156,7 +156,7 @@ PIN_12V
 Text Label 1050 2250 2    50   ~ 0
 PIN_12V
 $Comp
-L custom:W5500 U4
+L custom_digital:W5500 U4
 U 1 1 62228853
 P 4750 4150
 F 0 "U4" H 5644 4196 50  0000 L CNN
@@ -379,7 +379,7 @@ $EndComp
 Text Notes 6450 3750 0    50   ~ 0
 <1%
 $Comp
-L custom:RJ45_jack_POE J1
+L custom_passive:RJ45_jack_POE J1
 U 1 1 62344D7E
 P 9600 4950
 F 0 "J1" H 9928 5671 50  0000 L CNN

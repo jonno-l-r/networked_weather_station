@@ -1,0 +1,3 @@
+[submodule "cad/library/custom"]
+	path = cad/library/custom
+	url = ssh://pi@piserv.local:60127/home/pi/git/projects/libraries

@@ -71,8 +71,6 @@ F 3 "" H 7700 5600 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	7700 5450 7700 5600
-Wire Wire Line
-	7200 4350 7200 5500
 Text Label 7500 3300 1    50   ~ 0
 3V3
 Wire Wire Line
@@ -253,9 +251,9 @@ NoConn ~ 8200 2400
 NoConn ~ 8200 2500
 Wire Wire Line
 	7200 1700 7200 2650
-Text Label 6200 2650 2    50   ~ 0
+Text Label 6950 2650 2    50   ~ 0
 RG_CLR
-Text Label 6950 5500 2    50   ~ 0
+Text Label 7050 5200 2    50   ~ 0
 AN_CLR
 Wire Wire Line
 	8250 5350 8250 5850
@@ -538,8 +536,6 @@ Wire Wire Line
 	6000 3950 6000 4150
 Wire Wire Line
 	6000 4150 5750 4150
-Wire Wire Line
-	7200 5500 6950 5500
 Wire Wire Line
 	7200 4050 7050 4050
 Wire Wire Line
@@ -1443,9 +1439,7 @@ Wire Wire Line
 	4850 6500 5100 6500
 Text Notes 7400 7500 0    50   ~ 0
 remote sensors
-Wire Wire Line
-	6950 3200 6500 3200
-Text Label 6500 3200 2    50   ~ 0
+Text Label 6950 2550 2    50   ~ 0
 RAIN_TRG
 $Comp
 L Device:R R2
@@ -2022,8 +2016,6 @@ Wire Wire Line
 	6800 1400 6800 1650
 Connection ~ 6800 1400
 Wire Wire Line
-	6800 1400 7200 1400
-Wire Wire Line
 	6800 1950 6800 2150
 Wire Wire Line
 	6200 1500 6200 2150
@@ -2033,5 +2025,18 @@ Connection ~ 6200 2150
 Wire Wire Line
 	6200 2150 6200 2300
 Wire Wire Line
-	6200 2650 7200 2650
+	6950 2650 7200 2650
+Wire Wire Line
+	7200 4350 7200 5200
+Wire Wire Line
+	7200 5200 7050 5200
+Wire Wire Line
+	7150 2550 7150 1400
+Connection ~ 7150 1400
+Wire Wire Line
+	7150 1400 7200 1400
+Wire Wire Line
+	6800 1400 7150 1400
+Wire Wire Line
+	6950 2550 7150 2550
 $EndSCHEMATC
