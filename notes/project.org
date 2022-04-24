@@ -96,6 +96,25 @@ The AMS magnetic rotary encoders have digital outputs
 ***** Anemometer
 - A simple Hall effect sensor will suffice. Can also use a magnetic rotary encoder, such as the analogue one linked below
   - [[https://www.digikey.com.au/en/products/detail/te-connectivity-measurement-specialties/G-MRCO-037/5277441][G-MRCO-037]]
+** System design
+** Schematic capture
+** Choose housings
+** BOM
+** PCB layout
+** Design mechanical components
+*** Design anemometer mechanical components
+*** Design wind vane mechanical components
+*** Design rain gauge mechanical components
+** Microcontroller programming
+*** Environmental sensors
+*** Animometer
+*** Wind vane
+*** Rain gauge
+*** Ethernet phy
+** Mounting
+** Web server database
+** Web page dashboard
+
 ** Construction
 *** TODO Sensor array housing
 *** TODO Microcontroller housing
