@@ -1,7 +1,6 @@
-#+title: Networked weather monitoring station
+#+title: Networked weather monitoring station: Project diary
 
-* Project outline
-** PAUSED Choose Sensors
+* PAUSED Choose Sensors
 :LOGBOOK:
 - State "PAUSED"     from "IN-PROGRESS" [2022-01-27 Thu 20:19] \\
   Enough options for now, will commit to individual sensors after scoping out MCUs. Most likely choices are;
@@ -11,80 +10,80 @@
 - State "IN-PROGRESS" from "TODO"       [2022-01-13 Thu 17:34] \\
   Begin choosing environmental sensors
 :END:
-**** Temperature sensor
-***** TMP117AIDRVR
+*** Temperature sensor
+**** TMP117AIDRVR
 - Digital
 - 0.1 degree C accuracy from -20 to 50 degree C
 - 16 bit resolution
 - I2C
 - [[https://www.digikey.com.au/en/products/detail/texas-instruments/TMP117AIDRVR/9685284][Digikey]]
-***** LM35
+**** LM35
 - Analogue
 - 0.5 degree C accuracy
 - -55 to 150 C range
 - 4 - 30 V Vcc
 - p/m 0.25 C linearity
 - [[https://rocelec.widen.net/view/pdf/lhmv29xclw/NATLS06060-1.pdf?t.download=true&u=5oefqw][Datasheet]]
-***** DS18B20
+**** DS18B20
 - Digital
 - -55 - 125 degrees C
 - 0.5 degree C accuracy
 - One wire digital interface
 - [[https://core-electronics.com.au/makeblock-me-temperature-sensor-waterproof-ds18b20.html][Off the shelf assembly]]
 - [[https://www.digikey.com.au/en/products/detail/adafruit-industries-llc/381/5875807][Off the shelf (digikey)]]
-***** ADT7311
+**** ADT7311
 - Digital
 - -40 - 150 degrees C
 - 0.4 degree C accuracy
 - SPI interface
 - 8-SOIC
 - [[https://www.digikey.com.au/en/products/detail/analog-devices-inc/ADT7311WTRZ-RL7/6163946][Digikey]]
-**** Humidity sensor
-***** SHT30
+*** Humidity sensor
+**** SHT30
 - Accuracy: 2% RH
 - Range: 0 - 100% RH\
 - Output: I2C
 - Comes in Adafruit assembly
 - Has built-in temperature sensor
 [[https://www.digikey.com.au/en/products/detail/adafruit-industries-llc/5064/14625562][Digikey]]
-***** HPP801A031 (HS1101LF)
+**** HPP801A031 (HS1101LF)
 - Accuracy: 2% RH
 - Range 1 - 99% RH
 - Output: Analogue (capacitive, 2 pin)
 - See datasheet for drive and measurement circuit
 - [[https://www.digikey.com.au/en/products/detail/te-connectivity-measurement-specialties/HPP801A031/697731][Digikey]]
-***** ASAIR DHT20
+**** ASAIR DHT20
 - Accuracy: 3% RH
 - Range: 0 - 100% RH
 - Output: I2C
 - Comes in Spark Fun assembly
 - [[https://cdn.sparkfun.com/assets/8/a/1/5/0/DHT20.pdf][Digikey]]
-**** Barametric sensor (Absolute pressure sensor)
-***** ILPS22QSTR
+*** Barametric sensor (Absolute pressure sensor)
+**** ILPS22QSTR
 - Accuracy: 0.5 hPa
 - 24 bit
 - Range: 260 - 1260 hPa
 - QFN package
 - Output: I2C and SPI
 - [[https://www.digikey.com.au/en/products/detail/stmicroelectronics/ILPS22QSTR/15903343][Digikey]]
-***** BME280
+**** BME280
 - Accuracy: 1.5 hPa
 - Combined pressure and humidity sensor (Accuracy: 3% RH)
 - Output: I2C and SPI
 - [[https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf][Datasheet]]
-***** MS560702BA03-00
+**** MS560702BA03-00
 - Accuracy: 1.5 hPa
 - Range: 10 - 1200 hPa
 - Resolution: 24 bit
 - Output: I2C and SPI
 - [[https://www.digikey.com.au/en/products/detail/te-connectivity-measurement-specialties/MS560702BA03-00/14816076][Digikey]]
-***** NPP-301A-700AT
+**** NPP-301A-700AT
 - Accuracy: 0.2% (~ 2 hPa at 1 atmosphere)
 - Output: Analogue (Wheatstone bridge)
 - [[https://www.digikey.com.au/en/products/detail/amphenol-novasensor/NPP-301A-700AT/1795302][Digikey]]
-**** Anemometer and wind vane
+*** Anemometer and wind vane
 - Will attempt to make a custom anemometer. If calibration appears too challenging, an [[https://core-electronics.com.au/anemometer-wind-speed-sensor-w-analog-voltage-output.html][here is an off the shelf]] one from core electronics
-***** Wind vane
+**** Wind vane
 - Can use a magnetic rotary encoder, such as
   - [[https://www.digikey.com.au/en/products/detail/ams/AS5134-ZSSM/3464909][AS5134-ZSSM]]
     - Rotary sensor
@@ -93,43 +92,26 @@
     - [[https://ams.com/en/as5601][5601 product page]]
     - [[https://github.com/bitfasching/AS5601][Library for Arduino]]
 The AMS magnetic rotary encoders have digital outputs
-***** Anemometer
+**** Anemometer
 - A simple Hall effect sensor will suffice. Can also use a magnetic rotary encoder, such as the analogue one linked below
-  - [[https://www.digikey.com.au/en/products/detail/te-connectivity-measurement-specialties/G-MRCO-037/5277441][G-MRCO-037]]
-** System design
-** Schematic capture
-** Choose housings
-** BOM
-** PCB layout
-** Design mechanical components
-*** Design anemometer mechanical components
-*** Design wind vane mechanical components
-*** Design rain gauge mechanical components
-** Microcontroller programming
-*** Environmental sensors
-*** Animometer
-*** Wind vane
+  - [[https://www.digikey.com.au/en/products/detail/te-connectivity-measurement-specialties/G-MRCO-037/5277441][G-MRCO-037]]  
 *** Rain gauge
-*** Ethernet phy
-** Mounting
-** Web server database
-** Web page dashboard
-
-** Construction
-*** TODO Sensor array housing
-*** TODO Microcontroller housing
-*** TODO Build custom rain gauge
     - Tipping bucket design, see [[https://www.allaboutcircuits.com/projects/build-a-wireless-tipping-bucket-rain-gauge-part-1assembling-the-base/][these notes]]
-*** TODO Build custom anemometer      
-** Measurement platform
-*** TODO Arduino mockup
-**** TODO Bring up ethernet hat
-     - Fix line termination (needs 50 Ohm matching resistor)
-     - Get working with example sketches provided by Arduino
-**** TODO Develop C programs for streaming sensor data over TCP
-     
-*** TODO Prototype microcontroller development board
-**** IN-PROGRESS Define all necessary interfaces
+    
+* System design
+** Architecture
+#+HEADER: :imagemagick yes
+#+HEADER: :fit yes :noweb yes
+#+begin_src latex :file (cond-exp "figures/compiled/system_outline") :results file raw :exports results
+  \input{system_outline.pdf_tex}
+#+end_src
+
+#+CAPTION: High level system architecture
+#+LABEL: fig:high-level-system-outline
+#+RESULTS:
+[[file:figures/compiled/system_outline.png]]
+
+** IN-PROGRESS Define all necessary interfaces
 :LOGBOOK:
 - State "IN-PROGRESS" from "TODO"       [2022-01-27 Thu 21:25]
 :END:
@@ -151,17 +133,17 @@ The AMS magnetic rotary encoders have digital outputs
     | AS5601  | 0x36        |             |
     | BME280  | 0x76 / 0x77 |             |
     
-***** Network
+*** Network
 - RJ45 jack
   - 100 base-T with POE and integrated magnetics
   - [[https://www.digikey.com.au/en/products/detail/abracon-llc/ARJM11C7-114-BA-EW2/7675237][ARJM11C7-114-BA-EW2]]
   - [[https://abracon.com/Magnetics/ARJM11.pdf][Datasheet]]
   
-**** IN-PROGRESS Choose microcontroller
+** IN-PROGRESS Choose microcontroller
 :LOGBOOK:
 - State "IN-PROGRESS" from "TODO"       [2022-01-27 Thu 21:25]
 :END:
-***** Programmers
+*** Programmers
 - ICSP
   - In circuit serial programmer
   - USB - 6 pin programmer
@@ -170,32 +152,32 @@ The AMS magnetic rotary encoders have digital outputs
 - Serial boot loader
   - Need to flash MCU with boot loader program that sits at the beginning of memory
   - After the boot loader has been flashed (with the ICSP), can use the RX and TX serial communication pins to program the remainder of the memory (using a USB-serial adapter, such as the FTDI module)
-***** AVR
-****** ATMEGA328
+*** AVR
+**** ATMEGA328
 - 8 bit
 - 32k flash
 - 2k sram
 - Arduino UNO uses this MCU
 - Up to 16 MHz (Vcc = 5V)
 - [[https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf][Datasheet]]
-***** ST
-****** STM32
+*** ST
+**** STM32
 - https://www.youtube.com/watch?v=qMUzLU636s8
 - [[https://github.com/afiskon/stm32-w5500][STM32 and W5500]]
 - https://github.com/WIZnet-ioLibrary/W5x00-HTTPServer
 - [[https://www.carminenoviello.com/2015/08/28/adding-ethernet-connectivity-stm32-nucleo/][Nucleo dev board and W5500]]
-**** IN-PROGRESS Choose ethernet controller
+** IN-PROGRESS Choose ethernet controller
 :LOGBOOK:
 - State "IN-PROGRESS" from "TODO"       [2022-01-30 Sun 20:04]
 :END:
-***** Wiznet W5500
+*** Wiznet W5500
 - [[https://www.digikey.com.au/en/products/detail/wiznet/W5500/4425702][Digikey page]]
 - [[http://wizwiki.net/wiki/lib/exe/fetch.php?media=products:w5500:w5500_ds_v108e.pdf][datasheet]]
 - Hardware implementation of TCP/IP stack
 - [[http://wizwiki.net/wiki/lib/exe/fetch.php/products:w5500:w5500_sch_v110_use_mag_.png?cache=][Wiznet W5500 reference design]]
 - [[https://wizwiki.net/wiki/doku.php/design_guide:hardware:start][W5100 - 5500 hardware design guide]]
   
-**** IN-PROGRESS Design power supply
+** IN-PROGRESS Design power supply
 :LOGBOOK:
 - State "IN-PROGRESS" from "TODO"       [2022-01-31 Mon 20:42] \\
   Defining power budget and choosing LDOs
@@ -217,89 +199,26 @@ Power budget
 Power over ethernet guides:
 - [[https://www.freetronics.com.au/pages/power-over-ethernet-for-arduino][Freetronics article on POE for arduino]]
 
-***** NCP1117
+*** NCP1117
 - 5V fixed, 20V at the input
 - SOT223
 - 800 mA output  
-***** AZ1117IH-3.3TRG1
+*** AZ1117IH-3.3TRG1
 - [[https://www.diodes.com/assets/Datasheets/AZ1117I.pdf][Datasheet]]
 - 1117 series
 - 15V in
 - Fixed 3.3V out
 - 800 mA
 - SOT223
-***** NCP164ASN330T1G
+*** NCP164ASN330T1G
 - 5V input
 - Fixed 3.3V output
 - 300 mA output
 - SOT-23-5
 - [[https://www.digikey.com.au/en/products/detail/onsemi/NCP164ASN330T1G/15284210][Digikey product page]]
-**** IN-PROGRESS Schematic capture
-:LOGBOOK:
-- State "IN-PROGRESS" from "TODO"       [2022-02-02 Wed 21:37] \\
-  Now that sensors, 3.3V and 5V regulators, and the MCU have been chosen, schematic capture can begin
-:END:
-**** TODO PCB layout
-**** TODO Order components
-
-*** TODO Programming
-**** Adapt C programs for development board
-**** Program microcontroller 
-
-** Sensor housing and mounting system
-*** TODO Design weatherproof housing system for electronics
-*** TODO Design mounting system for sensors
-** Database system
-*** TODO Choose a database and install on server
-*** TODO Database system mockup
-**** TODO retrospectively add BOM records to database
-**** TODO CRON python script to write new data to database
-*** TODO Write python module to stream data weather data from microcontroller board into database
-
-** Frontend
-   - Data will be displayed in the form of a webpage 'dashboard'
-*** TODO Webpage stylesheet
-*** TODO Python script for contructing plots from database records
-*** TODO Construct plots over arbitrary timespan
-*** TODO Custom plot generator
-    - Generate plots over arbitrary timespans with multiple traces
-      - i.e. develop command set that allows the user to;
-        - Specify x-axis limits
-        - Choose dataset
-        - Add trace from dataset to plot
-*** TODO Dashboard statistics
-    - Statistics dashboard for selected units of time
-      - Averages
-      - Min / Max
-      - Current conditions
-
-** Miscellaneous articles
-*** Project writeups
-**** [[https://www.toptal.com/c/how-i-made-a-fully-functional-arduino-weather-station-for-300][Arduino weather station with database - project writeup]]
-This writeup goes into detail on the software side, with C code snippets given for microcontroller programming. Detail regarding network streaming and SQL database setup is also given. Hardware details lacking - sensors are not specified
-**** [[http://cactus.io/projects/weather/arduino-weather-station][Arduino based weather station]]
-This article specifies which sensors are used
-*** Articles on environmental sensing
-**** [[https://www.ti.com/lit/eb/slyy161/slyy161.pdf?ts=1642395390117&ref_url=https%253A%252F%252Fwww.google.com%252F][Engineers guide to temperature sensing]]
-**** [[https://www.avnet.com/wps/portal/abacus/solutions/technologies/sensors/pressure-sensors/media-types/barometric/][Avnet Pressure sensors - the design engineers guide]]
-**** [[https://www.ti.com/lit/an/snoa967a/snoa967a.pdf?ts=1643160209600&ref_url=https%253A%252F%252Fwww.google.com%252F][TI guide for PCB temperature sensors]]
-**** [[https://www.st.com/resource/en/application_note/an5449-temperature-sensors-guidelines-for-system-integration-stmicroelectronics.pdf][STMicro application note on integration of temperature sensors]]
-*** Power over ethernet articles
-**** [[https://www.freetronics.com.au/pages/power-over-ethernet-for-arduino][POE for arduino ethernet hat]]
-- Freetronics article on general concepts
-**** [[https://www.freetronics.com.au/products/ethernet-shield-with-poe][Freetronics POE arduino hat product page]]
-* Architecture
-#+HEADER: :imagemagick yes
-#+HEADER: :fit yes :noweb yes
-#+begin_src latex :file (cond-exp "figures/compiled/system_outline") :results file raw :exports results
-  \input{system_outline.pdf_tex}
-#+end_src
-
-#+CAPTION: High level system architecture
-#+LABEL: fig:high-level-system-outline
-#+RESULTS:
-[[file:figures/compiled/system_outline.png]]
-
+  
+* Schematic capture
+* Choose housings
 * BOM
 ** Main controller board
 |--------------------------------------------------------+----------+---------------------+--------------+-----------------------------+------------------+---------|
@@ -440,3 +359,36 @@ This article specifies which sensors are used
 - In-circuit serial programmer (ICSP) for AVR Atmega
 - Hookup wire for cables (26 / 24 AWG)
   
+* PCB layout
+* Design mechanical components
+** Design anemometer mechanical components
+** Design wind vane mechanical components
+** Design rain gauge mechanical components
+* Microcontroller programming
+** Environmental sensors
+** Animometer
+** Wind vane
+** Rain gauge
+** Ethernet phy
+* Assembly
+** Cable assembly
+** Wind sensor mechanical assembly
+* Mounting
+* Web server database
+* Web page dashboard
+* Resources
+** Miscellaneous articles
+*** Project writeups
+**** [[https://www.toptal.com/c/how-i-made-a-fully-functional-arduino-weather-station-for-300][Arduino weather station with database - project writeup]]
+This writeup goes into detail on the software side, with C code snippets given for microcontroller programming. Detail regarding network streaming and SQL database setup is also given. Hardware details lacking - sensors are not specified
+**** [[http://cactus.io/projects/weather/arduino-weather-station][Arduino based weather station]]
+This article specifies which sensors are used
+*** Articles on environmental sensing
+**** [[https://www.ti.com/lit/eb/slyy161/slyy161.pdf?ts=1642395390117&ref_url=https%253A%252F%252Fwww.google.com%252F][Engineers guide to temperature sensing]]
+**** [[https://www.avnet.com/wps/portal/abacus/solutions/technologies/sensors/pressure-sensors/media-types/barometric/][Avnet Pressure sensors - the design engineers guide]]
+**** [[https://www.ti.com/lit/an/snoa967a/snoa967a.pdf?ts=1643160209600&ref_url=https%253A%252F%252Fwww.google.com%252F][TI guide for PCB temperature sensors]]
+**** [[https://www.st.com/resource/en/application_note/an5449-temperature-sensors-guidelines-for-system-integration-stmicroelectronics.pdf][STMicro application note on integration of temperature sensors]]
+*** Power over ethernet articles
+**** [[https://www.freetronics.com.au/pages/power-over-ethernet-for-arduino][POE for arduino ethernet hat]]
+- Freetronics article on general concepts
+**** [[https://www.freetronics.com.au/products/ethernet-shield-with-poe][Freetronics POE arduino hat product page]]
