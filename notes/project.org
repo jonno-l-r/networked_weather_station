@@ -10,6 +10,37 @@
 - State "IN-PROGRESS" from "TODO"       [2022-01-13 Thu 17:34] \\
   Begin choosing environmental sensors
 :END:
+** BME280
+- Integrated barometer, hygrometer and temperature sensor
+- Accuracy: 1.5 hPa
+- Combined pressure and humidity sensor (Accuracy: 3% RH)
+- Output: I2C and SPI
+- [[https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf][Datasheet]]
+** MCP9808
+- Temperature sensor
+- I2C
+  - Addr: 0x18 to 0x1F
+- 0.25 degree C accuracy
+- Range: -40 - 125 degree C
+- [[https://cdn-shop.adafruit.com/datasheets/MCP9808.pdf][Datasheet]]
+** Anemometer and wind vane
+- Will attempt to make a custom anemometer. If calibration appears too challenging, an [[https://core-electronics.com.au/anemometer-wind-speed-sensor-w-analog-voltage-output.html][here is an off the shelf]] one from core electronics
+*** Wind vane
+- Can use a magnetic rotary encoder, such as
+  - [[https://www.digikey.com.au/en/products/detail/ams/AS5134-ZSSM/3464909][AS5134-ZSSM]]
+    - Rotary sensor
+  - [[https://www.digikey.com.au/en/products/detail/ams/AS5601-ASOM/5032389][AS5601-ASOM]]
+    - Position sensor
+    - [[https://ams.com/en/as5601][5601 product page]]
+    - [[https://github.com/bitfasching/AS5601][Library for Arduino]]
+The AMS magnetic rotary encoders have digital outputs
+*** Anemometer
+- A simple Hall effect sensor will suffice. Can also use a magnetic rotary encoder, such as the analogue one linked below
+  - [[https://www.digikey.com.au/en/products/detail/te-connectivity-measurement-specialties/G-MRCO-037/5277441][G-MRCO-037]]  
+** Rain gauge
+    - Tipping bucket design, see [[https://www.allaboutcircuits.com/projects/build-a-wireless-tipping-bucket-rain-gauge-part-1assembling-the-base/][these notes]]
+    
+** Alternatives
 *** Temperature sensor
 **** TMP117AIDRVR
 - Digital
@@ -38,7 +69,26 @@
 - SPI interface
 - 8-SOIC
 - [[https://www.digikey.com.au/en/products/detail/analog-devices-inc/ADT7311WTRZ-RL7/6163946][Digikey]]
-*** Humidity sensor
+
+*** Barametric sensor (Absolute pressure sensor)
+**** ILPS22QSTR
+- Accuracy: 0.5 hPa
+- 24 bit
+- Range: 260 - 1260 hPa
+- QFN package
+- Output: I2C and SPI
+- [[https://www.digikey.com.au/en/products/detail/stmicroelectronics/ILPS22QSTR/15903343][Digikey]]
+**** MS560702BA03-00
+- Accuracy: 1.5 hPa
+- Range: 10 - 1200 hPa
+- Resolution: 24 bit
+- Output: I2C and SPI
+- [[https://www.digikey.com.au/en/products/detail/te-connectivity-measurement-specialties/MS560702BA03-00/14816076][Digikey]]
+**** NPP-301A-700AT
+- Accuracy: 0.2% (~ 2 hPa at 1 atmosphere)
+- Output: Analogue (Wheatstone bridge)
+- [[https://www.digikey.com.au/en/products/detail/amphenol-novasensor/NPP-301A-700AT/1795302][Digikey]]
+*** Humidity
 **** SHT30
 - Accuracy: 2% RH
 - Range: 0 - 100% RH\
@@ -58,47 +108,11 @@
 - Output: I2C
 - Comes in Spark Fun assembly
 - [[https://cdn.sparkfun.com/assets/8/a/1/5/0/DHT20.pdf][Digikey]]
-*** Barametric sensor (Absolute pressure sensor)
-**** ILPS22QSTR
-- Accuracy: 0.5 hPa
-- 24 bit
-- Range: 260 - 1260 hPa
-- QFN package
-- Output: I2C and SPI
-- [[https://www.digikey.com.au/en/products/detail/stmicroelectronics/ILPS22QSTR/15903343][Digikey]]
-**** BME280
-- Accuracy: 1.5 hPa
-- Combined pressure and humidity sensor (Accuracy: 3% RH)
-- Output: I2C and SPI
-- [[https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf][Datasheet]]
-**** MS560702BA03-00
-- Accuracy: 1.5 hPa
-- Range: 10 - 1200 hPa
-- Resolution: 24 bit
-- Output: I2C and SPI
-- [[https://www.digikey.com.au/en/products/detail/te-connectivity-measurement-specialties/MS560702BA03-00/14816076][Digikey]]
-**** NPP-301A-700AT
-- Accuracy: 0.2% (~ 2 hPa at 1 atmosphere)
-- Output: Analogue (Wheatstone bridge)
-- [[https://www.digikey.com.au/en/products/detail/amphenol-novasensor/NPP-301A-700AT/1795302][Digikey]]
-*** Anemometer and wind vane
-- Will attempt to make a custom anemometer. If calibration appears too challenging, an [[https://core-electronics.com.au/anemometer-wind-speed-sensor-w-analog-voltage-output.html][here is an off the shelf]] one from core electronics
-**** Wind vane
-- Can use a magnetic rotary encoder, such as
-  - [[https://www.digikey.com.au/en/products/detail/ams/AS5134-ZSSM/3464909][AS5134-ZSSM]]
-    - Rotary sensor
-  - [[https://www.digikey.com.au/en/products/detail/ams/AS5601-ASOM/5032389][AS5601-ASOM]]
-    - Position sensor
-    - [[https://ams.com/en/as5601][5601 product page]]
-    - [[https://github.com/bitfasching/AS5601][Library for Arduino]]
-The AMS magnetic rotary encoders have digital outputs
-**** Anemometer
-- A simple Hall effect sensor will suffice. Can also use a magnetic rotary encoder, such as the analogue one linked below
-  - [[https://www.digikey.com.au/en/products/detail/te-connectivity-measurement-specialties/G-MRCO-037/5277441][G-MRCO-037]]  
-*** Rain gauge
-    - Tipping bucket design, see [[https://www.allaboutcircuits.com/projects/build-a-wireless-tipping-bucket-rain-gauge-part-1assembling-the-base/][these notes]]
-    
-* System design
+  
+* DONE System design
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-04-26 Tue 08:11]
+:END:
 ** Architecture
 #+HEADER: :imagemagick yes
 #+HEADER: :fit yes :noweb yes
@@ -217,9 +231,18 @@ Power over ethernet guides:
 - SOT-23-5
 - [[https://www.digikey.com.au/en/products/detail/onsemi/NCP164ASN330T1G/15284210][Digikey product page]]
   
-* Schematic capture
-* Choose housings
-* BOM
+* DONE Schematic capture
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-04-26 Tue 08:11]
+:END:
+* DONE Choose housings
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-04-26 Tue 08:11]
+:END:
+* DONE BOM
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-04-26 Tue 08:11]
+:END:
 ** Main controller board
 |--------------------------------------------------------+----------+---------------------+--------------+-----------------------------+------------------+---------|
 | Reference                                              | Quantity | Value               |    Footprint | Part no.                    | Notes            | Ordered |
@@ -257,7 +280,7 @@ Power over ethernet guides:
 | R4 R25 R26                                             |        3 | DNF                 |         0603 |                             |                  |         |
 | R6                                                     |        1 | 4.7k                |         0603 |                             |                  |         |
 |--------------------------------------------------------+----------+---------------------+--------------+-----------------------------+------------------+---------|
-| SW1 SW2                                                |        2 | SW_Push             |              |                             |                  |         |
+| SW1 SW2                                                |        2 | SW_Push             |          6mm | jaycar SP0600               |                  |         |
 |--------------------------------------------------------+----------+---------------------+--------------+-----------------------------+------------------+---------|
 | TP2 TP1                                                |        2 | TestPoint           |          SMD | RCU-0C                      | TE-connectivity  | x       |
 |--------------------------------------------------------+----------+---------------------+--------------+-----------------------------+------------------+---------|
@@ -266,7 +289,7 @@ Power over ethernet guides:
 | U3                                                     |        1 | +CAT811STBI-GT3+    |      SOT-143 | APX811-31UG-7               |                  | x       |
 | U4                                                     |        1 | W5500               |              | W5500                       | Ethernet phy     | x       |
 | U5                                                     |        1 | ATmega328-PU        |       DIP-28 |                             |                  |         |
-| U6                                                     |        1 | +P82B715+           |              | PCA9517A                    | I2C redriver     | x       |
+| U6                                                     |        1 | +P82B715+           |       TSSOP8 | PCA9517ADP                  | I2C redriver     | x       |
 | U7                                                     |        1 | +TXB0104D+          |      SOIC-14 | ‎TXS0104EDR‎                  | Level translator | x       |
 | Y1                                                     |        1 | 25MHz               |          SMD | ECS-250-18-5PX-F-TR         | 30ppm, 18pF      | x       |
 | Y2                                                     |        1 | 18MHz               |          SMD | ECS-180-S-5PX-TR            | 30ppm, 18pF      | x       |
@@ -359,23 +382,27 @@ Power over ethernet guides:
 - In-circuit serial programmer (ICSP) for AVR Atmega
 - Hookup wire for cables (26 / 24 AWG)
   
-* PCB layout
-* Design mechanical components
+* IN-PROGRESS PCB layout
+:LOGBOOK:
+- State "IN-PROGRESS" from "TODO"       [2022-04-27 Wed 20:26] \\
+  - Started footpring associated on controller schematic
+:END:
+* TODO Design mechanical components
 ** Design anemometer mechanical components
 ** Design wind vane mechanical components
 ** Design rain gauge mechanical components
-* Microcontroller programming
+* TODO Microcontroller programming
 ** Environmental sensors
 ** Animometer
 ** Wind vane
 ** Rain gauge
 ** Ethernet phy
-* Assembly
+* TODO Assembly
 ** Cable assembly
 ** Wind sensor mechanical assembly
-* Mounting
-* Web server database
-* Web page dashboard
+* TODO Mounting
+* TODO Web server database
+* TODO Web page dashboard
 * Resources
 ** Miscellaneous articles
 *** Project writeups
