@@ -388,6 +388,8 @@ Power over ethernet guides:
   - Started footpring associated on controller schematic
 :END:
 - PCBway [[https://www.pcbway.com/capabilities.html#:~:text=Leave%20min%20clearance%20of%201.6,between%20boards%20to%20be%20zero.&text=No%20extra%20charge.,-Advanced%20PCB%20Capabilities][capabilities table]]
+- Check whether PCBway plates through holes
+  - Kicad plates through holes by default (see [[https://forum.kicad.info/t/through-hole-component-connected-from-the-top-and-soldered-from-the-bottom/491][this post]])
 * TODO Design mechanical components
 ** Design anemometer mechanical components
 ** Design wind vane mechanical components
