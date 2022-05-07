@@ -119,8 +119,6 @@ Wire Wire Line
 Wire Wire Line
 	2550 2250 2550 2100
 Connection ~ 2400 2250
-Text Label 2550 2100 0    50   ~ 0
-3V3
 $Comp
 L power:GND #PWR04
 U 1 1 61FB6D1E
@@ -617,8 +615,6 @@ F 3 "" H 3850 1400 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	4650 900  4650 1000
-Text Label 3250 900  2    50   ~ 0
-3V3
 Wire Wire Line
 	4400 900  4650 900 
 Wire Wire Line
@@ -977,17 +973,12 @@ F 3 "" H 4900 6650 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	3900 5950 4400 5950
-Wire Wire Line
 	3900 6050 3900 5950
 Connection ~ 3900 5950
 Wire Wire Line
 	4150 5700 4900 5700
 Wire Wire Line
 	4400 5450 4800 5450
-Wire Wire Line
-	4400 5950 4400 5450
-Connection ~ 4400 5450
 Wire Wire Line
 	7300 4350 7300 4750
 Wire Wire Line
@@ -1042,13 +1033,8 @@ Wire Wire Line
 	4900 5700 4900 5050
 Wire Wire Line
 	4900 5700 4900 6050
-Connection ~ 4400 5950
-Wire Wire Line
-	4400 5950 5000 5950
 Wire Wire Line
 	4800 5450 4800 5050
-Wire Wire Line
-	4400 6050 4400 5950
 Wire Wire Line
 	3500 5450 3500 5700
 Connection ~ 3500 5700
@@ -1639,4 +1625,49 @@ Wire Wire Line
 	9400 6100 9650 6100
 Wire Wire Line
 	9100 6100 8950 6100
+Wire Wire Line
+	3900 5950 5000 5950
+Wire Wire Line
+	4400 5450 4400 6050
+Connection ~ 4400 5450
+Text Label 3250 900  2    50   ~ 0
+3V3
+Text GLabel 3050 1900 0    50   Input ~ 0
+3V3
+Text Label 2550 2100 0    50   ~ 0
+3V3
+Text Label 3200 1900 0    50   ~ 0
+3V3
+Wire Wire Line
+	3050 1900 3200 1900
+Text GLabel 3050 2100 0    50   Input ~ 0
+5V0
+Text Label 3200 2100 0    50   ~ 0
+5V0
+Wire Wire Line
+	3050 2100 3200 2100
+Text Label 4100 2100 0    50   ~ 0
+SCLK
+Text Label 4100 2000 0    50   ~ 0
+MISO
+Text Label 4100 1900 0    50   ~ 0
+MOSI
+Text Label 4100 1800 0    50   ~ 0
+CS
+Text GLabel 3950 1800 0    50   Input ~ 0
+CS
+Text GLabel 3950 1900 0    50   Input ~ 0
+MOSI
+Text GLabel 3950 2000 0    50   Input ~ 0
+MISO
+Text GLabel 3950 2100 0    50   Input ~ 0
+SCLK
+Wire Wire Line
+	3950 1800 4100 1800
+Wire Wire Line
+	3950 1900 4100 1900
+Wire Wire Line
+	3950 2000 4100 2000
+Wire Wire Line
+	3950 2100 4100 2100
 $EndSCHEMATC

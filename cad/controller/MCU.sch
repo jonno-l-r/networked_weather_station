@@ -1111,4 +1111,40 @@ F 3 "" H 6450 3100 50  0001 C CNN
 $EndComp
 Text Notes 7100 2500 0    50   ~ 0
 150 Ohm and 150 pF\ntypical damping values,\nif required
+Text GLabel 4200 3150 0    50   Input ~ 0
+3V3
+Text Label 4350 3150 0    50   ~ 0
+3V3
+Wire Wire Line
+	4200 3150 4350 3150
+Text GLabel 4200 3350 0    50   Input ~ 0
+5V0
+Text Label 4350 3350 0    50   ~ 0
+5V0
+Wire Wire Line
+	4200 3350 4350 3350
+Text Label 5100 3400 0    50   ~ 0
+SCLK
+Text Label 5100 3300 0    50   ~ 0
+MISO
+Text Label 5100 3200 0    50   ~ 0
+MOSI
+Text Label 5100 3100 0    50   ~ 0
+CS
+Text GLabel 4950 3100 0    50   Input ~ 0
+CS
+Text GLabel 4950 3200 0    50   Input ~ 0
+MOSI
+Text GLabel 4950 3300 0    50   Input ~ 0
+MISO
+Text GLabel 4950 3400 0    50   Input ~ 0
+SCLK
+Wire Wire Line
+	4950 3100 5100 3100
+Wire Wire Line
+	4950 3200 5100 3200
+Wire Wire Line
+	4950 3300 5100 3300
+Wire Wire Line
+	4950 3400 5100 3400
 $EndSCHEMATC
