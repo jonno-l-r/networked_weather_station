@@ -498,48 +498,37 @@ Text Notes 5900 5150 0    31   ~ 0
 See http://wizwiki.net/wiki/lib/exe/fetch.php/\nproducts:w5500:w5500_sch_v110_use_mag_.png?cache=
 Text Notes 10000 4800 0    47   ~ 0
 VC2 is POE on\nJ4/5 (VC2+) and\nJ7/8 (VC2-)
-Text Label 7300 2250 2    47   ~ 0
-PIN_12V_POE
 NoConn ~ 9250 4350
 NoConn ~ 9250 4850
 $Comp
 L Device:Jumper JP5
 U 1 1 624A0154
-P 10050 6100
-F 0 "JP5" H 10050 6364 50  0000 C CNN
-F 1 "Jumper" H 10050 6273 50  0000 C CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x02_P2.54mm_Vertical" H 10050 6100 50  0001 C CNN
-F 3 "~" H 10050 6100 50  0001 C CNN
-	1    10050 6100
+P 7700 2250
+F 0 "JP5" H 7700 2514 50  0000 C CNN
+F 1 "Jumper" H 7700 2423 50  0000 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x02_P2.54mm_Vertical" H 7700 2250 50  0001 C CNN
+F 3 "~" H 7700 2250 50  0001 C CNN
+	1    7700 2250
 	-1   0    0    1   
 $EndComp
 $Comp
 L Device:Jumper JP4
 U 1 1 624A141E
-P 10050 5900
-F 0 "JP4" H 10050 6164 50  0000 C CNN
-F 1 "Jumper" H 10050 6073 50  0000 C CNN
-F 2 "Connector_PinSocket_2.54mm:PinSocket_1x02_P2.54mm_Vertical" H 10050 5900 50  0001 C CNN
-F 3 "~" H 10050 5900 50  0001 C CNN
-	1    10050 5900
+P 7700 1750
+F 0 "JP4" H 7700 2014 50  0000 C CNN
+F 1 "Jumper" H 7700 1923 50  0000 C CNN
+F 2 "Connector_PinSocket_2.54mm:PinSocket_1x02_P2.54mm_Vertical" H 7700 1750 50  0001 C CNN
+F 3 "~" H 7700 1750 50  0001 C CNN
+	1    7700 1750
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	9750 5900 9650 5900
+	7400 2250 7300 2250
 Wire Wire Line
-	9650 5900 9650 6100
-Wire Wire Line
-	9750 6100 9650 6100
-Connection ~ 9650 6100
-Wire Wire Line
-	10350 6100 10450 6100
-Wire Wire Line
-	10350 5900 10450 5900
-Text Label 10450 6100 0    47   ~ 0
-PIN_12V_POE
-Text Label 10450 5900 0    47   ~ 0
+	8000 1750 8100 1750
+Text Label 8100 1750 0    47   ~ 0
 PIN_12V_JACK
-Text Label 8950 6100 2    47   ~ 0
+Text Label 5950 1750 2    47   ~ 0
 PIN_12V
 Wire Wire Line
 	5300 5050 5300 5150
@@ -1269,8 +1258,6 @@ F 3 "~" H 8450 2850 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	8600 2850 8750 2850
-Wire Wire Line
-	8000 2250 8300 2250
 $Comp
 L power:GND #PWR021
 U 1 1 626797AB
@@ -1282,36 +1269,21 @@ F 3 "" H 8000 2950 50  0001 C CNN
 	1    8000 2950
 	1    0    0    -1  
 $EndComp
-Connection ~ 8000 2250
 Wire Wire Line
 	8000 2850 8000 2950
-Connection ~ 8000 2850
 $Comp
 L Connector:TestPoint TP2
 U 1 1 62BD0C2D
-P 8000 2150
-F 0 "TP2" H 8058 2268 50  0000 L CNN
-F 1 "TestPoint" H 8058 2177 50  0000 L CNN
-F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 8200 2150 50  0001 C CNN
-F 3 "~" H 8200 2150 50  0001 C CNN
-	1    8000 2150
+P 6100 1650
+F 0 "TP2" H 6158 1768 50  0000 L CNN
+F 1 "TestPoint" H 6158 1677 50  0000 L CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 6300 1650 50  0001 C CNN
+F 3 "~" H 6300 1650 50  0001 C CNN
+	1    6100 1650
 	1    0    0    -1  
-$EndComp
-$Comp
-L Connector:TestPoint TP1
-U 1 1 62BD24C9
-P 7300 2850
-F 0 "TP1" V 7495 2922 50  0000 C CNN
-F 1 "TestPoint" V 7404 2922 50  0000 C CNN
-F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 7500 2850 50  0001 C CNN
-F 3 "~" H 7500 2850 50  0001 C CNN
-	1    7300 2850
-	0    -1   -1   0   
 $EndComp
 Wire Wire Line
 	8300 2850 8000 2850
-Wire Wire Line
-	8000 2250 8000 2150
 $Comp
 L Device:C C8
 U 1 1 62C14474
@@ -1387,10 +1359,6 @@ Wire Wire Line
 	3400 900  3400 1000
 Wire Wire Line
 	3850 900  3850 1000
-Wire Wire Line
-	4650 1300 4650 1350
-Wire Wire Line
-	4650 1350 6900 1350
 $Comp
 L Device:C C12
 U 1 1 62F0B102
@@ -1402,8 +1370,6 @@ F 3 "~" H 5100 1150 50  0001 C CNN
 	1    5100 1150
 	-1   0    0    1   
 $EndComp
-Wire Wire Line
-	5100 1300 5100 1350
 $Comp
 L Device:C C13
 U 1 1 62F1BE09
@@ -1415,8 +1381,6 @@ F 3 "~" H 5550 1150 50  0001 C CNN
 	1    5550 1150
 	-1   0    0    1   
 $EndComp
-Wire Wire Line
-	5550 1300 5550 1350
 $Comp
 L Device:C C14
 U 1 1 62F3E323
@@ -1428,8 +1392,6 @@ F 3 "~" H 6000 1150 50  0001 C CNN
 	1    6000 1150
 	-1   0    0    1   
 $EndComp
-Wire Wire Line
-	6000 1300 6000 1350
 $Comp
 L Device:C C15
 U 1 1 62F4F2EE
@@ -1441,8 +1403,6 @@ F 3 "~" H 6450 1150 50  0001 C CNN
 	1    6450 1150
 	-1   0    0    1   
 $EndComp
-Wire Wire Line
-	6450 1300 6450 1350
 $Comp
 L Device:C C16
 U 1 1 62F604B1
@@ -1469,51 +1429,37 @@ Wire Wire Line
 	7400 900  7600 900 
 Wire Wire Line
 	6900 1350 7400 1350
-Connection ~ 6900 1350
-Wire Wire Line
-	4650 1350 4650 1400
-Connection ~ 4650 1350
 Connection ~ 3850 1350
 $Comp
 L Device:CP C22
 U 1 1 6313C837
-P 8000 2550
-F 0 "C22" H 8118 2596 50  0000 L CNN
-F 1 "33uF" H 8118 2505 50  0000 L CNN
-F 2 "Capacitor_THT:CP_Radial_D4.0mm_P2.00mm" H 8038 2400 50  0001 C CNN
-F 3 "~" H 8000 2550 50  0001 C CNN
-	1    8000 2550
+P 6650 2050
+F 0 "C22" H 6768 2096 50  0000 L CNN
+F 1 "33uF" H 6768 2005 50  0000 L CNN
+F 2 "Capacitor_THT:CP_Radial_D4.0mm_P2.00mm" H 6688 1900 50  0001 C CNN
+F 3 "~" H 6650 2050 50  0001 C CNN
+	1    6650 2050
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	8000 2250 8000 2400
+	6650 1750 6650 1900
 Wire Wire Line
-	8000 2700 8000 2850
+	6650 2200 6650 2350
 $Comp
 L Device:C C19
 U 1 1 62415D4C
-P 7700 2550
-F 0 "C19" H 7585 2504 50  0000 R CNN
-F 1 "100nF" H 7585 2595 50  0000 R CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 7738 2400 50  0001 C CNN
-F 3 "~" H 7700 2550 50  0001 C CNN
-	1    7700 2550
+P 6350 2050
+F 0 "C19" H 6235 2004 50  0000 R CNN
+F 1 "100nF" H 6235 2095 50  0000 R CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 6388 1900 50  0001 C CNN
+F 3 "~" H 6350 2050 50  0001 C CNN
+	1    6350 2050
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	7700 2250 7700 2400
+	6350 1750 6350 1900
 Wire Wire Line
-	7700 2250 8000 2250
-Wire Wire Line
-	7700 2850 7700 2700
-Wire Wire Line
-	7700 2850 8000 2850
-Wire Wire Line
-	7700 2850 7300 2850
-Connection ~ 7700 2850
-Wire Wire Line
-	7700 2250 7300 2250
-Connection ~ 7700 2250
+	6350 2350 6350 2200
 $Comp
 L Device:C C7
 U 1 1 624834EF
@@ -1613,18 +1559,16 @@ $EndComp
 $Comp
 L Device:D D1
 U 1 1 62437589
-P 9250 6100
-F 0 "D1" H 9250 6317 50  0000 C CNN
-F 1 "D" H 9250 6226 50  0000 C CNN
-F 2 "Diode_THT:D_DO-41_SOD81_P7.62mm_Horizontal" H 9250 6100 50  0001 C CNN
-F 3 "~" H 9250 6100 50  0001 C CNN
-	1    9250 6100
+P 6950 1750
+F 0 "D1" H 6950 1967 50  0000 C CNN
+F 1 "D" H 6950 1876 50  0000 C CNN
+F 2 "Diode_THT:D_DO-41_SOD81_P7.62mm_Horizontal" H 6950 1750 50  0001 C CNN
+F 3 "~" H 6950 1750 50  0001 C CNN
+	1    6950 1750
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	9400 6100 9650 6100
-Wire Wire Line
-	9100 6100 8950 6100
+	6800 1750 6650 1750
 Wire Wire Line
 	3900 5950 5000 5950
 Wire Wire Line
@@ -1670,4 +1614,82 @@ Wire Wire Line
 	3950 2000 4100 2000
 Wire Wire Line
 	3950 2100 4100 2100
+Wire Wire Line
+	4650 1300 4650 1350
+Wire Wire Line
+	6450 1300 6450 1350
+Wire Wire Line
+	6450 1350 6900 1350
+Connection ~ 6900 1350
+Wire Wire Line
+	6000 1300 6000 1350
+Wire Wire Line
+	6000 1350 6450 1350
+Connection ~ 6450 1350
+Wire Wire Line
+	5550 1300 5550 1350
+Wire Wire Line
+	5550 1350 6000 1350
+Connection ~ 6000 1350
+Wire Wire Line
+	5100 1300 5100 1350
+Wire Wire Line
+	5100 1350 5550 1350
+Connection ~ 5550 1350
+Wire Wire Line
+	5100 1350 4650 1350
+Connection ~ 5100 1350
+Connection ~ 4650 1350
+Wire Wire Line
+	4650 1350 4650 1400
+Wire Wire Line
+	7100 1750 7300 1750
+$Comp
+L Connector:TestPoint TP1
+U 1 1 62BD24C9
+P 7900 2850
+F 0 "TP1" V 8095 2922 50  0000 C CNN
+F 1 "TestPoint" V 8004 2922 50  0000 C CNN
+F 2 "TestPoint:TestPoint_Pad_2.5x2.5mm" H 8100 2850 50  0001 C CNN
+F 3 "~" H 8100 2850 50  0001 C CNN
+	1    7900 2850
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	8000 2850 7900 2850
+Connection ~ 8000 2850
+Wire Wire Line
+	7300 1750 7400 1750
+Wire Wire Line
+	8000 2250 8300 2250
+Connection ~ 7300 1750
+Wire Wire Line
+	7300 1750 7300 2250
+Wire Wire Line
+	6350 1750 6650 1750
+Connection ~ 6650 1750
+Wire Wire Line
+	6350 1750 6100 1750
+Wire Wire Line
+	6100 1750 6100 1650
+Connection ~ 6350 1750
+Wire Wire Line
+	6100 1750 5950 1750
+Connection ~ 6100 1750
+Wire Wire Line
+	6350 2350 6650 2350
+Wire Wire Line
+	6650 2350 6650 2450
+Connection ~ 6650 2350
+$Comp
+L power:GND #PWR?
+U 1 1 62D48985
+P 6650 2450
+F 0 "#PWR?" H 6650 2200 50  0001 C CNN
+F 1 "GND" H 6655 2277 50  0000 C CNN
+F 2 "" H 6650 2450 50  0001 C CNN
+F 3 "" H 6650 2450 50  0001 C CNN
+	1    6650 2450
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
