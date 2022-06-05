@@ -498,8 +498,6 @@ Text Notes 5900 5150 0    31   ~ 0
 See http://wizwiki.net/wiki/lib/exe/fetch.php/\nproducts:w5500:w5500_sch_v110_use_mag_.png?cache=
 Text Notes 10000 4800 0    47   ~ 0
 VC2 is POE on\nJ4/5 (VC2+) and\nJ7/8 (VC2-)
-NoConn ~ 9250 4350
-NoConn ~ 9250 4850
 $Comp
 L Device:Jumper JP5
 U 1 1 624A0154
@@ -675,7 +673,7 @@ Wire Wire Line
 Wire Wire Line
 	8100 3300 8100 4150
 Wire Wire Line
-	8900 4450 9250 4450
+	8900 4450 9100 4450
 Wire Wire Line
 	8050 4550 9250 4550
 Wire Wire Line
@@ -1217,10 +1215,7 @@ F 3 "~" H 8450 2250 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 Wire Wire Line
-	8750 4950 9250 4950
-Wire Wire Line
-	9200 3900 9200 5200
-Connection ~ 9200 3900
+	8750 4950 9100 4950
 $Comp
 L power:GND #PWR023
 U 1 1 62537268
@@ -1692,4 +1687,21 @@ F 3 "" H 6650 2450 50  0001 C CNN
 	1    6650 2450
 	1    0    0    -1  
 $EndComp
+Connection ~ 9200 3900
+Wire Wire Line
+	9200 3900 9200 5200
+Wire Wire Line
+	9250 4850 9100 4850
+Wire Wire Line
+	9100 4850 9100 4950
+Connection ~ 9100 4950
+Wire Wire Line
+	9100 4950 9250 4950
+Wire Wire Line
+	9250 4350 9100 4350
+Wire Wire Line
+	9100 4350 9100 4450
+Connection ~ 9100 4450
+Wire Wire Line
+	9100 4450 9250 4450
 $EndSCHEMATC
