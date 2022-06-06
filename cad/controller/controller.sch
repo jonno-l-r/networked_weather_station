@@ -1704,4 +1704,10 @@ Wire Wire Line
 Connection ~ 9100 4450
 Wire Wire Line
 	9100 4450 9250 4450
+Text Label 3250 2300 0    50   ~ 0
+RST
+Text GLabel 3100 2300 0    50   Input ~ 0
+RST
+Wire Wire Line
+	3100 2300 3250 2300
 $EndSCHEMATC

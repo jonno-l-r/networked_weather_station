@@ -1165,4 +1165,10 @@ F 3 "" H 6650 5950 50  0001 C CNN
 	1    6650 5950
 	1    0    0    -1  
 $EndComp
+Text Label 4400 3550 0    50   ~ 0
+RST
+Text GLabel 4250 3550 0    50   Input ~ 0
+RST
+Wire Wire Line
+	4250 3550 4400 3550
 $EndSCHEMATC
