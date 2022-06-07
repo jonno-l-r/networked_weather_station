@@ -1571,44 +1571,44 @@ Wire Wire Line
 Connection ~ 4400 5450
 Text Label 3250 900  2    50   ~ 0
 3V3
-Text GLabel 3050 1900 0    50   Input ~ 0
+Text GLabel 4650 1900 0    50   Input ~ 0
 3V3
 Text Label 2550 2100 0    50   ~ 0
 3V3
-Text Label 3200 1900 0    50   ~ 0
+Text Label 4800 1900 0    50   ~ 0
 3V3
 Wire Wire Line
-	3050 1900 3200 1900
-Text GLabel 3050 2100 0    50   Input ~ 0
+	4650 1900 4800 1900
+Text GLabel 4650 2000 0    50   Input ~ 0
 5V0
-Text Label 3200 2100 0    50   ~ 0
+Text Label 4800 2000 0    50   ~ 0
 5V0
 Wire Wire Line
-	3050 2100 3200 2100
-Text Label 4100 2100 0    50   ~ 0
+	4650 2000 4800 2000
+Text Label 3800 2200 0    50   ~ 0
 SCLK
-Text Label 4100 2000 0    50   ~ 0
+Text Label 3800 2100 0    50   ~ 0
 MISO
-Text Label 4100 1900 0    50   ~ 0
+Text Label 3800 2000 0    50   ~ 0
 MOSI
-Text Label 4100 1800 0    50   ~ 0
+Text Label 3800 1900 0    50   ~ 0
 CS
-Text GLabel 3950 1800 0    50   Input ~ 0
+Text GLabel 3650 1900 0    50   Input ~ 0
 CS
-Text GLabel 3950 1900 0    50   Input ~ 0
+Text GLabel 3650 2000 0    50   Input ~ 0
 MOSI
-Text GLabel 3950 2000 0    50   Input ~ 0
+Text GLabel 3650 2100 0    50   Input ~ 0
 MISO
-Text GLabel 3950 2100 0    50   Input ~ 0
+Text GLabel 3650 2200 0    50   Input ~ 0
 SCLK
 Wire Wire Line
-	3950 1800 4100 1800
+	3650 1900 3800 1900
 Wire Wire Line
-	3950 1900 4100 1900
+	3650 2000 3800 2000
 Wire Wire Line
-	3950 2000 4100 2000
+	3650 2100 3800 2100
 Wire Wire Line
-	3950 2100 4100 2100
+	3650 2200 3800 2200
 Wire Wire Line
 	4650 1300 4650 1350
 Wire Wire Line
@@ -1704,4 +1704,16 @@ Wire Wire Line
 Connection ~ 9100 4450
 Wire Wire Line
 	9100 4450 9250 4450
+Text Label 4800 2100 0    50   ~ 0
+RST
+Text GLabel 4650 2100 0    50   Input ~ 0
+RST
+Wire Wire Line
+	4650 2100 4800 2100
+Text Label 4800 2200 0    50   ~ 0
+INT_W5500
+Text GLabel 4650 2200 0    50   Input ~ 0
+INT_W5500
+Wire Wire Line
+	4650 2200 4800 2200
 $EndSCHEMATC
