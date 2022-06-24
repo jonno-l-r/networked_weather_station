@@ -19,7 +19,7 @@ U 1 1 634F3453
 P 1350 2200
 F 0 "J1" H 1268 1775 50  0000 C CNN
 F 1 "Conn_01x04" H 1268 1866 50  0000 C CNN
-F 2 "" H 1350 2200 50  0001 C CNN
+F 2 "Connector_Molex:Molex_KK-254_AE-6410-04A_1x04_P2.54mm_Vertical" H 1350 2200 50  0001 C CNN
 F 3 "~" H 1350 2200 50  0001 C CNN
 	1    1350 2200
 	-1   0    0    1   
@@ -40,18 +40,18 @@ Wire Wire Line
 Wire Wire Line
 	1650 2000 1650 2400
 Text Label 1950 2100 0    50   ~ 0
-SCL_REM
+SCL
 Text Label 3100 1550 0    50   ~ 0
-3V3
+3V3_WV
 Text Label 1950 2300 0    50   ~ 0
-SDA_REM
+SDA
 $Comp
 L custom_analogue:HMC1501 U2
 U 1 1 6350E9DD
 P 4950 3400
 F 0 "U2" H 4925 3575 50  0000 C CNN
 F 1 "HMC1501" H 4925 3484 50  0000 C CNN
-F 2 "" H 4950 3550 50  0001 C CNN
+F 2 "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm" H 4950 3550 50  0001 C CNN
 F 3 "" H 4950 3550 50  0001 C CNN
 	1    4950 3400
 	1    0    0    -1  
@@ -62,7 +62,7 @@ U 1 1 6350FDBA
 P 1350 3200
 F 0 "J2" H 1268 2775 50  0000 C CNN
 F 1 "Conn_01x04" H 1268 2866 50  0000 C CNN
-F 2 "" H 1350 3200 50  0001 C CNN
+F 2 "Connector_Molex:Molex_KK-254_AE-6410-04A_1x04_P2.54mm_Vertical" H 1350 3200 50  0001 C CNN
 F 3 "~" H 1350 3200 50  0001 C CNN
 	1    1350 3200
 	-1   0    0    1   
@@ -113,7 +113,7 @@ F 3 "" H 5350 3950 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text Label 6000 3050 1    50   ~ 0
-3V3
+3V3_A
 Text Label 4400 3350 2    50   ~ 0
 AMR-
 Wire Wire Line
@@ -160,7 +160,7 @@ Wire Wire Line
 Wire Wire Line
 	4150 1900 4150 1550
 Text Label 4150 1550 1    50   ~ 0
-3V3
+3V3_WV
 $Comp
 L Device:C C4
 U 1 1 63519CAC
@@ -197,7 +197,7 @@ U 1 1 6351D2E5
 P 5800 1500
 F 0 "J3" H 5880 1542 50  0000 L CNN
 F 1 "Conn_01x03" H 5880 1451 50  0000 L CNN
-F 2 "" H 5800 1500 50  0001 C CNN
+F 2 "Connector_Molex:Molex_KK-254_AE-6410-03A_1x03_P2.54mm_Vertical" H 5800 1500 50  0001 C CNN
 F 3 "~" H 5800 1500 50  0001 C CNN
 	1    5800 1500
 	1    0    0    -1  
@@ -208,7 +208,7 @@ U 1 1 63518BD0
 P 5000 1700
 F 0 "U3" H 4975 1825 50  0000 C CNN
 F 1 "AS5601" H 4975 1734 50  0000 C CNN
-F 2 "" H 5000 1700 50  0001 C CNN
+F 2 "Package_SO:SOIC-8_3.9x4.9mm_P1.27mm" H 5000 1700 50  0001 C CNN
 F 3 "" H 5000 1700 50  0001 C CNN
 	1    5000 1700
 	1    0    0    -1  
@@ -251,7 +251,7 @@ Wire Wire Line
 	5450 3200 5450 3400
 Wire Wire Line
 	6000 3200 6000 3050
-Text Notes 4100 4950 0    50   ~ 0
+Text Notes 1700 4300 0    50   ~ 0
 AS5601 max field strength: 90mT\nHMC1501 nominal field strength: 800oe (80mT)\n\nField needs to be diametric (N/S in the plane of rotation)\n
 Wire Wire Line
 	5450 3200 6000 3200
@@ -325,9 +325,6 @@ Wire Wire Line
 	1550 3000 1800 3000
 Wire Wire Line
 	1800 1650 1800 2200
-Connection ~ 1800 2200
-Wire Wire Line
-	1800 2200 1800 3000
 Wire Wire Line
 	4550 2100 4550 2450
 Wire Wire Line
@@ -337,4 +334,91 @@ Wire Wire Line
 Connection ~ 4550 2450
 Wire Wire Line
 	4550 2450 4550 2500
+Text Notes 7050 6800 0    50   ~ 0
+Anemometer: DNF J1 and U3\nWind vane: DNF J2 and U2
+Text Notes 5750 1300 0    50   ~ 0
+DNF\n
+Text Label 3100 2600 0    50   ~ 0
+3V3_A
+$Comp
+L Device:C C2
+U 1 1 62B7765F
+P 2650 2950
+F 0 "C2" H 2765 2996 50  0000 L CNN
+F 1 "100nF" H 2765 2905 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 2688 2800 50  0001 C CNN
+F 3 "~" H 2650 2950 50  0001 C CNN
+	1    2650 2950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3100 2700 3100 2600
+Wire Wire Line
+	1800 2700 2650 2700
+Wire Wire Line
+	2650 2700 2650 2800
+Wire Wire Line
+	3100 2700 3100 2800
+Connection ~ 3100 2700
+Wire Wire Line
+	2650 3100 2650 3200
+Wire Wire Line
+	3100 3200 3100 3100
+Wire Wire Line
+	3100 3200 3100 3250
+Connection ~ 3100 3200
+$Comp
+L power:GND #PWR03
+U 1 1 62B7766E
+P 3100 3250
+F 0 "#PWR03" H 3100 3000 50  0001 C CNN
+F 1 "GND" H 3105 3077 50  0000 C CNN
+F 2 "" H 3100 3250 50  0001 C CNN
+F 3 "" H 3100 3250 50  0001 C CNN
+	1    3100 3250
+	1    0    0    -1  
+$EndComp
+Connection ~ 2650 2700
+Wire Wire Line
+	2650 2700 3100 2700
+Wire Wire Line
+	2650 3200 3100 3200
+$Comp
+L Device:C C6
+U 1 1 62B77677
+P 3100 2950
+F 0 "C6" H 3215 2996 50  0000 L CNN
+F 1 "10uF" H 3215 2905 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 3138 2800 50  0001 C CNN
+F 3 "~" H 3100 2950 50  0001 C CNN
+	1    3100 2950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1800 2700 1800 3000
+Text Notes 4700 2350 0    50   ~ 0
+Position sensor\nfor wind vane
+Text Notes 4600 4300 0    50   ~ 0
+Angular velocity \nsensor for anemometer
+$Comp
+L Device:C C7
+U 1 1 62B85AB5
+P 6100 3650
+F 0 "C7" H 6215 3696 50  0000 L CNN
+F 1 "DNF" H 6215 3605 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 6138 3500 50  0001 C CNN
+F 3 "~" H 6100 3650 50  0001 C CNN
+	1    6100 3650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5700 3400 6100 3400
+Wire Wire Line
+	6100 3400 6100 3500
+Connection ~ 5700 3400
+Wire Wire Line
+	5700 3900 6100 3900
+Wire Wire Line
+	6100 3900 6100 3800
+Connection ~ 5700 3900
 $EndSCHEMATC
