@@ -382,24 +382,50 @@ Power over ethernet guides:
 - In-circuit serial programmer (ICSP) for AVR Atmega
 - Hookup wire for cables (26 / 24 AWG)
   
-* IN-PROGRESS PCB layout
+* DONE PCB layout
 :LOGBOOK:
+- State "DONE"       from "IN-PROGRESS" [2022-07-01 Fri 10:08]
 - State "IN-PROGRESS" from "TODO"       [2022-04-27 Wed 20:26] \\
   - Started footpring associated on controller schematic
 :END:
 - PCBway [[https://www.pcbway.com/capabilities.html#:~:text=Leave%20min%20clearance%20of%201.6,between%20boards%20to%20be%20zero.&text=No%20extra%20charge.,-Advanced%20PCB%20Capabilities][capabilities table]]
 - Check whether PCBway plates through holes
+  - Yes, all through holes are plated (i.e. connected on both layers)
   - Kicad plates through holes by default (see [[https://forum.kicad.info/t/through-hole-component-connected-from-the-top-and-soldered-from-the-bottom/491][this post]])
+** DONE Control board
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-07-01 Fri 10:07]
+:END:
+** DONE Sensor breakout board
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-07-01 Fri 10:08]
+:END:
+** DONE WInd sensor board
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-07-01 Fri 10:08]
+:END:
 * TODO Design mechanical components
 ** Design anemometer mechanical components
 ** Design wind vane mechanical components
 ** Design rain gauge mechanical components
-* TODO Microcontroller programming
-** Environmental sensors
-** Animometer
-** Wind vane
-** Rain gauge
-** Ethernet phy
+* IN-PROGRESS Microcontroller programming
+:LOGBOOK:
+- State "IN-PROGRESS" from "TODO"       [2022-07-01 Fri 10:08] \\
+  - Setup microchip studio project
+  - Can successfully program arduino uno in C through microchip studio
+  - SPI library done
+  - I2C library done
+  - W5100 library done
+    - Successfully implemented simply HTTP webserver
+:END:
+** TODO Environmental sensors
+** TODO Animometer
+** TODO Wind vane
+** TODO Rain gauge
+** IN-PROGRESS Ethernet phy
+:LOGBOOK:
+- State "IN-PROGRESS" from "TODO"       [2022-07-01 Fri 10:10]
+:END:
 * TODO Assembly
 ** Cable assembly
 ** Wind sensor mechanical assembly
