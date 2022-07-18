@@ -432,6 +432,38 @@ Power over ethernet guides:
 * TODO Mounting
 * TODO Web server database
 * TODO Web page dashboard
+* Debugging
+** Controller board
+Configuration:
+- Microcontroller unsocketed
+- arduino connected over SPI
+- SS from Arduino pin 10 to socket #16 on controller board
+
+W5500 DC levels
+| Pin no | Pin name | Expected (V) | Measured (V) |
+|--------+----------+--------------+--------------|
+|     28 | VDD      |          3.3 |              |
+|     32 | SCSn     |     0 or 3.3 |              |
+|     23 | RSVD     |          GND |              |
+|     22 | 1V20     |          1.2 |              |
+|     21 | AVDD     |          3.3 |              |
+|     20 | TOCAP    |              |              |
+|     18 | VBG      |          1.2 |              |
+|     17 | AVDD     |          3.3 |              |
+|     15 | AVDD     |          3.3 |              |
+|     11 | AVDD     |          3.3 |              |
+|     10 | EXRES1   |              |              |
+|      8 | AVDD     |          3.3 |              |
+|     37 | RSTn     |          3.3 |              |
+|     36 | INTn     |          3.3 |              |
+
+25 MHz oscillator waveforms
+- X0 (pin 31)
+- XI (pin 30)
+
+Captured SPI frame waveform
+-
+
 * Resources
 ** Miscellaneous articles
 *** Project writeups
