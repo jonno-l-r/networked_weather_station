@@ -20,7 +20,7 @@ def reader(filename, offset=0, t_scale=1):
     return data
 
 
-d = reader("data/spi.csv", offset=3.5, t_scale=1e6)
+d = reader("debug/spi.csv", offset=3.5, t_scale=1e6)
 plt.plot(d['t'], d['ch1'], label="SS")
 plt.plot(d['t'], d['ch2'], label="SCLK")
 plt.plot(d['t'], d['ch3'], label="MOSI")

@@ -391,55 +391,53 @@ Text Label 3650 6500 0    50   ~ 0
 INT_W5500
 Text Notes 3550 4350 0    50   ~ 0
 18 MHz\nECS-180-S-5PX-TR
-Text Notes 2750 7450 0    50   ~ 0
-TODO\n- Atmega328 pin mapping\n- Route ADC input 1
 $Comp
 L Logic_LevelTranslator:TXB0104D U7
 U 1 1 62D75B44
-P 6650 4950
-F 0 "U7" H 6650 4161 50  0000 C CNN
-F 1 "TXB0104D" H 6650 4070 50  0000 C CNN
-F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 6650 4200 50  0001 C CNN
-F 3 "http://www.ti.com/lit/ds/symlink/txb0104.pdf" H 6760 5045 50  0001 C CNN
-	1    6650 4950
+P 5800 5200
+F 0 "U7" H 5800 4411 50  0000 C CNN
+F 1 "TXB0104D" H 5800 4320 50  0000 C CNN
+F 2 "Package_SO:SOIC-14_3.9x8.7mm_P1.27mm" H 5800 4450 50  0001 C CNN
+F 3 "http://www.ti.com/lit/ds/symlink/txb0104.pdf" H 5910 5295 50  0001 C CNN
+	1    5800 5200
 	-1   0    0    -1  
 $EndComp
-Text Label 6100 3900 2    50   ~ 0
+Text Label 5250 4150 2    50   ~ 0
 5V0
-Text Label 7250 3900 0    50   ~ 0
+Text Label 6400 4150 0    50   ~ 0
 3V3
 Wire Wire Line
-	6250 4650 6100 4650
+	5400 4900 5250 4900
 Wire Wire Line
-	6250 5050 6100 5050
+	5400 5300 5250 5300
 Wire Wire Line
-	6250 5250 6100 5250
-Text Label 6100 4650 2    50   ~ 0
+	5400 5500 5250 5500
+Text Label 5250 4900 2    50   ~ 0
 SCLK_5V
-Text Label 6100 5250 2    50   ~ 0
+Text Label 5250 5500 2    50   ~ 0
 CS_5V
-Text Label 6100 5050 2    50   ~ 0
+Text Label 5250 5300 2    50   ~ 0
 MOSI_5V
-Text Label 6100 4850 2    50   ~ 0
+Text Label 5250 5100 2    50   ~ 0
 MISO_5V
 Wire Wire Line
-	6250 4850 6100 4850
+	5400 5100 5250 5100
 Wire Wire Line
-	7050 5050 7200 5050
+	6200 5300 6350 5300
 Wire Wire Line
-	7050 4650 7200 4650
+	6200 4900 6350 4900
 Wire Wire Line
-	7050 5250 7200 5250
-Text Label 7200 4650 0    50   ~ 0
+	6200 5500 6350 5500
+Text Label 6350 4900 0    50   ~ 0
 SCLK
-Text Label 7200 5250 0    50   ~ 0
+Text Label 6350 5500 0    50   ~ 0
 CS
-Text Label 7200 5050 0    50   ~ 0
+Text Label 6350 5300 0    50   ~ 0
 MOSI
-Text Label 7200 4850 0    50   ~ 0
+Text Label 6350 5100 0    50   ~ 0
 MISO
 Wire Wire Line
-	7050 4850 7200 4850
+	6200 5100 6350 5100
 Wire Wire Line
 	9050 1000 9050 1700
 Wire Wire Line
@@ -449,57 +447,57 @@ Wire Wire Line
 $Comp
 L Device:C C34
 U 1 1 631DB87C
-P 7200 4150
-F 0 "C34" H 7315 4196 50  0000 L CNN
-F 1 "100nF" H 7315 4105 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 7238 4000 50  0001 C CNN
-F 3 "~" H 7200 4150 50  0001 C CNN
-	1    7200 4150
+P 6350 4400
+F 0 "C34" H 6465 4446 50  0000 L CNN
+F 1 "100nF" H 6465 4355 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 6388 4250 50  0001 C CNN
+F 3 "~" H 6350 4400 50  0001 C CNN
+	1    6350 4400
 	1    0    0    -1  
 $EndComp
 $Comp
 L Device:C C31
 U 1 1 631DFFCE
-P 6150 4150
-F 0 "C31" H 6265 4196 50  0000 L CNN
-F 1 "100nF" H 6265 4105 50  0000 L CNN
-F 2 "Capacitor_SMD:C_0603_1608Metric" H 6188 4000 50  0001 C CNN
-F 3 "~" H 6150 4150 50  0001 C CNN
-	1    6150 4150
+P 5300 4400
+F 0 "C31" H 5415 4446 50  0000 L CNN
+F 1 "100nF" H 5415 4355 50  0000 L CNN
+F 2 "Capacitor_SMD:C_0603_1608Metric" H 5338 4250 50  0001 C CNN
+F 3 "~" H 5300 4400 50  0001 C CNN
+	1    5300 4400
 	-1   0    0    1   
 $EndComp
 $Comp
 L power:GND #PWR036
 U 1 1 63218CA3
-P 7200 4300
-F 0 "#PWR036" H 7200 4050 50  0001 C CNN
-F 1 "GND" H 7205 4127 50  0000 C CNN
-F 2 "" H 7200 4300 50  0001 C CNN
-F 3 "" H 7200 4300 50  0001 C CNN
-	1    7200 4300
+P 6350 4550
+F 0 "#PWR036" H 6350 4300 50  0001 C CNN
+F 1 "GND" H 6355 4377 50  0000 C CNN
+F 2 "" H 6350 4550 50  0001 C CNN
+F 3 "" H 6350 4550 50  0001 C CNN
+	1    6350 4550
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:GND #PWR034
 U 1 1 632191F1
-P 6150 4300
-F 0 "#PWR034" H 6150 4050 50  0001 C CNN
-F 1 "GND" H 6155 4127 50  0000 C CNN
-F 2 "" H 6150 4300 50  0001 C CNN
-F 3 "" H 6150 4300 50  0001 C CNN
-	1    6150 4300
+P 5300 4550
+F 0 "#PWR034" H 5300 4300 50  0001 C CNN
+F 1 "GND" H 5305 4377 50  0000 C CNN
+F 2 "" H 5300 4550 50  0001 C CNN
+F 3 "" H 5300 4550 50  0001 C CNN
+	1    5300 4550
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	7200 4000 7200 3900
-Connection ~ 7200 3900
+	6350 4250 6350 4150
+Connection ~ 6350 4150
 Wire Wire Line
-	7200 3900 7250 3900
+	6350 4150 6400 4150
 Wire Wire Line
-	6150 4000 6150 3900
+	5300 4250 5300 4150
 Wire Wire Line
-	6100 3900 6150 3900
-Connection ~ 6150 3900
+	5250 4150 5300 4150
+Connection ~ 5300 4150
 $Comp
 L Device:Ferrite_Bead FB4
 U 1 1 6323F4B9
@@ -537,13 +535,13 @@ Wire Wire Line
 	1350 3500 1350 3400
 Connection ~ 1350 3500
 Wire Wire Line
-	6550 4250 6550 3900
+	5700 4500 5700 4150
 Wire Wire Line
-	6150 3900 6550 3900
+	5300 4150 5700 4150
 Wire Wire Line
-	6750 4250 6750 3900
+	5900 4500 5900 4150
 Wire Wire Line
-	6750 3900 7050 3900
+	5900 4150 6200 4150
 $Comp
 L Device:C C35
 U 1 1 625F438F
@@ -1050,72 +1048,72 @@ F 3 "" H 6250 3100 50  0001 C CNN
 $EndComp
 Text Notes 6900 2500 0    50   ~ 0
 150 Ohm and 150 pF\ntypical damping values,\nif required
-Text GLabel 4100 3150 0    50   Input ~ 0
+Text GLabel 3850 2600 0    50   Input ~ 0
 3V3
-Text Label 4250 3150 0    50   ~ 0
+Text Label 4000 2600 0    50   ~ 0
 3V3
 Wire Wire Line
-	4100 3150 4250 3150
-Text GLabel 4100 3250 0    50   Input ~ 0
+	3850 2600 4000 2600
+Text GLabel 3850 2700 0    50   Input ~ 0
 5V0
-Text Label 4250 3250 0    50   ~ 0
+Text Label 4000 2700 0    50   ~ 0
 5V0
 Wire Wire Line
-	4100 3250 4250 3250
-Text Label 5100 3400 0    50   ~ 0
+	3850 2700 4000 2700
+Text Label 4850 2850 0    50   ~ 0
 SCLK
-Text Label 5100 3300 0    50   ~ 0
+Text Label 4850 2750 0    50   ~ 0
 MISO
-Text Label 5100 3200 0    50   ~ 0
+Text Label 4850 2650 0    50   ~ 0
 MOSI
-Text Label 5100 3100 0    50   ~ 0
+Text Label 4850 2550 0    50   ~ 0
 CS
-Text GLabel 4950 3100 0    50   Input ~ 0
+Text GLabel 4700 2550 0    50   Input ~ 0
 CS
-Text GLabel 4950 3200 0    50   Input ~ 0
+Text GLabel 4700 2650 0    50   Input ~ 0
 MOSI
-Text GLabel 4950 3300 0    50   Input ~ 0
+Text GLabel 4700 2750 0    50   Input ~ 0
 MISO
-Text GLabel 4950 3400 0    50   Input ~ 0
+Text GLabel 4700 2850 0    50   Input ~ 0
 SCLK
 Wire Wire Line
-	4950 3100 5100 3100
+	4700 2550 4850 2550
 Wire Wire Line
-	4950 3200 5100 3200
+	4700 2650 4850 2650
 Wire Wire Line
-	4950 3300 5100 3300
+	4700 2750 4850 2750
 Wire Wire Line
-	4950 3400 5100 3400
+	4700 2850 4850 2850
 Wire Wire Line
-	6650 5650 6650 5950
+	5800 5900 5800 6200
 $Comp
 L power:GND #PWR0102
 U 1 1 62DBDB96
-P 6650 5950
-F 0 "#PWR0102" H 6650 5700 50  0001 C CNN
-F 1 "GND" H 6655 5777 50  0000 C CNN
-F 2 "" H 6650 5950 50  0001 C CNN
-F 3 "" H 6650 5950 50  0001 C CNN
-	1    6650 5950
+P 5800 6200
+F 0 "#PWR0102" H 5800 5950 50  0001 C CNN
+F 1 "GND" H 5805 6027 50  0000 C CNN
+F 2 "" H 5800 6200 50  0001 C CNN
+F 3 "" H 5800 6200 50  0001 C CNN
+	1    5800 6200
 	1    0    0    -1  
 $EndComp
-Text Label 4250 3350 0    50   ~ 0
+Text Label 4000 2800 0    50   ~ 0
 RST
-Text GLabel 4100 3350 0    50   Input ~ 0
+Text GLabel 3850 2800 0    50   Input ~ 0
 RST
 Wire Wire Line
-	4100 3350 4250 3350
-Text Label 4250 3450 0    50   ~ 0
+	3850 2800 4000 2800
+Text Label 4000 2900 0    50   ~ 0
 INT_W5500
-Text GLabel 4100 3450 0    50   Input ~ 0
+Text GLabel 3850 2900 0    50   Input ~ 0
 INT_W5500
 Wire Wire Line
-	4100 3450 4250 3450
+	3850 2900 4000 2900
 Wire Wire Line
-	7050 3900 7050 4450
-Connection ~ 7050 3900
+	6200 4150 6200 4700
+Connection ~ 6200 4150
 Wire Wire Line
-	7050 3900 7200 3900
+	6200 4150 6350 4150
 $Comp
 L custom_digital:PCA9517A U6
 U 1 1 624DB520
@@ -1170,4 +1168,8 @@ Wire Wire Line
 	6100 1950 6550 1950
 Wire Wire Line
 	6100 2050 6300 2050
+Wire Notes Line
+	6700 4800 6700 5550
+Text Notes 6800 5200 0    50   ~ 0
+To W5500
 $EndSCHEMATC

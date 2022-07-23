@@ -1,0 +1,104 @@
+* W5500 forum post
+I've been having trouble communicating with the W5500 over SPI on a custom designed MCU board. The SPI master is an Atmega328P running at 5V, which is connected to the W5500 SPI inputs via a TXB0104D 5V-3.3V level translator. There are no other devices on the SPI bus.
+
+#+caption: Controller board SPI bus
+[[file:controller_spi.png]]
+
+The following code is used to test communication over the SPI
+
+#+caption: spi.c
+#+begin_src c
+  /*
+   ,* basic spi driver
+   ,*/ 
+
+  #include "spi.h"
+
+  /*
+  SCK: PB5
+  MISO: PB4
+  MOSI: PB3
+  SS: PB2
+  ,*/
+
+  void spi_init(void){
+          // Enable
+          PRR &= ~(1<<PRSPI);
+          SPCR = (1<<SPE) | (1<<MSTR);
+	
+          // Use SPI mode 0
+          SPCR |= (0<<CPOL) | (0<<CPHA);
+	
+          // Use largest clock divider (i.e. slowest speed)
+          SPCR |= (1<<SPR0) | (1<<SPR1);
+	
+      // Data order is MSB --> LSB
+          SPCR |= (0<<DORD);
+	
+          // Set data direction (MOSI, SCLK as outputs)
+          DDRB = (1<<DDB3) | (1<<DDB5) | (1<<DDB2);
+	
+          // Enable pullup on SS
+          PORTB |= (1<<PORTB2);
+  }
+
+  void spi_ss (uint8_t lvl){
+          if (lvl){
+                  PORTB |= (1<<DDB2);
+          }
+          else {
+                  PORTB &= ~(1<<DDB2);
+          }
+  }
+
+  uint8_t spi_txrx(uint8_t data){
+          SPDR = data;
+	
+          // Poll until transmission is complete
+          while (!(SPSR & (1<<SPIF)));
+	
+          return SPDR;
+  }
+#+end_src
+
+#+caption: main.c
+#+begin_src c
+  /*
+   ,* main.c
+   ,*/ 
+
+  #define F_CPU 18000000UL
+
+  #include <stdio.h>
+  #include <avr/io.h>
+  #include <avr/pgmspace.h>
+  #include <util/delay.h>
+  #include "usart.h"
+  #include "spi.h"
+
+  FILE usart0_str = FDEV_SETUP_STREAM(USART0SendByte, USART0ReceiveByte, _FDEV_SETUP_RW);
+
+  uint8_t w5500_write(uint8_t addr1, uint8_t addr2, uint8_t opcode, uint8_t data){
+      uint8_t data_rx;
+
+          spi_ss(0);
+          spi_txrx(addr1);
+          spi_txrx(addr2);
+          spi_txrx(opcode);
+          data_rx = spi_txrx(data);
+          spi_ss(1);
+	
+          return data_rx;
+  }
+
+  void main(void){
+      // Remap stdout to uart
+      USART0Init();
+      stdin=stdout=&usart0_str;	
+
+      // Read 
+      spi_init();
+      rx = w5500_test(0xE8, 0x00, 0x03, 0x00);
+      printf("0x%x", rx);
+  }
+#+end_src
