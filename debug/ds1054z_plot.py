@@ -20,15 +20,15 @@ def reader(filename, offset=0, t_scale=1):
     return data
 
 
-d = reader("debug/spi.csv", offset=3.5, t_scale=1e6)
+d = reader("debug/spi_ver_1.csv", offset=3.5, t_scale=1e6)
 plt.plot(d['t'], d['ch1'], label="SS")
 plt.plot(d['t'], d['ch2'], label="SCLK")
-plt.plot(d['t'], d['ch3'], label="MOSI")
-plt.plot(d['t'], d['ch4'], label="MISO")
+plt.plot(d['t'], d['ch3'], label="MISO")
+plt.plot(d['t'], d['ch4'], label="MOSI")
 
 plt.title(
     "SPI at TXB0104D 3.3V side\n"\
-    "transmission sequence 0xE8 0x00 0x03 0x00"
+    "transmission sequence 0x00 0x00 0x39 0x00"
 )
 plt.xlabel(r'Time $(\mu s)$')
 plt.ylabel("Volts")
