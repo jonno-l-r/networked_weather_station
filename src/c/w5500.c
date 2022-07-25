@@ -1,0 +1,215 @@
+/*
+ * w5500.c
+ *
+ * Created: 22/05/2022 11:03:47 AM
+ *  Author: Jonno
+ */ 
+
+#include "spi.h"
+#include "w5500.h"
+#include <util/delay.h>
+
+uint16_t RX_MASK;
+uint16_t gS0_RX_BASE;
+uint16_t gS1_RX_BASE;
+uint16_t gS2_RX_BASE;
+uint16_t gS3_RX_BASE;
+
+uint16_t TX_MASK;
+uint16_t gS0_TX_BASE;
+uint16_t gS1_TX_BASE;
+uint16_t gS2_TX_BASE;
+uint16_t gS3_TX_BASE;
+
+uint8_t w5500_test(uint8_t opcode, uint8_t addr1, uint8_t addr2, uint8_t data){
+	spi_ss(0);
+	//_delay_ms(5);
+	 spi_txrx(addr1);
+	//_delay_ms(1);
+	 spi_txrx(addr2);
+	//_delay_ms(1);
+	 spi_txrx(opcode);
+	//_delay_ms(1);
+	uint8_t rx = spi_txrx(data);
+
+	//uint8_t tx[] = {addr1, addr2, opcode, data};
+	//spi_write_multi(tx, 4);
+	//uint8_t rx = spi_read();
+	//_delay_ms(5)
+	spi_ss(1);
+	
+	return rx;
+}
+
+uint8_t w5500_write(uint8_t opcode, uint16_t addr, uint8_t data){
+	uint8_t addr1 = (uint8_t)(addr >> 8);
+	uint8_t addr2 = (uint8_t)(addr & 0xff);
+	uint8_t data_rx;
+	
+	spi_ss(0);
+	spi_txrx(addr1);
+	spi_txrx(addr2);
+	spi_txrx(opcode);
+	data_rx = spi_txrx(data);
+	spi_ss(1);
+	
+	return data_rx;
+}
+
+
+void w5500_init(void){
+	spi_init();
+	w5500_write(WRITE, MODE, 0x80);
+}
+
+
+uint8_t w5500_get_status(void){
+	return (uint8_t) w5500_write(READ | SOCK_0, S0_SR, 0x0);
+}
+
+
+void w5500_set_command(uint8_t cmd){
+	w5500_write(WRITE | SOCK_0, S0_CR, cmd);
+}
+
+
+w5500_tcp_init(uint16_t source_port){
+	// Configure memory (2k / socket)
+	// w5500_write(WRITE | SOCK_0, RMSR, 0x55);
+	// w5500_write(WRITE | SOCK_0, TMSR, 0x55);
+
+	// Partition RX memory
+	gS0_RX_BASE = 0x6000;
+	RX_MASK = 0x800 - 1;
+	gS1_RX_BASE = gS0_RX_BASE + RX_MASK + 1;
+	gS2_RX_BASE = gS1_RX_BASE + RX_MASK + 1;
+	gS3_RX_BASE = gS2_RX_BASE + RX_MASK + 1;
+	
+	// Partition TX memory
+	gS0_TX_BASE = 0x4000;
+	TX_MASK = 0x800 - 1;
+	gS1_TX_BASE = gS0_TX_BASE + TX_MASK + 1;
+	gS2_TX_BASE = gS1_TX_BASE + TX_MASK + 1;
+	gS3_TX_BASE = gS2_TX_BASE + TX_MASK + 1;
+		
+	// Enable TCP
+	w5500_write(WRITE | SOCK_0, S0_MR, 0x01);
+		
+	// Source port
+	w5500_write(WRITE | SOCK_0, S0_PORT0, (uint8_t)(source_port >> 8));
+	w5500_write(WRITE | SOCK_0, S0_PORT1, (uint8_t)(source_port & 0xff));	
+}
+
+
+uint16_t w5500_tcp_rx_size(void){
+	uint16_t size = 0x0;
+	uint8_t size_upper = w5500_write(READ | SOCK_0, S0_RX_RSR0, 0x0);
+	uint8_t size_lower = w5500_write(READ | SOCK_0, S0_RX_RSR1, 0x0);
+	size = ((uint16_t) size_upper) << 8;
+	size |= (uint16_t) size_lower;
+	
+	return size;
+}
+
+
+uint16_t w5500_tcp_tx_size(void){
+	uint16_t size = 0x0;
+	uint8_t size_upper = w5500_write(READ | SOCK_0, S0_TX_FSR0, 0x0);
+	uint8_t size_lower = w5500_write(READ | SOCK_0, S0_TX_FSR1, 0x0);
+	size = ((uint16_t) size_upper) << 8;
+	size |= (uint16_t) size_lower;
+	
+	return size;
+}
+
+
+uint16_t w5500_tcp_rx_readpt(void){
+	uint16_t size = 0x0;
+	uint8_t size_upper = w5500_write(READ | SOCK_0, S0_RX_RD0, 0x0);
+	uint8_t size_lower = w5500_write(READ | SOCK_0, S0_RX_RD1, 0x0);
+	size = ((uint16_t) size_upper) << 8;
+	size |= (uint16_t) size_lower;
+	
+	return size;
+}
+
+
+void w5500_tcp_rx(uint8_t* data, uint16_t size){
+	uint16_t read_pt = 0x0;
+	uint16_t offset;
+	uint16_t start_addr;
+
+	uint8_t read_pt_upper = w5500_write(READ | SOCK_0, S0_RX_RD0, 0x0);
+	uint8_t read_pt_lower = w5500_write(READ | SOCK_0, S0_RX_RD1, 0x0);
+	
+	read_pt = ((uint16_t) read_pt_upper) << 8;
+	read_pt |= (uint16_t) read_pt_lower;
+		 
+	offset = read_pt & RX_MASK;
+	start_addr = gS0_RX_BASE + offset;
+	
+	if ((offset+size) > (RX_MASK+1)){
+		uint16_t upper_size = RX_MASK+1 - offset;
+		for(int i=0; i<upper_size; i++){
+			data[i] = w5500_write(READ | SOCK_0_RX_BUF, start_addr+i, 0x0);
+		}
+		uint16_t left_size = size - upper_size;
+		for(int i=0; i<left_size; i++){
+			data[i+upper_size] = w5500_write(READ | SOCK_0_RX_BUF, gS0_RX_BASE+i, 0x0);
+		}
+	}
+	else {
+		for(int i=0; i<size; i++){
+			data[i] = w5500_write(READ | SOCK_0_RX_BUF, start_addr+i, 0x0);
+		}	
+	}
+	
+	read_pt += size;
+	uint8_t size_upper = (uint8_t) (read_pt >> 8);
+	uint8_t size_lower = (uint8_t) (read_pt & 0xff);
+	w5500_write(WRITE | SOCK_0, S0_RX_RD0, size_upper);
+	w5500_write(WRITE | SOCK_0, S0_RX_RD1, size_lower);
+}
+
+
+void w5500_tcp_tx(uint8_t* data, uint16_t size){
+	uint16_t freesize = w5500_tcp_tx_size();
+	uint16_t write_pt = 0;
+	uint16_t offset;
+	uint16_t start_addr;
+	
+	write_pt = ((uint16_t) w5500_write(READ | SOCK_0, S0_TX_WR0, 0x0)) << 8;
+	write_pt |= (uint16_t) w5500_write(READ | SOCK_0, S0_TX_WR1, 0x0);
+
+	offset =  write_pt & TX_MASK;
+	start_addr = gS0_TX_BASE + offset;
+	
+	if ((offset+size) > (TX_MASK+1)){
+		uint16_t upper_size = TX_MASK+1 - offset;
+		for(int i=0; i<upper_size; i++){
+			w5500_write(WRITE | SOCK_0_TX_BUF, start_addr+i, data[i]);
+		}
+		uint16_t left_size = size - upper_size;
+		for(int i=0; i<left_size; i++){
+			w5500_write(WRITE | SOCK_0_TX_BUF, gS0_TX_BASE+i, data[i+upper_size]);
+		}
+	}	
+	else {
+		for(int i=0; i<size; i++){
+			w5500_write(WRITE | SOCK_0_TX_BUF, start_addr+i, data[i]);
+		}		
+	}
+	
+	write_pt += size;
+	uint8_t size_upper = (uint8_t) (write_pt >> 8);
+	uint8_t size_lower = (uint8_t) (write_pt & 0xff);
+	w5500_write(WRITE | SOCK_0, S0_TX_WR0, size_upper);
+	w5500_write(WRITE | SOCK_0, S0_TX_WR1, size_lower);
+}
+
+
+void w5500_assign_network_addr(uint16_t base_reg_addr, uint8_t* addr, uint8_t length){
+	for (uint8_t i=0; i<length; i++){
+		w5500_write(WRITE, base_reg_addr+i, addr[i]);
+	}
+}
