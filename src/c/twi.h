@@ -8,13 +8,13 @@
 #ifndef TWI_H_
 #define TWI_H_
 #include <avr/io.h>
-void TWIInit(void);
-void TWIStart(void);
-void TWIStop(void);
-void TWIWrite(uint8_t u8data);
-uint8_t TWIReadACK(void);
-uint8_t TWIReadNACK(void);
-uint8_t TWIGetStatus(void);
+void twi_init(void);
+void twi_start(void);
+void twi_stop(void);
+void twi_write(uint8_t u8data);
+uint8_t twi_read_ack(void);
+uint8_t twi_read_nack(void);
+uint8_t twi_get_status(void);
 
 
 

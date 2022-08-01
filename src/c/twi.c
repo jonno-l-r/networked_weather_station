@@ -8,8 +8,9 @@
 #include "twi.h"
 
 void twi_init(void){
-	TWSR = 0x00; // Prescaler and i2c status (bits 7:3)
-	TWBR = 0x0C; // Scaler
+	// SCL = f_cpu / (16 + 2*TWBR*prescaler)
+	TWSR = 0x03; // Prescaler (bits 1:0)
+	TWBR = 0x40; // SCL scaler
 	
 	TWCR = (1<<TWEN); // Control register (start, stop, interrupt)
 }
@@ -20,7 +21,7 @@ void twi_start(void)
 	while ((TWCR & (1<<TWINT)) == 0);
 }
 
-void twi_Stop(void)
+void twi_stop(void)
 {
 	TWCR = (1<<TWINT)|(1<<TWSTO)|(1<<TWEN); // Generate stop signal
 }
