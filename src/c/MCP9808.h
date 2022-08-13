@@ -10,11 +10,11 @@
 #define MCP9808_H_
 
 // Device address
-#define ADDRESS 0x30
+#define MCP_ADDRESS 0x30
 
 // Op codes
-#define READ 0x1
-#define WRITE 0x0
+#define MCP_READ 0x1
+#define MCP_WRITE 0x0
 
 // Register addresses
 #define REG_TEMP 0x5

@@ -23,11 +23,11 @@ uint16_t mcp9808_read(uint8_t reg){
 	twi_init();
 	
 	twi_start();
-	twi_write(ADDRESS & ~((uint8_t) WRITE));
+	twi_write(MCP_ADDRESS & ~((uint8_t) MCP_WRITE));
 	twi_write(reg);
 	
 	twi_start();
-	twi_write(ADDRESS | ((uint8_t) READ));
+	twi_write(MCP_ADDRESS | ((uint8_t) MCP_READ));
 	upper_byte = twi_read_ack();
 	lower_byte = twi_read_nack();
 	

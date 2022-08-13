@@ -10,11 +10,11 @@
 #define BME280_H_
 
 
-#define ADDRESS 0xEE
+#define BME_ADDRESS 0xEE
 
 // OP codes
-#define READ 0x1
-#define WRITE 0x0
+#define BME_READ 0x1
+#define BME_WRITE 0x0
 
 uint8_t bme280_get_id(void);
 void bme280_get_measurements(int32_t *temp, uint32_t *pres, uint32_t *hum);

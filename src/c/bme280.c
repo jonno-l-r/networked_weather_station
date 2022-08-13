@@ -90,7 +90,7 @@ uint32_t bme280_get_humidity(int32_t h_raw){
 		(((v_x1_u32r * ((int32_t)compensation.dig_h3)) >> 11) + ((int32_t)32768))) >> 10) + \
 		((int32_t)2097152)) * ((int32_t)compensation.dig_h2) +8192) >> 14));
 	
-	v_x1_u32r = (v_x1_u32r - (((((v_x1_u32r >> 15) * (v_x1_u32r >> 15)) >> 7) *\ 
+	v_x1_u32r = (v_x1_u32r - (((((v_x1_u32r >> 15) * (v_x1_u32r >> 15)) >> 7) *\
 		((int32_t)compensation.dig_h1)) >> 4));
 		
 	v_x1_u32r = (v_x1_u32r < 0 ? 0 : v_x1_u32r);
@@ -103,7 +103,7 @@ uint32_t bme280_get_humidity(int32_t h_raw){
 void bme280_write(uint8_t reg, uint8_t data){
 	twi_start();
 	
-	twi_write(ADDRESS & ~((uint8_t) WRITE));
+	twi_write(BME_ADDRESS & ~((uint8_t) BME_WRITE));
 	twi_write(reg);
 	twi_write(data);
 	
@@ -119,11 +119,11 @@ uint16_t bme280_read(uint8_t reg){
 	twi_init();
 	
 	twi_start();
-	twi_write(ADDRESS & ~((uint8_t) WRITE));
+	twi_write(BME_ADDRESS & ~((uint8_t) BME_WRITE));
 	twi_write(reg);
 	
 	twi_start();
-	twi_write(ADDRESS | ((uint8_t) READ));
+	twi_write(BME_ADDRESS | ((uint8_t) BME_READ));
 	upper_byte = twi_read_ack();
 	lower_byte = twi_read_nack();
 	
@@ -138,11 +138,11 @@ void bme280_burst_read(uint8_t start_reg, int len, uint8_t *data){
 	twi_init();
 	
 	twi_start();
-	twi_write(ADDRESS & ~((uint8_t) WRITE));
+	twi_write(BME_ADDRESS & ~((uint8_t) BME_WRITE));
 	twi_write(start_reg);
 	
 	twi_start();
-	twi_write(ADDRESS | ((uint8_t) READ));
+	twi_write(BME_ADDRESS | ((uint8_t) BME_READ));
 	
 	for (int i=0; i<len-1; i++){
 		data[i] = twi_read_ack();

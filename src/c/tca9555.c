@@ -10,6 +10,7 @@
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include "tca9555.h"
+#include "twi.h"
 
 
 uint8_t tca9555_read(uint8_t reg_addr){

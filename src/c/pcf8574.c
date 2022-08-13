@@ -10,6 +10,7 @@
 #include <avr/io.h>
 #include <avr/pgmspace.h>
 #include "pcf8574.h"
+#include "twi.h"
 
 
 uint8_t pcf8574_read(void){

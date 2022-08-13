@@ -7,55 +7,60 @@
 
 #ifndef W5500_H_
 #define W5500_H_
-#include <avr/io.h>
-#include "spi.h"
 
-// Opcodes
-#define WRITE 0x04 // 0xf0
-#define READ 0x00 // 0x0f
-#define SOCK_0 0x08
+/*
+ * Control byte components
+ * Address sequence is
+ * addr_upper, addr_lower, control
+ */
+// Operation modes (2:0)
+#define WRITE 0x04
+#define READ 0x00
 
-#define SOCK_0_RX_BUF 0x18
-#define SOCK_0_TX_BUF 0x10
+// Control register: block select bits
+#define SOCK_n 0x01
+#define SOCK_n_RX_BUF 0x3
+#define SOCK_n_TX_BUF 0x2
 
-// Registers
+// Block select bit offset
+#define BSB_BIT_OFFSET 0x3
+
+
+/* 
+ * Common registers
+ */
 #define MODE 0x0
 #define INTERRUPT_MASK 0x16
 #define GATEWAY_ADDR 0x01
 #define SUBNET_MASK 0x05
 #define MAC_ADDR 0x09
 #define IP_ADDR 0x0F
-
-
 #define RMSR 0x001A
 #define TMSR 0x001B
 
+// Socket registers
 #define S0_MR 0x00
 
 #define S0_PORT0 0x04
 #define S0_PORT1 0x05
 
-#define S0_CR 0x01
-#define S0_SR 0x03
-
 #define S0_RX_RSR0 0x26 // upper
 #define S0_RX_RSR1 0x27 // lower
-
 #define S0_RX_RD0 0x28
 #define S0_RX_RD1 0x29
 
 #define S0_TX_FSR0 0x20
 #define S0_TX_FSR1 0x21
-
 #define S0_TX_WR0 0x24
 #define S0_TX_WR1 0x25
 #define S0_TX_RD0 0x22
-#define S0_TX_RD0 0x23
+#define S0_TX_RD1 0x23
 
 #define S0_RXBUF_SIZE 0x1E
 #define S0_TXBUF_SIZE 0x1F
 
-// Socket states (command reg)
+// Socket state commands (Sn_CR)
+#define S0_CR 0x01
 #define OPEN 0x01
 #define LISTEN 0x02
 #define CONNECT 0x04
@@ -64,7 +69,8 @@
 #define RECV 0x40
 #define SEND 0x20
 
-// Socket states (status reg)
+// Socket states (Sn_SR)
+#define S0_SR 0x03
 #define SOCK_CLOSED 0x00
 #define SOCK_ESTABLISHED 0x17
 #define SOCK_INIT 0x13
@@ -73,14 +79,22 @@
 
 #define EOT 0x04
 
-uint8_t w5500_test(uint8_t opcode, uint8_t addr1, uint8_t addr2, uint8_t data);
+
 uint8_t w5500_write(uint8_t opcode, uint16_t addr, uint8_t data);
 void w5500_init(void);
+uint8_t get_socket_BSB(uint8_t socket, uint8_t mode);
+uint8_t w5500_get_status(int socket);
+void w5500_set_command(int socket, uint8_t cmd);
+void w5500_tcp_init(int socket, uint16_t source_port);
+void w5500_rx_set_size(int socket, int size);
+uint16_t w5500_rx_rsr(int socket);
+uint16_t w5500_rx_size(int socket);
+void w5500_tx_set_size(int socket, int size);
+uint16_t w5500_tx_fsr(int socket);
+uint16_t w5500_tx_size(int socket);
+int w5500_tcp_rx(int socket, uint8_t* data);
+void w5500_tcp_tx(int socket, char* data, int data_size);
 void w5500_assign_network_addr(uint16_t base_reg_addr, uint8_t* addr, uint8_t length);
-uint8_t w5500_get_status(void);
-uint16_t w5500_rx_tcp_size(void);
-uint16_t w5500_tcp_tx_free_size(void);
-uint16_t w5500_tcp_rx_free_size(void);
-uint16_t w5500_tx_tcp_size(void);
+
 
 #endif /* W5500_H_ */
