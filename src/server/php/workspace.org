@@ -1,4 +1,4 @@
-#+title: Web server backend Development notebook
+#+title: Web server backend development notebook
 This literate programming document functions as a scratchpad for the database setup and PHP development. All PHP sources are tangled directly from the babel code blocks defined in this document.
 
 * Date and time in PHP
@@ -283,8 +283,9 @@ Get maximums or minimums over a timespan
 | 1675483201 |        13 | temperature | MCP9808 |    19.875 | degree_c |
 
 * Database classes
-#+begin_src php :dir /plink:pi@piserv#60127:~/src/php/ :results output text :tangle /plink:pi@piserv#60127:~/src/php/weather_database.php  
-  //<?php
+#+name: weather_db
+#+begin_src php :dir /plink:pi@piserv#60127:~/src/php/ :results output text :tangle weather_db.php
+  <?php
 
   class WeatherDB {
       private $measurement_name;
@@ -533,8 +534,7 @@ Get maximums or minimums over a timespan
       echo json_encode($latest);
   };
 
-  test();
-  //?>
+  ?>
 #+end_src
 
 #+RESULTS:
@@ -549,11 +549,12 @@ Get maximums or minimums over a timespan
 : 22.4
 
 * Weather station sensor class
-#+begin_src php :dir /plink:pi@piserv#60127:~/src/php/ :results output text :tangle /plink:pi@piserv#60127:~/src/php/weather_station.php
+#+name: weather_station
+#+begin_src php :dir /plink:pi@piserv#60127:~/src/php/ :results output text :tangle weather_station.php
   <?php
 
   namespace station;
-  require_once 'weather_database.php';
+  require_once 'weather_db.php';
   use WriteWeatherDB;
 
 
@@ -645,3 +646,163 @@ array(4) {
 }
 #+end_example
 
+* Front controller
+#+name: controller
+#+begin_src php :dir /plink:pi@piserv#60127:~/src/php/ :results output text :tangle controller.php
+  <?php
+  namespace controller;
+  require_once "weather_db.php";
+  use ReadWeatherDB;
+
+
+  class Controller {
+      private $db;
+      private $endpoint;
+      private $request;
+
+      const api_root = "sensors";
+
+
+      public function __construct($uri, $request){
+          $this->db = new ReadWeatherDB();
+          $this->_getEndpoint($uri);
+          $this->request = $request;
+      }
+
+
+      private function _getEndpoint($_uri){
+          $uri = explode("/", $_uri);
+          $key = array_search(self::api_root, $uri);
+
+          if ($key){
+              $this->endpoint = $key==(count($uri)-1) ?
+                              self::api_root : $uri[$key+1];
+          }
+          else {
+              $this->endpoint = NULL;
+          }
+      }
+
+
+      public function processRequest(){
+          switch ($this->endpoint){
+          case "getLatest":
+              header("HTTP/1.1 200 OK");
+              echo json_encode($this->db->getLatest());
+              break;
+
+          case "getBetween":
+              header("HTTP/1.1 200 OK");
+              echo json_encode(
+                  $this->db->getBetween(
+                      (int)$this->request["t1"],
+                      (int)$this->request["t2"]                    
+                  )
+              );
+              break;
+
+          case "getMaxBetween":
+              header("HTTP/1.1 200 OK");
+              echo json_encode(
+                  $this->db->getMaxBetween(
+                      (int)$this->request["t1"],
+                      (int)$this->request["t2"]                    
+                  )
+              );
+              break;
+
+          case "getMinBetween":
+              header("HTTP/1.1 200 OK");
+              echo json_encode(
+                  $this->db->getMinBetween(
+                      (int)$this->request["t1"],
+                      (int)$this->request["t2"]                    
+                  )
+              );
+              break;
+
+          case "getAvgBetween":
+              header("HTTP/1.1 200 OK");
+              echo json_encode(
+                  $this->db->getAverageBetween(
+                      (int)$this->request["t1"],
+                      (int)$this->request["t2"]                    
+                  )
+              );
+              break;
+
+          case "getOver":
+              header("HTTP/1.1 200 OK");
+              echo json_encode(
+                  $this->db->getOver(
+                      (int)$this->request["t1"],
+                      (int)$this->request["t2"],
+                      (int)$this->request["id"],
+                      (float)$this->request["threshold"]
+                  )
+              );
+              break;
+
+          case "getUnder":
+              header("HTTP/1.1 200 OK");
+              echo json_encode(
+                  $this->db->getUnder(
+                      (int)$this->request["t1"],
+                      (int)$this->request["t2"],
+                      (int)$this->request["id"],
+                      (float)$this->request["threshold"]
+                  )
+              );
+              break;            
+
+          default:
+              header("HTTP/1.1 404 Not Found");
+          }
+          $this->db->close();
+      }
+  }
+
+
+  function test(){
+      $x = new Controller("hello/world", array());
+  }
+
+  ?>
+#+end_src
+
+#+RESULTS: controller
+
+#+name: main
+#+begin_src php :tangle main.php
+  <?php
+
+  namespace main;
+  require_once "controller.php";
+  use controller\Controller;
+
+
+  $x = new Controller(
+     $_SERVER["REQUEST_URI"],
+     $_GET
+  );
+  $x->processRequest();
+
+  ?>
+#+end_src
+
+* Tangle to server
+#+begin_src php :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/php/weather_station.php :noweb yes
+  <<weather_station>>
+#+end_src
+
+#+begin_src php :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/php/weather_db.php :noweb yes
+  <<weather_db>>
+#+end_src
+
+#+begin_src php :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/php/controller.php :noweb yes
+  <<controller>>
+#+end_src
+
+#+begin_src php :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/php/main.php :noweb yes
+  <<main>>
+#+end_src
