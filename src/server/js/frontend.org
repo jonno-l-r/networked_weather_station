@@ -3,9 +3,86 @@
 * D3
 #+name: plot
 #+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/plot.js
-  function plot(){
+  function plotLine(data, id, x_key, y_key, {
+      margin_top = 50,
+      margin_bottom = 50,
+      margin_right = 20,
+      margin_left = 50,
+      width = 800,
+      height = 400,
+      x_domain,
+      y_domain,
+      y_label,
+      x_label,
+      line_width = 1.5,
+      x_type = d3.scaleLinear,
+      y_type = d3.scaleLinear
+  } = {}){
+      let x = data.map(i => i[x_key]*1000);
+      let y = data.map(i => i[y_key]);
+      const I = d3.range(x.length);
 
+      let x_range = [margin_left, width-margin_right];
+      let y_range = [margin_top, height-margin_bottom];
+      x_domain = (x_domain===undefined) ? d3.extent(x) : x_domain;
+      y_domain = (y_domain===undefined) ? d3.extent(y).reverse() : y_domain;
+      const x_scale = x_type(x_domain, x_range);
+      const y_scale = y_type(y_domain, y_range);
+
+      const x_axis = d3.axisBottom(x_scale)
+            .ticks(width/60)
+            .tickSizeOuter(0);
+      const y_axis = d3.axisLeft(y_scale)
+            .ticks(height/80);
+
+      const line = d3.line()
+            .curve(d3.curveLinear)
+            .x(i => x_scale(x[i]))
+            .y(i => y_scale(y[i]));
+
+      let svg = d3.select('#'+id)
+          .attr("width", width)
+          .attr("height", height);
+
+      svg.append("g")
+          .attr("transform", `translate(0, ${height - margin_bottom})`)
+          .call(x_axis)
+          .call(
+              g => g.append("text")
+                  .attr("y", margin_bottom-10)
+                  .attr("x", width/2)
+                  .attr("text-anchor", "start")
+                  .attr("fill", "currentColor")
+                  .text(x_label)
+          );
+
+
+      svg.append("g")
+          .attr("transform", `translate(${margin_left}, 0)`)
+          .call(y_axis)
+          .call(
+              g => g.selectAll(".tick line").clone()
+                  .attr("x2", width - margin_left - margin_right)
+                  .attr("stroke-opacity", 0.1)
+          )
+          .call(
+              g => g.append("text")
+                  .attr("x", -margin_left)
+                  .attr("y", margin_top-10)
+                  .attr("text-anchor", "start")
+                  .attr("fill", "currentColor")
+                  .text(y_label)
+          );
+
+      svg.append("path")
+          .attr("fill", "none")
+          .attr("stroke", "red")
+          .attr("stroke-width", line_width)
+          .attr("stroke-linecap", "round")
+          .attr("stroke-linejoin", "round")
+          .attr("d", line(I));
   }
+
 #+end_src
 
 * Main
@@ -41,8 +118,8 @@
 #+end_src
 
 
-#+name: main
-#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/main.js
+#+name: make_table
+#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/make_table.js
   const API_ROOT = "../php/main.php/sensors/";
   const UNIT_MAP = {
       "degree_c": '\u2103',
@@ -72,6 +149,24 @@
               d.getDate(),
               0, 0, 0)
       ).valueOf() / 1000;
+  }
+
+
+  function unique(data){
+      let ids = {};
+      temp = data.filter(
+          (d) => {
+              if (d.sensor_id in ids){
+                  return false;
+              }
+              else {
+                  ids[d.sensor_id] = true;
+                  return true;
+              }
+          }
+      );
+      console.log(ids);
+      return temp;
   }
 
 
@@ -123,20 +218,10 @@
   };
   request(API_ROOT+"getMaxBetween", "GET", data=data).then(
       (data) => {
-          _data = [];
-          for (sensor of data){
-              let unique = (
-                  _data.length>0 &&
-                      _data[_data.length-1].sensor_id
-                      != sensor.sensor_id
-              );
-
-              if (unique || _data.length==0){
-                  _data.push(sensor);
-              }
-          }
-
-          makeColumn(_data, "Maximum");
+          makeColumn(
+              unique(data),
+              "Maximum"
+          );
       }
   );
 
@@ -145,24 +230,61 @@
   // so far
   request(API_ROOT+"getMinBetween", "GET", data=data).then(
       (data) => {
-          _data = [];
-          for (sensor of data){
-              let unique = (
-                  _data.length>0 &&
-                      _data[_data.length-1].sensor_id
-                      != sensor.sensor_id
-              );
-
-              if (unique || _data.length==0){
-                  _data.push(sensor);
-              }
-          }
-
-          makeColumn(_data, "Minimum");
+          makeColumn(
+              unique(data),
+              "Minimum"
+          );
       }
   );
 #+end_src
 
+
+#+name: make_plot
+#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/make_plot.js
+  data = {
+      "t2": Date.now()/1000,
+      "t1": (Date.now()/1000) - 60*60*48
+  };
+  request(API_ROOT+"getBetween", "GET", data).then(
+      (data) => {
+          plotLine(
+              data.filter(d => d.sensor_id==13),
+              "plot_temperature",
+              "timestamp",
+              "value",
+              {
+                  x_type: d3.scaleTime,
+                  y_label: UNIT_MAP["degree_c"],
+                  x_label: "Time"
+              }
+          );
+
+          plotLine(
+              data.filter(d => d.sensor_id==11),
+              "plot_pressure",
+              "timestamp",
+              "value",
+              {
+                  x_type: d3.scaleTime,
+                  y_label: UNIT_MAP["Pa"],
+                  x_label: "Time"
+              }
+          );
+
+          plotLine(
+              data.filter(d => d.sensor_id==12),
+              "plot_humidity",
+              "timestamp",
+              "value",
+              {
+                  x_type: d3.scaleTime,
+                  y_label: UNIT_MAP["%"],
+                  x_label: "Time"
+              }
+          );        
+      }
+  )
+#+end_src
 
 * Main dashboard page
 #+name: dashboard
@@ -174,8 +296,9 @@
           <title>Weather</title>
       </head>
       <body>
-          <div id="current">
-              <span id="timestamp"></span><br>
+          <div id="current" class="container">
+              <span class="name">Observations</span>
+              <span class ="title" id="timestamp"></span>
               <table id="_current">
                   <tr id="labels">
                       <th></th>
@@ -193,8 +316,31 @@
           </div>
 
 
+          <div class="container">
+              <span class="name">
+                  <span class="collapse" id="collapse_plots">&#8212</span>
+                  Recent conditions
+              </span>
+              <div class="plot">
+                  <span class="title">Temperature</span>
+                  <svg id="plot_temperature"></svg>
+              </div>
+              <div class="plot">
+                  <span class="title">Humidity</span>
+                  <svg id="plot_humidity"></svg>
+              </div>
+              <div class="plot">
+                  <span class="title">Pressure</span>
+                  <svg id="plot_pressure"></svg>
+              </div>
+          </div>
+
+
+          <script src="https://d3js.org/d3.v7.min.js"></script>
+          <script type="text/javascript" src="../js/plot.js"></script>
           <script type="text/javascript" src="../js/request.js"></script>
-          <script type="text/javascript" src="../js/main.js"></script>
+          <script type="text/javascript" src="../js/make_table.js"></script>
+          <script type="text/javascript" src="../js/make_plot.js"></script>
       </body>
   </html>
 #+end_src
@@ -206,15 +352,22 @@
       margin-left: auto;
       margin-right: auto;
       text-align: center;
+      max-width: 900px;
   }
 
 
-  #current {
+  .container {
       display: inline-block;
       padding: 10px;
+      margin-bottom: 20px;
       text-align: center;
       border: 1px solid gray;
       border-radius: 10px;
+  }
+
+
+  .plot {
+      margin-bottom: 10px;
   }
 
 
@@ -223,22 +376,48 @@
       font-family: monospace;
   }
 
+
   tr {
       background: cyan;
   }
 
 
-  span {
-      margin-bottom: 15px;
+  .name {    
+      display: block;
       font-family: sans-serif;
-      font-size: 18pt;
+      text-align: center;
+      font-size: 14pt;
+      margin-bottom: 10px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      width: 100%;
+      background: #e6ffed;
+
+  }  
+
+
+  .title {
+      display: block;
+      text-align: center;
+      font-size: 10pt;
+      font-family: sans-serif;
+
+      width: 100%;
+      background: cyan;
   }
 
 
-  #timestamp {
-      text-align: center;
-      font-size: 12pt;
+  .collapse {
+      font-size: 10pt;
+      display: inline-block;
+      float: left;
+      margin-left: 5px;
+      border: 1px solid gray;
+      border-radius: 4px;
+      text-align: left;
+      width: 20px;
       background: white;
-      border-bottom: 1px solid gray;
-  }  
+      box-shadow: 1px 1px;
+      text-align: center;
+  }
 #+end_src
