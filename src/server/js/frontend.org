@@ -44,6 +44,9 @@
           .attr("width", width)
           .attr("height", height);
 
+      svg.selectAll('path').remove();
+      svg.selectAll('g').remove();
+
       svg.append("g")
           .attr("transform", `translate(0, ${height - margin_bottom})`)
           .call(x_axis)
@@ -85,7 +88,7 @@
 
 #+end_src
 
-* Main
+* COMMENT Main
 #+name: request
 #+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/request.js
   function request(url, method, data = {}){
@@ -241,49 +244,90 @@
 
 #+name: make_plot
 #+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/make_plot.js
-  data = {
-      "t2": Date.now()/1000,
-      "t1": (Date.now()/1000) - 60*60*48
-  };
-  request(API_ROOT+"getBetween", "GET", data).then(
-      (data) => {
-          plotLine(
-              data.filter(d => d.sensor_id==13),
-              "plot_temperature",
-              "timestamp",
-              "value",
-              {
-                  x_type: d3.scaleTime,
-                  y_label: UNIT_MAP["degree_c"],
-                  x_label: "Time"
-              }
-          );
+  function makePlot(range){
+      data = {
+          "t2": Date.now()/1000,
+          "t1": (Date.now()/1000) - 60*60*range
+      };
+      request(API_ROOT+"getBetween", "GET", data).then(
+          (data) => {
+              plotLine(
+                  data.filter(d => d.sensor_id==13),
+                  "plot_temperature",
+                  "timestamp",
+                  "value",
+                  {
+                      x_type: d3.scaleTime,
+                      y_label: UNIT_MAP["degree_c"],
+                      x_label: "Time"
+                  }
+              );
 
-          plotLine(
-              data.filter(d => d.sensor_id==11),
-              "plot_pressure",
-              "timestamp",
-              "value",
-              {
-                  x_type: d3.scaleTime,
-                  y_label: UNIT_MAP["Pa"],
-                  x_label: "Time"
-              }
-          );
+              plotLine(
+                  data.filter(d => d.sensor_id==11),
+                  "plot_pressure",
+                  "timestamp",
+                  "value",
+                  {
+                      x_type: d3.scaleTime,
+                      y_label: UNIT_MAP["Pa"],
+                      x_label: "Time"
+                  }
+              );
 
-          plotLine(
-              data.filter(d => d.sensor_id==12),
-              "plot_humidity",
-              "timestamp",
-              "value",
-              {
-                  x_type: d3.scaleTime,
-                  y_label: UNIT_MAP["%"],
-                  x_label: "Time"
+              plotLine(
+                  data.filter(d => d.sensor_id==12),
+                  "plot_humidity",
+                  "timestamp",
+                  "value",
+                  {
+                      x_type: d3.scaleTime,
+                      y_label: UNIT_MAP["%"],
+                      x_label: "Time"
+                  }
+              );        
+          }
+      )
+
+  }
+#+end_src
+
+
+#+name: control_page
+#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/control_page.js
+  // Minimize / maximize display widgets
+  (() => {
+      const collapse = document.getElementsByClassName("collapse");
+
+      for (let e of collapse){
+          e.onclick = () => {
+              let display = e.parentElement
+                  .parentElement
+                  .getElementsByClassName("display")[0];
+
+              if (display.style.display == "none"){
+                  display.style.display = "block";
+                  e.innerText = "\u2014";
               }
-          );        
+              else {
+                  display.style.display = "none";
+                  e.innerText = "+";
+              }
+          }
       }
-  )
+  })();
+
+
+  // Plot range callbacks
+  (()=>{
+      const range = document.getElementById("range");
+
+      range.onchange = () => {
+          makePlot(parseInt(range.value));
+      };
+
+      makePlot(range.value);
+  })();
 #+end_src
 
 * Main dashboard page
@@ -297,22 +341,27 @@
       </head>
       <body>
           <div id="current" class="container">
-              <span class="name">Observations</span>
-              <span class ="title" id="timestamp"></span>
-              <table id="_current">
-                  <tr id="labels">
-                      <th></th>
-                  </tr>
-                  <tr id="temperature">
-                      <td>Temperature</td>
-                  </tr>
-                  <tr id="pressure">
-                      <td>Pressure</td>
-                  </tr>
-                  <tr id="humidity">
-                      <td>Humidity</td>
-                  </tr>
-              </table>
+              <span class="name">
+                  <span class="collapse" id="collapse_plots">&#8212</span>
+                  Observations
+              </span>
+              <div class="display">
+                  <span class ="title" id="timestamp"></span>
+                  <table id="_current">
+                      <tr id="labels">
+                          <th></th>
+                      </tr>
+                      <tr id="temperature">
+                          <td>Temperature</td>
+                      </tr>
+                      <tr id="pressure">
+                          <td>Pressure</td>
+                      </tr>
+                      <tr id="humidity">
+                          <td>Humidity</td>
+                      </tr>
+                  </table>
+              </div>
           </div>
 
 
@@ -321,17 +370,28 @@
                   <span class="collapse" id="collapse_plots">&#8212</span>
                   Recent conditions
               </span>
-              <div class="plot">
-                  <span class="title">Temperature</span>
-                  <svg id="plot_temperature"></svg>
-              </div>
-              <div class="plot">
-                  <span class="title">Humidity</span>
-                  <svg id="plot_humidity"></svg>
-              </div>
-              <div class="plot">
-                  <span class="title">Pressure</span>
-                  <svg id="plot_pressure"></svg>
+              <div class="display">
+                  <div class="control">
+                      <label for="range">Range:</label>
+                      <select id = "range">
+                          <option value="1">1 hour</option>
+                          <option value="12">12 hours</option>
+                          <option value="24">1 day</option>
+                          <option value="168">1 week</option>
+                      </select>
+                  </div>
+                  <div class="plot">
+                      <span class="title">Temperature</span>
+                      <svg id="plot_temperature"></svg>
+                  </div>
+                  <div class="plot">
+                      <span class="title">Humidity</span>
+                      <svg id="plot_humidity"></svg>
+                  </div>
+                  <div class="plot">
+                      <span class="title">Pressure</span>
+                      <svg id="plot_pressure"></svg>
+                  </div>
               </div>
           </div>
 
@@ -341,6 +401,7 @@
           <script type="text/javascript" src="../js/request.js"></script>
           <script type="text/javascript" src="../js/make_table.js"></script>
           <script type="text/javascript" src="../js/make_plot.js"></script>
+          <script type="text/javascript" src="../js/control_page.js"></script>
       </body>
   </html>
 #+end_src
@@ -363,6 +424,7 @@
       text-align: center;
       border: 1px solid gray;
       border-radius: 10px;
+      min-width: 200px;
   }
 
 
@@ -419,5 +481,12 @@
       background: white;
       box-shadow: 1px 1px;
       text-align: center;
+  }
+
+
+  .control {
+      display: block;
+      margin-bottom: 5px;
+      text-align: right;
   }
 #+end_src
