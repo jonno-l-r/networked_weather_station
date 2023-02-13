@@ -88,7 +88,7 @@
 
 #+end_src
 
-* COMMENT Main
+* Main
 #+name: request
 #+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/request.js
   function request(url, method, data = {}){
@@ -249,6 +249,7 @@
           "t2": Date.now()/1000,
           "t1": (Date.now()/1000) - 60*60*range
       };
+    
       request(API_ROOT+"getBetween", "GET", data).then(
           (data) => {
               plotLine(
@@ -259,7 +260,8 @@
                   {
                       x_type: d3.scaleTime,
                       y_label: UNIT_MAP["degree_c"],
-                      x_label: "Time"
+                      x_label: "Time",
+                      width: 500
                   }
               );
 
@@ -271,7 +273,8 @@
                   {
                       x_type: d3.scaleTime,
                       y_label: UNIT_MAP["Pa"],
-                      x_label: "Time"
+                      x_label: "Time",
+                      width: 500
                   }
               );
 
@@ -283,12 +286,66 @@
                   {
                       x_type: d3.scaleTime,
                       y_label: UNIT_MAP["%"],
-                      x_label: "Time"
+                      x_label: "Time",
+                      width: 500
                   }
               );        
           }
-      )
+      );
+  }
 
+
+  function makeMinMaxPlot(mode, start, stop){
+      data = {
+          "t2": stop/1000,
+          "t1": start/1000,
+          "period": 60*60*24
+      };
+
+      let endpoint = (mode=="max") ? "getMaxBetween" : "getMinBetween";
+    
+      request(API_ROOT+endpoint, "GET", data).then(
+          (data) => {
+              plotLine(
+                  data.filter(d => d.sensor_id==13),
+                  "plot_minmax_temperature",
+                  "timestamp",
+                  "value",
+                  {
+                      x_type: d3.scaleTime,
+                      y_label: UNIT_MAP["degree_c"],
+                      x_label: "Time",
+                      width: 500
+                  }
+              );
+
+              plotLine(
+                  data.filter(d => d.sensor_id==11),
+                  "plot_minmax_pressure",
+                  "timestamp",
+                  "value",
+                  {
+                      x_type: d3.scaleTime,
+                      y_label: UNIT_MAP["Pa"],
+                      x_label: "Time",
+                      width: 500
+                  }
+              );
+
+              plotLine(
+                  data.filter(d => d.sensor_id==12),
+                  "plot_minmax_humidity",
+                  "timestamp",
+                  "value",
+                  {
+                      x_type: d3.scaleTime,
+                      y_label: UNIT_MAP["%"],
+                      x_label: "Time",
+                      width: 500
+                  }
+              );        
+          }
+      );
   }
 #+end_src
 
@@ -327,6 +384,47 @@
       };
 
       makePlot(range.value);
+  })();
+
+
+  // Minmax plot callbacks
+  (()=>{
+      const mode = document.getElementById("mode");
+      const start = document.getElementById("minmax_start");
+      const stop = document.getElementById("minmax_stop");
+
+      stop.valueAsNumber = Date.now();
+      start.valueAsNumber = Date.now() - 1000*60*60*24*7;
+
+      mode.onchange = () => {
+          makeMinMaxPlot(
+              mode.value,
+              start.valueAsNumber,
+              stop.valueAsNumber
+          );
+      };
+
+      start.onchange = () => {
+          makeMinMaxPlot(
+              mode.value,
+              start.valueAsNumber,
+              stop.valueAsNumber
+          );
+      };
+
+      stop.onChange = () => {
+          makeMinMaxPlot(
+              mode.value,
+              start.valueAsNumber,
+              stop.valueAsNumber
+          );
+      };
+
+      makeMinMaxPlot(
+          mode.value,
+          start.valueAsNumber,
+          stop.valueAsNumber
+      );
   })();
 #+end_src
 
@@ -396,6 +494,39 @@
           </div>
 
 
+          <div class="container">
+              <span class="name">
+                  <span class="collapse" id="collapse_minmax_plots">&#8212</span>
+                  Daily minimums and maximums
+              </span>
+              <div class="display">
+                  <div class="control">
+                      <label for="mode">Plot:</label>
+                      <select id = "mode">
+                          <option value="min">Daily minimums</option>
+                          <option value="max">Daily maximums</option>
+                      </select>                    
+                      <label for="minmax_start">Start:</label>
+                      <input type="date" id = "minmax_start"></input>
+                      <label for="minmax_stop">Stop:</label>
+                      <input type="date" id = "minmax_stop"></input>
+                  </div>
+                  <div class="plot">
+                      <span class="title">Temperature</span>
+                      <svg id="plot_minmax_temperature"></svg>
+                  </div>
+                  <div class="plot">
+                      <span class="title">Humidity</span>
+                      <svg id="plot_minmax_humidity"></svg>
+                  </div>
+                  <div class="plot">
+                      <span class="title">Pressure</span>
+                      <svg id="plot_minmax_pressure"></svg>
+                  </div>
+              </div>
+          </div>        
+
+
           <script src="https://d3js.org/d3.v7.min.js"></script>
           <script type="text/javascript" src="../js/plot.js"></script>
           <script type="text/javascript" src="../js/request.js"></script>
@@ -413,7 +544,7 @@
       margin-left: auto;
       margin-right: auto;
       text-align: center;
-      max-width: 900px;
+      max-width: 2000px;
   }
 
 
@@ -425,11 +556,15 @@
       border: 1px solid gray;
       border-radius: 10px;
       min-width: 200px;
+      margin-left: 20px;
+      margin-right: 20px;
   }
 
 
   .plot {
       margin-bottom: 10px;
+      display: inline-block;
+      background-color: #f0f0ff;
   }
 
 

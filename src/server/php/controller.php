@@ -55,7 +55,8 @@ class Controller {
             echo json_encode(
                 $this->db->getMaxBetween(
                     (int)$this->request["t1"],
-                    (int)$this->request["t2"]                    
+                    (int)$this->request["t2"],
+                    (int)$this->request["period"]
                 )
             );
             break;
@@ -65,7 +66,8 @@ class Controller {
             echo json_encode(
                 $this->db->getMinBetween(
                     (int)$this->request["t1"],
-                    (int)$this->request["t2"]                    
+                    (int)$this->request["t2"],
+                    (int)$this->request["period"]
                 )
             );
             break;

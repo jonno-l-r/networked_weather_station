@@ -37,6 +37,20 @@ This literate programming document functions as a scratchpad for the database se
 : Unix timestamp: 1674776783
 : Date and time: 2023-01-27 10:46:23
 
+
+#+begin_src php :dir /plink:pi@piserv#60127:~/src/c/ :results output text
+  function test($args="hello"){
+      echo $args;
+  }
+
+  test();
+#+end_src
+
+#+RESULTS:
+: hello
+
+
+
 * MySQL database scratch space
 Select rows given unit and sensor
 #+begin_src sql :engine mysql :dbuser utest :dir /plink:pi@piserv#60127:~/ :results output table :cache yes :exports both
@@ -456,7 +470,7 @@ Get maximums or minimums over a timespan
       }
 
 
-      private function _getMaxMinBetween($t1, $t2, $func){
+      private function _queryMaxMinBetween($t1, $t2, $func){
           /* Where t1 < t2 */
 
           return $this->_queryTable(
@@ -472,16 +486,36 @@ Get maximums or minimums over a timespan
               . "AND x.sensor_id = y.sensor_id "
               . "WHERE s.id = y.sensor_id"
           );
+      }    
+
+
+      private function _getMaxMinBetween($t1, $t2, $func, $period){
+          $data = array();
+          $min_period = 60*60*24;
+
+          if ($period >= $min_period){
+              for ($_t1=$t2; $_t1>$t1; $_t1=$_t1-$period){
+                  $data = array_merge(
+                      $data,
+                      $this->_queryMaxMinBetween($_t1, $t2, $func)
+                  );
+              }
+          }
+          else {
+              $data = $this->_queryMaxMinBetween($t1, $t2, $func);
+          }
+
+          return $data;
       }
 
 
-      public function getMaxBetween($t1, $t2){
-          return $this->_getMaxMinBetween($t1, $t2, "max");
+      public function getMaxBetween($t1, $t2, $period=0){
+          return $this->_getMaxMinBetween($t1, $t2, "max", $period);
       }
 
 
-      public function getMinBetween($t1, $t2){
-          return $this->_getMaxMinBetween($t1, $t2, "min");
+      public function getMinBetween($t1, $t2, $period=0){
+          return $this->_getMaxMinBetween($t1, $t2, "min", $period);
       }
 
 
@@ -706,7 +740,8 @@ array(4) {
               echo json_encode(
                   $this->db->getMaxBetween(
                       (int)$this->request["t1"],
-                      (int)$this->request["t2"]                    
+                      (int)$this->request["t2"],
+                      (int)$this->request["period"]
                   )
               );
               break;
@@ -716,7 +751,8 @@ array(4) {
               echo json_encode(
                   $this->db->getMinBetween(
                       (int)$this->request["t1"],
-                      (int)$this->request["t2"]                    
+                      (int)$this->request["t2"],
+                      (int)$this->request["period"]
                   )
               );
               break;

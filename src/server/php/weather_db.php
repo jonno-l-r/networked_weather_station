@@ -169,7 +169,7 @@ class ReadWeatherDB extends WeatherDB {
     }
 
 
-    private function _getMaxMinBetween($t1, $t2, $func){
+    private function _queryMaxMinBetween($t1, $t2, $func){
         /* Where t1 < t2 */
 
         return $this->_queryTable(
@@ -185,16 +185,36 @@ class ReadWeatherDB extends WeatherDB {
             . "AND x.sensor_id = y.sensor_id "
             . "WHERE s.id = y.sensor_id"
         );
+    }    
+
+
+    private function _getMaxMinBetween($t1, $t2, $func, $period){
+        $data = array();
+        $min_period = 60*60*24;
+
+        if ($period >= $min_period){
+            for ($_t1=$t2; $_t1>$t1; $_t1=$_t1-$period){
+                $data = array_merge(
+                    $data,
+                    $this->_queryMaxMinBetween($_t1, $t2, $func)
+                );
+            }
+        }
+        else {
+            $data = $this->_queryMaxMinBetween($t1, $t2, $func);
+        }
+
+        return $data;
     }
 
 
-    public function getMaxBetween($t1, $t2){
-        return $this->_getMaxMinBetween($t1, $t2, "max");
+    public function getMaxBetween($t1, $t2, $period=0){
+        return $this->_getMaxMinBetween($t1, $t2, "max", $period);
     }
 
 
-    public function getMinBetween($t1, $t2){
-        return $this->_getMaxMinBetween($t1, $t2, "min");
+    public function getMinBetween($t1, $t2, $period=0){
+        return $this->_getMaxMinBetween($t1, $t2, "min", $period);
     }
 
 
