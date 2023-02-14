@@ -173,7 +173,7 @@ class ReadWeatherDB extends WeatherDB {
         /* Where t1 < t2 */
 
         return $this->_queryTable(
-            "SELECT y.timestamp, y.sensor_id, s.measurement, s.sensor, x.value, s.unit "
+            "SELECT x.timestamp, x.sensor_id, s.measurement, s.sensor, x.value, s.unit "
             . "FROM " . WeatherDB::metadata_table . " s, "
             . "(SELECT timestamp, sensor_id, " . self::sanitize[$func] . "(value) as value "
             . "FROM " . WeatherDB::data_table . " "
@@ -190,13 +190,17 @@ class ReadWeatherDB extends WeatherDB {
 
     private function _getMaxMinBetween($t1, $t2, $func, $period){
         $data = array();
-        $min_period = 60*60*24;
+        $min_period = 60*60*12;
 
         if ($period >= $min_period){
-            for ($_t1=$t2; $_t1>$t1; $_t1=$_t1-$period){
+            for ($_t1=$t2-$period; $_t1>$t1; $_t1=$_t1-$period){
                 $data = array_merge(
                     $data,
-                    $this->_queryMaxMinBetween($_t1, $t2, $func)
+                    $this->_queryMaxMinBetween(
+                        $_t1,
+                        $_t1+$period,
+                        $func
+                    )
                 );
             }
         }

@@ -98,7 +98,6 @@
               key + "=" + data[key] + "&";
       }
       url = url + params;
-      console.log(url);
 
       return new Promise(
           (resolve, reject) => {
@@ -168,7 +167,7 @@
               }
           }
       );
-      console.log(ids);
+      
       return temp;
   }
 
@@ -249,7 +248,7 @@
           "t2": Date.now()/1000,
           "t1": (Date.now()/1000) - 60*60*range
       };
-    
+
       request(API_ROOT+"getBetween", "GET", data).then(
           (data) => {
               plotLine(
@@ -303,9 +302,15 @@
       };
 
       let endpoint = (mode=="max") ? "getMaxBetween" : "getMinBetween";
-    
+
       request(API_ROOT+endpoint, "GET", data).then(
           (data) => {
+              data.sort(
+                  (a, b) => {
+                      return a.timestamp - b.timestamp;
+                  }
+              );
+
               plotLine(
                   data.filter(d => d.sensor_id==13),
                   "plot_minmax_temperature",
@@ -412,7 +417,7 @@
           );
       };
 
-      stop.onChange = () => {
+      stop.onchange = () => {
           makeMinMaxPlot(
               mode.value,
               start.valueAsNumber,
@@ -571,6 +576,7 @@
   table {
       text-align: left;
       font-family: monospace;
+      font-size: 12pt;
   }
 
 
