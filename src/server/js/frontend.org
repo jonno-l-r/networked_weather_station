@@ -3,89 +3,132 @@
 * D3
 #+name: plot
 #+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/plot.js
-  function plotLine(data, id, x_key, y_key, {
-      margin_top = 50,
-      margin_bottom = 50,
-      margin_right = 20,
-      margin_left = 50,
-      width = 800,
-      height = 400,
-      x_domain,
-      y_domain,
-      y_label,
-      x_label,
-      line_width = 1.5,
-      x_type = d3.scaleLinear,
-      y_type = d3.scaleLinear
-  } = {}){
-      let x = data.map(i => i[x_key]*1000);
-      let y = data.map(i => i[y_key]);
-      const I = d3.range(x.length);
+  function LinePlot(
+      data,
+      id,
+      {
+          x_map = i=>{},
+          y_map = i=>{},
+          z_map = i=>1
+      }={},
+      {
+          margin_top = 50,
+          margin_bottom = 50,
+          margin_right = 20,
+          margin_left = 50,
+          width = 800,
+          height = 400,
+          y_label,
+          x_label,
+          line_width = 1.5,
+          line_colour = "red",
+          x_type = d3.scaleLinear,
+          y_type = d3.scaleLinear,
+          interpolation = d3.curveNatural
+      }={}
+  ){
+      return {
+          data: data,
+          div: "#"+id,
 
-      let x_range = [margin_left, width-margin_right];
-      let y_range = [margin_top, height-margin_bottom];
-      x_domain = (x_domain===undefined) ? d3.extent(x) : x_domain;
-      y_domain = (y_domain===undefined) ? d3.extent(y).reverse() : y_domain;
-      const x_scale = x_type(x_domain, x_range);
-      const y_scale = y_type(y_domain, y_range);
+          addData: function(_data){
+              this.data = this.data.concat(_data);
+          },
 
-      const x_axis = d3.axisBottom(x_scale)
-            .ticks(width/60)
-            .tickSizeOuter(0);
-      const y_axis = d3.axisLeft(y_scale)
-            .ticks(height/80);
+          clearData: function(){
+              this.data = [];
+          },
 
-      const line = d3.line()
-            .curve(d3.curveLinear)
-            .x(i => x_scale(x[i]))
-            .y(i => y_scale(y[i]));
+          _mapLineColour: (typeof line_colour)==="object" ?
+              ([d])=>line_colour[z_map(d)] :
+              ()=>line_colour,
 
-      let svg = d3.select('#'+id)
-          .attr("width", width)
-          .attr("height", height);
+          _setScales: function(){
+              this.svg = d3.select(this.div)
+                  .attr("width", width)
+                  .attr("height", height);
 
-      svg.selectAll('path').remove();
-      svg.selectAll('g').remove();
+              this.x = this.data.map(x_map);
+              this.y = this.data.map(y_map);
 
-      svg.append("g")
-          .attr("transform", `translate(0, ${height - margin_bottom})`)
-          .call(x_axis)
-          .call(
-              g => g.append("text")
-                  .attr("y", margin_bottom-10)
-                  .attr("x", width/2)
-                  .attr("text-anchor", "start")
-                  .attr("fill", "currentColor")
-                  .text(x_label)
-          );
+              let x_range = [margin_left, width-margin_right];
+              let y_range = [margin_top, height-margin_bottom];
 
+              x_domain = d3.extent(this.x);
+              y_domain = d3.extent(this.y).reverse();
 
-      svg.append("g")
-          .attr("transform", `translate(${margin_left}, 0)`)
-          .call(y_axis)
-          .call(
-              g => g.selectAll(".tick line").clone()
-                  .attr("x2", width - margin_left - margin_right)
-                  .attr("stroke-opacity", 0.1)
-          )
-          .call(
-              g => g.append("text")
-                  .attr("x", -margin_left)
-                  .attr("y", margin_top-10)
-                  .attr("text-anchor", "start")
-                  .attr("fill", "currentColor")
-                  .text(y_label)
-          );
+              this.x_scale = x_type(x_domain, x_range);
+              this.y_scale = y_type(y_domain, y_range);
 
-      svg.append("path")
-          .attr("fill", "none")
-          .attr("stroke", "red")
-          .attr("stroke-width", line_width)
-          .attr("stroke-linecap", "round")
-          .attr("stroke-linejoin", "round")
-          .attr("d", line(I));
+              this.x_axis = d3.axisBottom(this.x_scale)
+                    .ticks(width/60)
+                    .tickSizeOuter(0);
+              this.y_axis = d3.axisLeft(this.y_scale)
+                    .ticks(height/80);
+
+              this.line = d3.line()
+                    .curve(interpolation)
+                    .x(d => this.x_scale(x_map(d)))
+                    .y(d => this.y_scale(y_map(d)));
+          },
+
+          _drawAxis: function(){
+              this.svg.selectAll('g').remove();
+              this.svg.append("g")
+                  .attr("transform", `translate(0, ${height - margin_bottom})`)
+                  .call(this.x_axis)
+                  .call(
+                      g => g.append("text")
+                          .attr("y", margin_bottom-10)
+                          .attr("x", width/2)
+                          .attr("text-anchor", "start")
+                          .attr("fill", "currentColor")
+                          .text(x_label)
+                  );
+
+              this.svg.append("g")
+                  .attr("transform", `translate(${margin_left}, 0)`)
+                  .call(this.y_axis)
+                  .call(
+                      g => g.selectAll(".tick line").clone()
+                          .attr("x2", width - margin_left - margin_right)
+                          .attr("stroke-opacity", 0.1)
+                  )
+                  .call(
+                      g => g.append("text")
+                          .attr("x", -margin_left)
+                          .attr("y", margin_top-10)
+                          .attr("text-anchor", "start")
+                          .attr("fill", "currentColor")
+                          .text(y_label)
+                  );            
+          },
+
+          drawData: function(){
+              this._setScales();
+              this._drawAxis();
+
+              d3.select(this.div)
+                  .append("g")               
+                  .selectAll("path")
+                  .data([...d3.group(this.data, z_map)].map(i=>i[1]))
+                  .join(
+                      enter => enter
+                          .append("path")
+                          .attr("class", "line")
+                          .transition().duration(500)
+                          .attr("stroke-opacity", 1)
+                          .selection(),
+                      update => update,
+                      exit => exit.remove()
+                  )
+                  .attr("d", this.line)
+                  .attr("fill", "none")
+                  .attr("stroke", this._mapLineColour)
+                  .attr("stroke-width", line_width);
+          }
+      };
   }
-
 #+end_src
 
 * Main
@@ -243,112 +286,121 @@
 
 #+name: make_plot
 #+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/make_plot.js
-  function makePlot(range){
-      data = {
+  function WeatherLinePlot(
+      {
+          x_map = d => d.timestamp*1000,
+          y_map = d => d.value,
+          z_map = d => d.sensor_id,
+          filter_func = (d,s) => (d.sensor_id==s),
+          colour_map = "red",
+          interpolation = d3.curveNatural
+      } = {}
+  ){
+      return (data, div_id, _sensor_id, unit)=>{
+          let plot = LinePlot(
+              data.filter((d)=>filter_func(d,_sensor_id)),
+              div_id,
+              {
+                  x_map: x_map,
+                  y_map: y_map,
+                  z_map: z_map
+              },
+              {
+                  x_type: d3.scaleTime,
+                  y_label: UNIT_MAP[unit],
+                  x_label: "Time",
+                  width: 500,
+                  line_colour: colour_map,
+                  interpolation: interpolation
+              }
+          );
+
+          plot.addFilteredData = function(_data){
+              plot.addData(_data.filter((d)=>filter_func(d,_sensor_id)));
+          };
+
+          return plot;
+      };
+  }
+
+
+  function plotAllRecords(range){
+      let data = {
           "t2": Date.now()/1000,
           "t1": (Date.now()/1000) - 60*60*range
       };
 
+      let plotter = WeatherLinePlot();
+
       request(API_ROOT+"getBetween", "GET", data).then(
           (data) => {
-              plotLine(
-                  data.filter(d => d.sensor_id==13),
-                  "plot_temperature",
-                  "timestamp",
-                  "value",
-                  {
-                      x_type: d3.scaleTime,
-                      y_label: UNIT_MAP["degree_c"],
-                      x_label: "Time",
-                      width: 500
-                  }
-              );
-
-              plotLine(
-                  data.filter(d => d.sensor_id==11),
-                  "plot_pressure",
-                  "timestamp",
-                  "value",
-                  {
-                      x_type: d3.scaleTime,
-                      y_label: UNIT_MAP["Pa"],
-                      x_label: "Time",
-                      width: 500
-                  }
-              );
-
-              plotLine(
-                  data.filter(d => d.sensor_id==12),
-                  "plot_humidity",
-                  "timestamp",
-                  "value",
-                  {
-                      x_type: d3.scaleTime,
-                      y_label: UNIT_MAP["%"],
-                      x_label: "Time",
-                      width: 500
-                  }
-              );        
+              plotter(data, "plot_temperature", 13, "degree_c").drawData();
+              plotter(data, "plot_pressure", 11, "Pa").drawData();
+              plotter(data, "plot_humidity", 12, "%").drawData();
           }
       );
   }
 
 
-  function makeMinMaxPlot(mode, start, stop){
-      data = {
+  function plotAllMinMax(start, stop){
+      let request_data = {
           "t2": stop/1000,
           "t1": start/1000,
           "period": 60*60*24
       };
 
-      let endpoint = (mode=="max") ? "getMaxBetween" : "getMinBetween";
+      let plotter = WeatherLinePlot({
+          z_map: d=>d.type,
+          colour_map: {
+              "min": "blue",
+              "max": "red"
+          },
+          interpolation: d3.curveStep
+      });
 
-      request(API_ROOT+endpoint, "GET", data).then(
+      let p_temp = plotter([], "plot_minmax_temperature", 13, "degree_c");
+      let p_pres = plotter([], "plot_minmax_pressure", 11, "Pa");
+      let p_hum = plotter([], "plot_minmax_humidity", 12, "%");
+
+      request(API_ROOT+"getMaxBetween", "GET", request_data).then(
           (data) => {
+              data.map(d => {
+                  d.type = "max";
+                  return d;
+              });
+              data.sort(
+                  (a, b) => {
+                      return a.timestamp - b.timestamp;
+                  }
+              );            
+
+              p_temp.addFilteredData(data);
+              p_pres.addFilteredData(data);
+              p_hum.addFilteredData(data);
+              p_temp.drawData();
+              p_pres.drawData();
+              p_hum.drawData();
+          }
+      );
+
+      request(API_ROOT+"getMinBetween", "GET", request_data).then(
+          (data) => {
+              data.map(d => {
+                  d.type = "min";
+                  return d;
+              });
               data.sort(
                   (a, b) => {
                       return a.timestamp - b.timestamp;
                   }
               );
 
-              plotLine(
-                  data.filter(d => d.sensor_id==13),
-                  "plot_minmax_temperature",
-                  "timestamp",
-                  "value",
-                  {
-                      x_type: d3.scaleTime,
-                      y_label: UNIT_MAP["degree_c"],
-                      x_label: "Time",
-                      width: 500
-                  }
-              );
-
-              plotLine(
-                  data.filter(d => d.sensor_id==11),
-                  "plot_minmax_pressure",
-                  "timestamp",
-                  "value",
-                  {
-                      x_type: d3.scaleTime,
-                      y_label: UNIT_MAP["Pa"],
-                      x_label: "Time",
-                      width: 500
-                  }
-              );
-
-              plotLine(
-                  data.filter(d => d.sensor_id==12),
-                  "plot_minmax_humidity",
-                  "timestamp",
-                  "value",
-                  {
-                      x_type: d3.scaleTime,
-                      y_label: UNIT_MAP["%"],
-                      x_label: "Time",
-                      width: 500
-                  }
-              );        
+              p_temp.addFilteredData(data);
+              p_pres.addFilteredData(data);
+              p_hum.addFilteredData(data);
+              p_temp.drawData();
+              p_pres.drawData();
+              p_hum.drawData();
           }
       );
   }
@@ -385,48 +437,36 @@
       const range = document.getElementById("range");
 
       range.onchange = () => {
-          makePlot(parseInt(range.value));
+          plotAllRecords(parseInt(range.value));
       };
 
-      makePlot(range.value);
+      plotAllRecords(range.value);
   })();
 
 
   // Minmax plot callbacks
   (()=>{
-      const mode = document.getElementById("mode");
       const start = document.getElementById("minmax_start");
       const stop = document.getElementById("minmax_stop");
 
       stop.valueAsNumber = Date.now();
       start.valueAsNumber = Date.now() - 1000*60*60*24*7;
 
-      mode.onchange = () => {
-          makeMinMaxPlot(
-              mode.value,
-              start.valueAsNumber,
-              stop.valueAsNumber
-          );
-      };
-
       start.onchange = () => {
-          makeMinMaxPlot(
-              mode.value,
+          plotAllMinMax(
               start.valueAsNumber,
               stop.valueAsNumber
           );
       };
 
       stop.onchange = () => {
-          makeMinMaxPlot(
-              mode.value,
+          plotAllMinMax(
               start.valueAsNumber,
               stop.valueAsNumber
           );
       };
 
-      makeMinMaxPlot(
-          mode.value,
+      plotAllMinMax(
           start.valueAsNumber,
           stop.valueAsNumber
       );
@@ -506,11 +546,6 @@
               </span>
               <div class="display">
                   <div class="control">
-                      <label for="mode">Plot:</label>
-                      <select id = "mode">
-                          <option value="min">Daily minimums</option>
-                          <option value="max">Daily maximums</option>
-                      </select>                    
                       <label for="minmax_start">Start:</label>
                       <input type="date" id = "minmax_start"></input>
                       <label for="minmax_stop">Stop:</label>
