@@ -13,7 +13,7 @@
 #define READ 0x0
 #define WRITE 0x1
 
-#define ADDRESS 0x40
+#define TCA_ADDRESS 0x40
 
 
 #endif

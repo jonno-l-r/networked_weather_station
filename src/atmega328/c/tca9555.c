@@ -13,19 +13,44 @@
 #include "twi.h"
 
 
+uint8_t tca9555_write(uint8_t reg_addr, uint8_t val){
+	
+}
+
+
 uint8_t tca9555_read(uint8_t reg_addr){
 	uint8_t port;
 	twi_init();
 	
 	twi_start();
-	twi_write(ADDRESS | ((uint8_t) WRITE));
+	twi_write(TCA_ADDRESS | ((uint8_t) WRITE));
 	twi_write(reg_addr);
 	
 	twi_start();
-	twi_write(ADDRESS | ((uint8_t) READ));
+	twi_write(TCA_ADDRESS | ((uint8_t) READ));
 	
 	port = twi_read_ack();
 	
 	twi_stop();
 	return port;
+}
+
+
+/*
+ * TCA9555 driver API
+ */
+
+void tca9555_configure(uint8_t config){
+
+}
+
+
+uint8_t tca9555_read_port(uint8_t port){
+	uint8_t val;
+	return val;
+}
+
+
+void tca9555_write_port(uint8_t port){
+	
 }

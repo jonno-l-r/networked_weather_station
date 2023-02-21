@@ -9,7 +9,7 @@
 #define HTTP_SERVER_H_
 
 
-void tcp_init(uint8_t* mac_addr, uint8_t* subnet_mask, uint8_t* gateway, uint8_t* ip_addr);
+void tcp_init(uint8_t* mac_addr, uint8_t* subnet_mask, uint8_t* gateway, uint8_t* ip_addr, uint16_t port);
 void tcp_open(void);
 void tcp_listen(void);
 int tcp_wait_established(void);

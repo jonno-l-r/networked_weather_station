@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="../css/dashboard.css">
+        <title>Weather</title>
+    </head>
+    <body>
+        <div id="current" class="container">
+            <span class="name">
+                <span class="collapse" id="collapse_plots">&#8212</span>
+                Observations
+            </span>
+            <div class="display">
+                <span class ="title" id="timestamp"></span>
+                <table id="_current">
+                    <tr id="labels">
+                        <th></th>
+                    </tr>
+                    <tr id="temperature">
+                        <td>Temperature</td>
+                    </tr>
+                    <tr id="pressure">
+                        <td>Pressure</td>
+                    </tr>
+                    <tr id="humidity">
+                        <td>Humidity</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+
+        <div class="container" id="raw_plot_container">
+            <span class="name">
+                <span class="collapse" id="collapse_plots">&#8212</span>
+                Recent conditions
+            </span>
+            <div class="display">
+                <div class="control">
+                    <label for="range">Range:</label>
+                    <select id = "range">
+                        <option value="1">1 hour</option>
+                        <option value="12">12 hours</option>
+                        <option value="24">1 day</option>
+                        <option value="168">1 week</option>
+                    </select>
+                    <span class="status" id="status_raw">Loading</span>
+                </div>
+                <div class="plot">
+                    <span class="title">Temperature</span>
+                    <svg id="plot_temperature"></svg>
+                </div>
+                <div class="plot">
+                    <span class="title">Humidity</span>
+                    <svg id="plot_humidity"></svg>
+                </div>
+                <div class="plot">
+                    <span class="title">Pressure</span>
+                    <svg id="plot_pressure"></svg>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container" id="minmax_plot_container">
+            <span class="name">
+                <span class="collapse" id="collapse_minmax_plots">&#8212</span>
+                Daily minimums and maximums
+            </span>
+            <div class="display">
+                <div class="control">
+                    <label for="minmax_start">Start:</label>
+                    <input type="date" id = "minmax_start"></input>
+                    <label for="minmax_stop">Stop:</label>
+                    <input type="date" id = "minmax_stop"></input>
+                    <span class="status" id="status_minmax">Loading</span>
+                </div>
+                <div class="plot">
+                    <span class="title">Temperature</span>
+                    <svg id="plot_minmax_temperature"></svg>
+                </div>
+                <div class="plot">
+                    <span class="title">Humidity</span>
+                    <svg id="plot_minmax_humidity"></svg>
+                </div>
+                <div class="plot">
+                    <span class="title">Pressure</span>
+                    <svg id="plot_minmax_pressure"></svg>
+                </div>
+            </div>
+        </div>        
+
+
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <script type="text/javascript" src="../js/plot.js"></script>
+        <script type="text/javascript" src="../js/request.js"></script>
+        <script type="text/javascript" src="../js/make_table.js"></script>
+        <script type="text/javascript" src="../js/make_plot.js"></script>
+        <script type="text/javascript" src="../js/dashboard_setup.js"></script>
+    </body>
+</html>

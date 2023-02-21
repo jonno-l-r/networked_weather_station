@@ -2,7 +2,7 @@
 
 * D3
 #+name: plot
-#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/plot.js
+#+begin_src js :tangle plot.js
   function LinePlot(
       data,
       id,
@@ -15,12 +15,12 @@
           margin_top = 50,
           margin_bottom = 50,
           margin_right = 20,
-          margin_left = 50,
-          width = 800,
-          height = 400,
+          margin_left = 60,
+          width=400,
+          height=375,
           y_label,
           x_label,
-          line_width = 1.5,
+          line_width = 2,
           line_colour = "red",
           x_type = d3.scaleLinear,
           y_type = d3.scaleLinear,
@@ -45,8 +45,8 @@
 
           _setScales: function(){
               this.svg = d3.select(this.div)
-                  .attr("width", width)
-                  .attr("height", height);
+                  .attr("viewBox", "0 0 " + width + " " + height)
+                  .attr("preserveAspectRatio", "xMidYMid meet");
 
               this.x = this.data.map(x_map);
               this.y = this.data.map(y_map);
@@ -61,7 +61,7 @@
               this.y_scale = y_type(y_domain, y_range);
 
               this.x_axis = d3.axisBottom(this.x_scale)
-                    .ticks(width/60)
+                    .ticks(width/85)
                     .tickSizeOuter(0);
               this.y_axis = d3.axisLeft(this.y_scale)
                     .ticks(height/80);
@@ -116,7 +116,7 @@
                       enter => enter
                           .append("path")
                           .attr("class", "line")
-                          .transition().duration(500)
+                          .transition().duration(200)
                           .attr("stroke-opacity", 1)
                           .selection(),
                       update => update,
@@ -131,9 +131,9 @@
   }
 #+end_src
 
-* Main
+* Tables and plots
 #+name: request
-#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/request.js
+#+begin_src js :tangle request.js
   function request(url, method, data = {}){
       let params = "/?";
       for (let key in data){
@@ -164,7 +164,7 @@
 
 
 #+name: make_table
-#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/make_table.js
+#+begin_src js :tangle make_table.js
   const API_ROOT = "../php/main.php/sensors/";
   const UNIT_MAP = {
       "degree_c": '\u2103',
@@ -285,7 +285,7 @@
 
 
 #+name: make_plot
-#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/make_plot.js
+#+begin_src js :tangle make_plot.js
   function WeatherLinePlot(
       {
           x_map = d => d.timestamp*1000,
@@ -326,7 +326,7 @@
 
   function plotRawRecords(range, on_request=()=>{}){
       on_request();
-    
+
       let data = {
           "t2": Date.now()/1000,
           "t1": (Date.now()/1000) - 60*60*range
@@ -414,8 +414,9 @@
 #+end_src
 
 
-#+name: control_page
-#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/control_page.js
+* Page
+#+name: dashboard_setup
+#+begin_src js :tangle dashboard_setup.js
   // Generate callback function
   // to signal completed request
   // and update status field
@@ -514,9 +515,9 @@
   })();
 #+end_src
 
-* Main dashboard page
+
 #+name: dashboard
-#+begin_src html :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/html/dashboard.html
+#+begin_src html :tangle ../html/dashboard.html
   <!DOCTYPE html>
   <html>
       <head>
@@ -549,7 +550,7 @@
           </div>
 
 
-          <div class="container">
+          <div class="container" id="raw_plot_container">
               <span class="name">
                   <span class="collapse" id="collapse_plots">&#8212</span>
                   Recent conditions
@@ -581,7 +582,7 @@
           </div>
 
 
-          <div class="container">
+          <div class="container" id="minmax_plot_container">
               <span class="name">
                   <span class="collapse" id="collapse_minmax_plots">&#8212</span>
                   Daily minimums and maximums
@@ -615,19 +616,19 @@
           <script type="text/javascript" src="../js/request.js"></script>
           <script type="text/javascript" src="../js/make_table.js"></script>
           <script type="text/javascript" src="../js/make_plot.js"></script>
-          <script type="text/javascript" src="../js/control_page.js"></script>
+          <script type="text/javascript" src="../js/dashboard_setup.js"></script>
       </body>
   </html>
 #+end_src
 
-* Stylesheets
-#+dashboard_style
-#+begin_src css :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/css/dashboard.css
+* Stylesheet
+#+name: dashboard_style
+#+begin_src css :tangle ../css/dashboard.css
   body {
       margin-left: auto;
       margin-right: auto;
       text-align: center;
-      max-width: 2000px;
+      max-width: 1300px;
   }
 
 
@@ -638,13 +639,25 @@
       text-align: center;
       border: 1px solid gray;
       border-radius: 10px;
-      min-width: 200px;
+      min-width: 300px;
+      max-width: 1200px;
       margin-left: 20px;
       margin-right: 20px;
   }
 
 
+  #raw_plot_container, #minmax_plot_container {
+      width: 90%;
+  }
+
+
+  svg text {
+      font-size: 10pt;
+  }
+
+
   .plot {
+      width: 33%;
       margin-bottom: 10px;
       display: inline-block;
       background: #f0f0ff;
@@ -655,6 +668,10 @@
       text-align: left;
       font-family: monospace;
       font-size: 12pt;
+  }
+
+  th, td {
+      padding: 3px;
   }
 
 
@@ -696,7 +713,8 @@
       border: 1px solid gray;
       border-radius: 4px;
       text-align: left;
-      width: 20px;
+      //width: 2%;
+      padding: 2px;
       background: white;
       box-shadow: 1px 1px;
       text-align: center;
@@ -720,4 +738,73 @@
       width: 60px;
       text-align: center;
   }
+
+
+  @media only screen and (max-width: 1000px){
+      .plot {
+          display: inline-block;
+          width: 97%;
+          text-align: center;
+      }
+
+      table {
+          font-size: 25pt;
+      }
+
+      .control, select, input, .title {
+          font-size: 20pt;
+      }
+
+      .status {
+          font-size: 20pt;
+          width: 100px;
+      }
+
+      .name, .collapse {
+          font-size: 30pt;
+      }
+
+      svg text {
+          font-size: 11pt;
+      }
+
+      /* svg path { */
+      /*     stroke-width: 3px; */
+      /* } */
+  }
+#+end_src
+
+* Tangle to server
+#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/plot.js :noweb yes 
+  <<plot>>
+#+end_src
+
+
+#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/request.js :noweb yes 
+  <<request>>
+#+end_src
+
+
+#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/make_table.js :noweb yes 
+  <<make_table>>
+#+end_src
+
+
+#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/make_plot.js :noweb yes 
+  <<make_plot>>
+#+end_src
+
+
+#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/dashboard_setup.js :noweb yes 
+  <<dashboard_setup>>
+#+end_src
+
+
+#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/html/dashboard.html :noweb yes 
+  <<dashboard>>
+#+end_src
+
+
+#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/css/dashboard.css :noweb yes 
+  <<dashboard_style>>
 #+end_src

@@ -24,7 +24,7 @@ int api_get_bme280(char* buf, int offset){
 	id = bme280_get_id();
 	bme280_get_measurements(&temp, &pres, &hum);
 	i += sprintf(offset+buf+i, "[{\"id\":%d},", id);
-	i += sprintf(offset+buf+i, "{\"temperature\":%ld, \"div\":%d},", temp, 10);
+	i += sprintf(offset+buf+i, "{\"temperature\":%ld, \"div\":%d},", temp, 100);
 	i += sprintf(offset+buf+i, "{\"pressure\":%lu, \"div\":%d},", pres, 256);
 	i += sprintf(offset+buf+i, "{\"humidity\":%lu, \"div\":%d}]", hum, 1024);
 		
