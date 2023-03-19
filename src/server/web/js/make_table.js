@@ -9,6 +9,11 @@ const SENSOR_WHITELIST = [
     "12",
     "13"
 ];
+const normalise = {
+    "11": (d)=>parseInt(d)+7100,
+    "12": (d)=>parseFloat(d),
+    "13": (d)=>parseFloat(d)
+};
 
 
 function getDateString(timestamp_secs){
@@ -59,10 +64,11 @@ function makeColumn(data, name){
         if (SENSOR_WHITELIST.includes(sensor.sensor_id)) {
             let row = document.getElementById(sensor.measurement);
             let data_cell = document.createElement("td");
+            let val = normalise[sensor.sensor_id](sensor.value);
 
             data_cell.appendChild(
                 document.createTextNode(
-                    `${sensor.value} ${UNIT_MAP[sensor.unit]}`
+                    `${val} ${UNIT_MAP[sensor.unit]}`
                 )
             );
 

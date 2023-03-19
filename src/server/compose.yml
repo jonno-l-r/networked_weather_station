@@ -1,0 +1,43 @@
+networks:
+  public:
+    external:
+      name: frontend
+  private:
+services:
+  weather:
+    build:
+      context: ./
+      dockerfile: "php.Dockerfile"
+    restart: "always"
+    ports:
+      - "1000:1000"
+    volumes:
+      - type: bind
+        source: ./web
+        target: /var/www/html
+    networks:
+      - public
+      - private
+    environment:
+      - MARIADB_USER=${MARIADB_USER:-utest}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD:-utest}
+      - MARIADB_DATABASE=weather
+      - WEATHER_STATION_ADDRESS=http://192.168.1.200:1000
+  db:
+    build:
+      context: ./
+      dockerfile: mariadb.Dockerfile
+    environment:
+      - MARIADB_ROOT_PASSWORD=root
+      - MARIADB_USER=${MARIADB_USER:-utest}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD:-utest}
+      - MARIADB_DATABASE=weather
+    volumes:
+      - type: bind
+        source: ./sql/db
+        target: /var/lib/mysql
+      - type: bind
+        source: ./sql/init
+        target: /docker-entrypoint-initdb.d
+    networks:
+      - private

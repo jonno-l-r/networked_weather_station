@@ -8,22 +8,18 @@ class WeatherDB {
 
     protected $mysqli;
 
-    const user = "utest";
-    const database = "weather_test";
-    const host = "localhost";
-    const pw = "";
     const metadata_table = "sensors";
     const data_table = "canberra_data";
 
     const sensor_query = "SELECT id FROM sensors WHERE measurement=? AND sensor=?";
 
 
-    public function __construct(){
+    public function __construct(){        
         $this->mysqli = new mysqli(
-            self::host,
-            self::user,
-            self::pw,
-            self::database
+            "db",
+            getenv("MARIADB_USER"),
+            getenv("MARIADB_PASSWORD"),
+            getenv("MARIADB_DATABASE")
         );
         $this->sensor_stmt = $this->mysqli->prepare(self::sensor_query);
 
@@ -181,7 +177,7 @@ class ReadWeatherDB extends WeatherDB {
             . (int)$t1 . " AND " . (int)$t2 . " "
             . "GROUP BY sensor_id) AS x "
             . "JOIN " . WeatherDB::data_table . " y "
-            . "ON x.value = y.value "
+            . "ON x.timestamp = y.timestamp "
             . "AND x.sensor_id = y.sensor_id "
             . "WHERE s.id = y.sensor_id"
         );

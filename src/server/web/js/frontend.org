@@ -61,7 +61,7 @@
               this.y_scale = y_type(y_domain, y_range);
 
               this.x_axis = d3.axisBottom(this.x_scale)
-                    .ticks(width/85)
+                    .ticks(width/100)
                     .tickSizeOuter(0);
               this.y_axis = d3.axisLeft(this.y_scale)
                     .ticks(height/80);
@@ -176,6 +176,11 @@
       "12",
       "13"
   ];
+  const normalise = {
+      "11": (d)=>parseInt(d)+7100,
+      "12": (d)=>parseFloat(d),
+      "13": (d)=>parseFloat(d)
+  };
 
 
   function getDateString(timestamp_secs){
@@ -210,7 +215,7 @@
               }
           }
       );
-      
+
       return temp;
   }
 
@@ -226,10 +231,11 @@
           if (SENSOR_WHITELIST.includes(sensor.sensor_id)) {
               let row = document.getElementById(sensor.measurement);
               let data_cell = document.createElement("td");
+              let val = normalise[sensor.sensor_id](sensor.value);
 
               data_cell.appendChild(
                   document.createTextNode(
-                      `${sensor.value} ${UNIT_MAP[sensor.unit]}`
+                      `${val} ${UNIT_MAP[sensor.unit]}`
                   )
               );
 
@@ -293,7 +299,7 @@
           z_map = d => d.sensor_id,
           filter_func = (d,s) => (d.sensor_id==s),
           colour_map = "red",
-          interpolation = d3.curveNatural
+          interpolation = d3.curveLinear
       } = {}
   ){
       return (data, div_id, _sensor_id, unit)=>{
@@ -332,7 +338,9 @@
           "t1": (Date.now()/1000) - 60*60*range
       };
 
-      let plotter = WeatherLinePlot();
+      let plotter = WeatherLinePlot(
+          y_map: (d) => normalise[d.sensor_id](d.value)
+      );
 
       request(API_ROOT+"getBetween", "GET", data).then(
           (data) => {
@@ -356,6 +364,7 @@
 
       let plotter = WeatherLinePlot({
           z_map: d=>d.type,
+          y_map: (d) => normalise[d.sensor_id](d.value),
           colour_map: {
               "min": "blue",
               "max": "red"
@@ -412,7 +421,6 @@
       );
   }
 #+end_src
-
 
 * Page
 #+name: dashboard_setup

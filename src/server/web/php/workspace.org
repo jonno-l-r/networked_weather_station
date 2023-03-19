@@ -211,88 +211,26 @@ Get all values for a particular ID over or under a threshold
 Get maximums or minimums over a timespan
 #+begin_src sql :engine mysql :dbuser utest :dir /plink:pi@piserv#60127:~/ :results output table :cache no :exports both
   USE weather_test;
-  SELECT y.timestamp, y.sensor_id, s.measurement, s.sensor, x.value, s.unit
-         FROM sensors s, (
-              SELECT timestamp, sensor_id, MAX(value) as value
-              FROM canberra_data
-              WHERE timestamp BETWEEN 1675450000 AND 1675482781
-              GROUP BY sensor_id
-         ) as x
-         join canberra_data y
-         on x.value = y.value
-         AND x.sensor_id = y.sensor_id
-         WHERE s.id = y.sensor_id;
+  SELECT x.timestamp, x.sensor_id, s.measurement, s.sensor, x.value, s.unit
+  FROM sensors s, (
+       SELECT  timestamp, sensor_id, MAX(value) as value
+       FROM canberra_data
+       WHERE timestamp BETWEEN 1677192939 AND 1677279339
+       GROUP BY sensor_id
+       ) AS x
+  JOIN canberra_data y
+  ON x.timestamp = y.timestamp
+  AND x.sensor_id = y.sensor_id
+  WHERE s.id = y.sensor_id
 #+end_src
 
 #+RESULTS:
 |  timestamp | sensor_id | measurement | sensor  |     value | unit     |
 |------------+-----------+-------------+---------+-----------+----------|
-| 1675364401 |        10 | temperature | BME280  |     19.26 | degree_c |
-| 1675391281 |        10 | temperature | BME280  |     19.26 | degree_c |
-| 1675391341 |        10 | temperature | BME280  |     19.26 | degree_c |
-| 1675391461 |        10 | temperature | BME280  |     19.26 | degree_c |
-| 1675391582 |        10 | temperature | BME280  |     19.26 | degree_c |
-| 1675391641 |        10 | temperature | BME280  |     19.26 | degree_c |
-| 1675391761 |        10 | temperature | BME280  |     19.26 | degree_c |
-| 1675391882 |        10 | temperature | BME280  |     19.26 | degree_c |
-| 1675391941 |        10 | temperature | BME280  |     19.26 | degree_c |
-| 1675392001 |        10 | temperature | BME280  |     19.26 | degree_c |
-| 1675392841 |        10 | temperature | BME280  |     19.26 | degree_c |
-| 1675392901 |        10 | temperature | BME280  |     19.26 | degree_c |
-| 1675392961 |        10 | temperature | BME280  |     19.26 | degree_c |
-| 1675393021 |        10 | temperature | BME280  |     19.26 | degree_c |
-| 1675393081 |        10 | temperature | BME280  |     19.26 | degree_c |
-| 1675393201 |        10 | temperature | BME280  |     19.26 | degree_c |
-| 1675416721 |        10 | temperature | BME280  |     19.26 | degree_c |
-| 1675482721 |        10 | temperature | BME280  |     19.26 | degree_c |
-| 1675482781 |        10 | temperature | BME280  |     19.26 | degree_c |
-| 1675478581 |        11 | pressure    | BME280  | 93445.223 | Pa       |
-| 1675458241 |        12 | humidity    | BME280  |    43.516 | %        |
-| 1675362721 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675362841 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675362902 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675362961 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675363021 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675363141 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675363321 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675363382 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675394161 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675394281 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675394341 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675394702 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675394821 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675394881 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675394941 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675395002 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675395121 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675395181 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675395241 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675395361 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675395422 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675414381 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675414681 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675414741 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675414801 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675414861 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675414921 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675414982 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675415041 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675415101 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675415161 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675415221 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675415282 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675415461 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675415521 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675482541 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675482721 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675482781 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675482841 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675482901 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675482961 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675483021 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675483081 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675483141 |        13 | temperature | MCP9808 |    19.875 | degree_c |
-| 1675483201 |        13 | temperature | MCP9808 |    19.875 | degree_c |
+| 1677192961 |        10 | temperature | BME280  |     22.15 | degree_c |
+| 1677192961 |        11 | pressure    | BME280  | 94951.785 | Pa       |
+| 1677192961 |        12 | humidity    | BME280  |    50.908 | %        |
+| 1677192961 |        13 | temperature | MCP9808 |     22.75 | degree_c |
 
 * Database classes
 #+name: weather_db
@@ -307,22 +245,18 @@ Get maximums or minimums over a timespan
 
       protected $mysqli;
 
-      const user = "utest";
-      const database = "weather_test";
-      const host = "localhost";
-      const pw = "";
       const metadata_table = "sensors";
       const data_table = "canberra_data";
 
       const sensor_query = "SELECT id FROM sensors WHERE measurement=? AND sensor=?";
 
 
-      public function __construct(){
+      public function __construct(){        
           $this->mysqli = new mysqli(
-              self::host,
-              self::user,
-              self::pw,
-              self::database
+              "db",
+              getenv("MARIADB_USER"),
+              getenv("MARIADB_PASSWORD"),
+              getenv("MARIADB_DATABASE")
           );
           $this->sensor_stmt = $this->mysqli->prepare(self::sensor_query);
 
@@ -480,7 +414,7 @@ Get maximums or minimums over a timespan
               . (int)$t1 . " AND " . (int)$t2 . " "
               . "GROUP BY sensor_id) AS x "
               . "JOIN " . WeatherDB::data_table . " y "
-              . "ON x.value = y.value "
+              . "ON x.timestamp = y.timestamp "
               . "AND x.sensor_id = y.sensor_id "
               . "WHERE s.id = y.sensor_id"
           );
@@ -644,8 +578,10 @@ Get maximums or minimums over a timespan
 
 
   function main(){
+      $addr = getenv("WEATHER_STATION_ADDRESS");
+
       $db = new WriteWeatherDB("canberra_data");
-      $w_station = new WeatherStation("http://192.168.1.200:1000");
+      $w_station = new WeatherStation($addr);
 
       $data = $w_station->getMeasurements();
       $data_to_write = array();
@@ -689,6 +625,7 @@ array(4) {
   namespace controller;
   require_once "weather_db.php";
   use ReadWeatherDB;
+  error_reporting(E_ALL ^ E_WARNING);
 
 
   class Controller {

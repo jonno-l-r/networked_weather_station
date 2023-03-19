@@ -55,8 +55,10 @@ class WeatherStation {
 
 
 function main(){
+    $addr = getenv("WEATHER_STATION_ADDRESS");
+
     $db = new WriteWeatherDB("canberra_data");
-    $w_station = new WeatherStation("http://192.168.1.200:1000");
+    $w_station = new WeatherStation($addr);
 
     $data = $w_station->getMeasurements();
     $data_to_write = array();

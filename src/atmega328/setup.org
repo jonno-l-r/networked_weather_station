@@ -1,0 +1,39 @@
+#+title: AVR toolchain setup
+
+* Programming
+Microchip studio can be configured to use an external programming tool (such as AVRdude) through the 'external tools' dialogue (accessed from the tools menu).
+
+** UART
+For programming over UART with AVRdude use the following command;
+
+=avrdude.exe -C "avrdude.conf" -patmega328p -carduino -P\\.\COM<port-number> -b115200 -D -Uflash:w:"$(ProjectDir)Debug\$(TargetName).hex":i=
+
+- Note that =avrdude.conf= is available on the path ="C:\Program Files (x86)\Arduino\hardware\tools\avr\etc\= if the Arduino IDE is installed
+- <port-number> is the serial port number
+
+To check which fuses are set using AVRdude, run the following command;
+
+=./avrdude.exe -c avrisp -p m328p -P com8 -b 19200 -U lfuse:r:-:i -v -C "avrdude.conf"=
+
+AVRdude can also be used to view memory usage;
+
+=./avr-size -C --mcu=atmega328 '<project>.elf'=
+
+In Microchip studio, the =.elf= is stored under =<project>/<project>/Debug/<project>.elf=
+
+  
+** ISP
+If programming with an ISP programmer (or an Arduino configured as an ISP programmer) through AVRdude, use the following command;
+
+=avrdude.exe -F -v -p m328p -c arduino -P COM<port-number> -b 19200 -U flash:w:"$(ProjectDir)Debug\$(ItemFileName).hex":i -C "avrdude.conf"=
+
+- [[https://www.instructables.com/Integrate-ArduinoISP-and-Atmel-Studio/][This article]] explains how flags can be set with avrdude:
+- Arduino provides a sketch which turns the board into an ISP: [[https://learn.adafruit.com/arduino-tips-tricks-and-techniques/arduinoisp#bonus-using-with-avrdude][Link to sketch]]
+
+* Bootloader burning
+- Burning bootloader .hex with AVRDUDE: [[https://learn.sparkfun.com/tutorials/installing-an-arduino-bootloader/all][sparkfun article]]
+- [[https://www.engbedded.com/fusecalc/][AVR fuse calculator]]
+- [[https://github.com/Optiboot/optiboot][Optiboot repo]]
+  - Optiboot is an Arduino compatible bootloader for AVR microcontrollers
+  - Make command: =make atmega328 AVR_FREQ=18000000L BAUD_RATE=112500=
+  - Need packages =gcc-avr= and =avr-libc= to compile optiboot

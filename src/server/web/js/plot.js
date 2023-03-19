@@ -56,7 +56,7 @@ function LinePlot(
             this.y_scale = y_type(y_domain, y_range);
 
             this.x_axis = d3.axisBottom(this.x_scale)
-                  .ticks(width/85)
+                  .ticks(width/100)
                   .tickSizeOuter(0);
             this.y_axis = d3.axisLeft(this.y_scale)
                   .ticks(height/80);

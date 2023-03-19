@@ -25,6 +25,7 @@ FILE usart0_str = FDEV_SETUP_STREAM(USART0SendByte, USART0ReceiveByte, _FDEV_SET
 int main(void){
 	int data_size;
 	char data[512];
+	int averages = 10;
 	
 	uint8_t ip_addr[] = {192, 168, 1, 200};
 	uint8_t subnet_mask[] = {255, 255, 255, 0};
@@ -35,12 +36,12 @@ int main(void){
 	// Test
 	USART0Init();
 	stdin=stdout=&usart0_str;
-	data_size = api_get_all(data);
+	data_size = api_get_all(data, averages);
 	printf("size: %d\n%s", data_size, data);
 	
 	tcp_init(mac_addr, subnet_mask, gateway, ip_addr, port);
 	while (1){
-		data_size = api_get_all(data);
+		data_size = api_get_all(data, averages);
 		
 		tcp_open();
 		tcp_listen();

@@ -2,6 +2,7 @@
 namespace controller;
 require_once "weather_db.php";
 use ReadWeatherDB;
+error_reporting(E_ALL ^ E_WARNING);
 
 
 class Controller {

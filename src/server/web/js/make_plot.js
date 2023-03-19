@@ -5,7 +5,7 @@ function WeatherLinePlot(
         z_map = d => d.sensor_id,
         filter_func = (d,s) => (d.sensor_id==s),
         colour_map = "red",
-        interpolation = d3.curveNatural
+        interpolation = d3.curveLinear
     } = {}
 ){
     return (data, div_id, _sensor_id, unit)=>{
@@ -44,7 +44,9 @@ function plotRawRecords(range, on_request=()=>{}){
         "t1": (Date.now()/1000) - 60*60*range
     };
 
-    let plotter = WeatherLinePlot();
+    let plotter = WeatherLinePlot(
+        y_map: (d) => normalise[d.sensor_id](d.value)
+    );
 
     request(API_ROOT+"getBetween", "GET", data).then(
         (data) => {
@@ -68,6 +70,7 @@ function plotMinMaxDaily(start, stop, on_request=()=>{}){
 
     let plotter = WeatherLinePlot({
         z_map: d=>d.type,
+        y_map: (d) => normalise[d.sensor_id](d.value),
         colour_map: {
             "min": "blue",
             "max": "red"
