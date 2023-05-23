@@ -1,5 +1,0 @@
-(sym_lib_table
-  (lib (name custom)(type Legacy)(uri ${KIPRJMOD}/custom.lib)(options "")(descr "")(disabled))
-  (lib (name custom_digital)(type Legacy)(uri ${KIPRJMOD}/../library/custom/cad/kicad/symbol/custom_IC_digital.lib)(options "")(descr ""))
-  (lib (name custom_passive)(type Legacy)(uri ${KIPRJMOD}/../library/custom/cad/kicad/symbol/custom_passive.lib)(options "")(descr ""))
-)

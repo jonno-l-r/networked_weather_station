@@ -15,6 +15,9 @@ services:
       - type: bind
         source: ./web
         target: /var/www/html
+      - type: bind
+        source: ./log
+        target: /var/log/apache2
     networks:
       - public
       - private
@@ -23,6 +26,7 @@ services:
       - MARIADB_PASSWORD=${MARIADB_PASSWORD:-utest}
       - MARIADB_DATABASE=weather
       - WEATHER_STATION_ADDRESS=http://192.168.1.200:1000
+      - TZ=Australia/Canberra
   db:
     build:
       context: ./
@@ -32,6 +36,7 @@ services:
       - MARIADB_USER=${MARIADB_USER:-utest}
       - MARIADB_PASSWORD=${MARIADB_PASSWORD:-utest}
       - MARIADB_DATABASE=weather
+      - TZ=Australia/Canberra
     volumes:
       - type: bind
         source: ./sql/db

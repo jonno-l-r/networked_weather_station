@@ -571,6 +571,7 @@
                           <option value="12">12 hours</option>
                           <option value="24">1 day</option>
                           <option value="168">1 week</option>
+                          <option value="672">1 month</option>
                       </select>
                       <span class="status" id="status_raw">Loading</span>
                   </div>
@@ -780,39 +781,4 @@
       /*     stroke-width: 3px; */
       /* } */
   }
-#+end_src
-
-* Tangle to server
-#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/plot.js :noweb yes 
-  <<plot>>
-#+end_src
-
-
-#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/request.js :noweb yes 
-  <<request>>
-#+end_src
-
-
-#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/make_table.js :noweb yes 
-  <<make_table>>
-#+end_src
-
-
-#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/make_plot.js :noweb yes 
-  <<make_plot>>
-#+end_src
-
-
-#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/js/dashboard_setup.js :noweb yes 
-  <<dashboard_setup>>
-#+end_src
-
-
-#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/html/dashboard.html :noweb yes 
-  <<dashboard>>
-#+end_src
-
-
-#+begin_src js :tangle /plink:pi@piserv#60127:/var/www/html/website/apps/weather/css/dashboard.css :noweb yes 
-  <<dashboard_style>>
 #+end_src
