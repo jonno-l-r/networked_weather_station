@@ -1,0 +1,482 @@
+#+title: Networked weather monitoring station: Project diary
+
+* PAUSED Choose Sensors
+:LOGBOOK:
+- State "PAUSED"     from "IN-PROGRESS" [2022-01-27 Thu 20:19] \\
+  Enough options for now, will commit to individual sensors after scoping out MCUs. Most likely choices are;
+  - Temperature: TMP117A
+  - Humidity: BME280
+  - Barometer: BME280
+- State "IN-PROGRESS" from "TODO"       [2022-01-13 Thu 17:34] \\
+  Begin choosing environmental sensors
+:END:
+** BME280
+- Integrated barometer, hygrometer and temperature sensor
+- Accuracy: 1.5 hPa
+- Combined pressure and humidity sensor (Accuracy: 3% RH)
+- Output: I2C and SPI
+- [[https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme280-ds002.pdf][Datasheet]]
+** MCP9808
+- Temperature sensor
+- I2C
+  - Addr: 0x18 to 0x1F
+- 0.25 degree C accuracy
+- Range: -40 - 125 degree C
+- [[https://cdn-shop.adafruit.com/datasheets/MCP9808.pdf][Datasheet]]
+** Anemometer and wind vane
+- Will attempt to make a custom anemometer. If calibration appears too challenging, an [[https://core-electronics.com.au/anemometer-wind-speed-sensor-w-analog-voltage-output.html][here is an off the shelf]] one from core electronics
+*** Wind vane
+- Can use a magnetic rotary encoder, such as
+  - [[https://www.digikey.com.au/en/products/detail/ams/AS5134-ZSSM/3464909][AS5134-ZSSM]]
+    - Rotary sensor
+  - [[https://www.digikey.com.au/en/products/detail/ams/AS5601-ASOM/5032389][AS5601-ASOM]]
+    - Position sensor
+    - [[https://ams.com/en/as5601][5601 product page]]
+    - [[https://github.com/bitfasching/AS5601][Library for Arduino]]
+The AMS magnetic rotary encoders have digital outputs
+*** Anemometer
+- A simple Hall effect sensor will suffice. Can also use a magnetic rotary encoder, such as the analogue one linked below
+  - [[https://www.digikey.com.au/en/products/detail/te-connectivity-measurement-specialties/G-MRCO-037/5277441][G-MRCO-037]]  
+** Rain gauge
+    - Tipping bucket design, see [[https://www.allaboutcircuits.com/projects/build-a-wireless-tipping-bucket-rain-gauge-part-1assembling-the-base/][these notes]]
+    
+** Alternatives
+*** Temperature sensor
+**** TMP117AIDRVR
+- Digital
+- 0.1 degree C accuracy from -20 to 50 degree C
+- 16 bit resolution
+- I2C
+- [[https://www.digikey.com.au/en/products/detail/texas-instruments/TMP117AIDRVR/9685284][Digikey]]
+**** LM35
+- Analogue
+- 0.5 degree C accuracy
+- -55 to 150 C range
+- 4 - 30 V Vcc
+- p/m 0.25 C linearity
+- [[https://rocelec.widen.net/view/pdf/lhmv29xclw/NATLS06060-1.pdf?t.download=true&u=5oefqw][Datasheet]]
+**** DS18B20
+- Digital
+- -55 - 125 degrees C
+- 0.5 degree C accuracy
+- One wire digital interface
+- [[https://core-electronics.com.au/makeblock-me-temperature-sensor-waterproof-ds18b20.html][Off the shelf assembly]]
+- [[https://www.digikey.com.au/en/products/detail/adafruit-industries-llc/381/5875807][Off the shelf (digikey)]]
+**** ADT7311
+- Digital
+- -40 - 150 degrees C
+- 0.4 degree C accuracy
+- SPI interface
+- 8-SOIC
+- [[https://www.digikey.com.au/en/products/detail/analog-devices-inc/ADT7311WTRZ-RL7/6163946][Digikey]]
+
+*** Barametric sensor (Absolute pressure sensor)
+**** ILPS22QSTR
+- Accuracy: 0.5 hPa
+- 24 bit
+- Range: 260 - 1260 hPa
+- QFN package
+- Output: I2C and SPI
+- [[https://www.digikey.com.au/en/products/detail/stmicroelectronics/ILPS22QSTR/15903343][Digikey]]
+**** MS560702BA03-00
+- Accuracy: 1.5 hPa
+- Range: 10 - 1200 hPa
+- Resolution: 24 bit
+- Output: I2C and SPI
+- [[https://www.digikey.com.au/en/products/detail/te-connectivity-measurement-specialties/MS560702BA03-00/14816076][Digikey]]
+**** NPP-301A-700AT
+- Accuracy: 0.2% (~ 2 hPa at 1 atmosphere)
+- Output: Analogue (Wheatstone bridge)
+- [[https://www.digikey.com.au/en/products/detail/amphenol-novasensor/NPP-301A-700AT/1795302][Digikey]]
+*** Humidity
+**** SHT30
+- Accuracy: 2% RH
+- Range: 0 - 100% RH\
+- Output: I2C
+- Comes in Adafruit assembly
+- Has built-in temperature sensor
+[[https://www.digikey.com.au/en/products/detail/adafruit-industries-llc/5064/14625562][Digikey]]
+**** HPP801A031 (HS1101LF)
+- Accuracy: 2% RH
+- Range 1 - 99% RH
+- Output: Analogue (capacitive, 2 pin)
+- See datasheet for drive and measurement circuit
+- [[https://www.digikey.com.au/en/products/detail/te-connectivity-measurement-specialties/HPP801A031/697731][Digikey]]
+**** ASAIR DHT20
+- Accuracy: 3% RH
+- Range: 0 - 100% RH
+- Output: I2C
+- Comes in Spark Fun assembly
+- [[https://cdn.sparkfun.com/assets/8/a/1/5/0/DHT20.pdf][Digikey]]
+  
+* DONE System design
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-04-26 Tue 08:11]
+:END:
+** Architecture
+#+HEADER: :imagemagick yes
+#+HEADER: :fit yes :noweb yes
+#+begin_src latex :file (cond-exp "figures/compiled/system_outline") :results file raw :exports results
+  \input{system_outline.pdf_tex}
+#+end_src
+
+#+CAPTION: High level system architecture
+#+LABEL: fig:high-level-system-outline
+#+RESULTS:
+[[file:figures/compiled/system_outline.png]]
+
+** IN-PROGRESS Define all necessary interfaces
+:LOGBOOK:
+- State "IN-PROGRESS" from "TODO"       [2022-01-27 Thu 21:25]
+:END:
+- SPI
+  - Ethernet controller
+- I2C
+  - BME280
+  - TMP117A
+- Analogue
+  - Anemometer
+  - Wind vane
+  - Rain gauge
+
+    I2C addresses
+    | Device  | Address     | Config bits |
+    |---------+-------------+-------------|
+    | PCFB547 | 0x40-0x4F   | A2,A1,A0    |
+    | TCA9555 | 0x20-0x27   | A2,A1,A0    |
+    | AS5601  | 0x36        |             |
+    | BME280  | 0x76 / 0x77 |             |
+    
+*** Network
+- RJ45 jack
+  - 100 base-T with POE and integrated magnetics
+  - [[https://www.digikey.com.au/en/products/detail/abracon-llc/ARJM11C7-114-BA-EW2/7675237][ARJM11C7-114-BA-EW2]]
+  - [[https://abracon.com/Magnetics/ARJM11.pdf][Datasheet]]
+  
+** IN-PROGRESS Choose microcontroller
+:LOGBOOK:
+- State "IN-PROGRESS" from "TODO"       [2022-01-27 Thu 21:25]
+:END:
+*** Programmers
+- ICSP
+  - In circuit serial programmer
+  - USB - 6 pin programmer
+  - Used with programming software (i.e. AVR studio)
+  - Can be used to flash boot loaders
+- Serial boot loader
+  - Need to flash MCU with boot loader program that sits at the beginning of memory
+  - After the boot loader has been flashed (with the ICSP), can use the RX and TX serial communication pins to program the remainder of the memory (using a USB-serial adapter, such as the FTDI module)
+*** AVR
+**** ATMEGA328
+- 8 bit
+- 32k flash
+- 2k sram
+- Arduino UNO uses this MCU
+- Up to 16 MHz (Vcc = 5V)
+- [[https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-7810-Automotive-Microcontrollers-ATmega328P_Datasheet.pdf][Datasheet]]
+*** ST
+**** STM32
+- https://www.youtube.com/watch?v=qMUzLU636s8
+- [[https://github.com/afiskon/stm32-w5500][STM32 and W5500]]
+- https://github.com/WIZnet-ioLibrary/W5x00-HTTPServer
+- [[https://www.carminenoviello.com/2015/08/28/adding-ethernet-connectivity-stm32-nucleo/][Nucleo dev board and W5500]]
+** IN-PROGRESS Choose ethernet controller
+:LOGBOOK:
+- State "IN-PROGRESS" from "TODO"       [2022-01-30 Sun 20:04]
+:END:
+*** Wiznet W5500
+- [[https://www.digikey.com.au/en/products/detail/wiznet/W5500/4425702][Digikey page]]
+- [[http://wizwiki.net/wiki/lib/exe/fetch.php?media=products:w5500:w5500_ds_v108e.pdf][datasheet]]
+- Hardware implementation of TCP/IP stack
+- [[http://wizwiki.net/wiki/lib/exe/fetch.php/products:w5500:w5500_sch_v110_use_mag_.png?cache=][Wiznet W5500 reference design]]
+- [[https://wizwiki.net/wiki/doku.php/design_guide:hardware:start][W5100 - 5500 hardware design guide]]
+  
+** IN-PROGRESS Design power supply
+:LOGBOOK:
+- State "IN-PROGRESS" from "TODO"       [2022-01-31 Mon 20:42] \\
+  Defining power budget and choosing LDOs
+:END:
+Power budget
+|-----------+------+-----------------------+-----------------------------------|
+| Chip      | Vcc  | Max current draw (mA) | Note                              |
+|-----------+------+-----------------------+-----------------------------------|
+| ATmega328 | 5V   |                    15 | 16 MHz, no pins supplying current |
+| W5500     | 3.3V |                   132 |                                   |
+| BME250    | 3.3V |                     1 |                                   |
+| TMP117    | 3.3V |                     0 | Negligible                        |
+| AS5601    | 3.3V |                    10 | 100 mA if burning OTP             |
+|-----------+------+-----------------------+-----------------------------------|
+|           |      |                   158 |                                   |
+|-----------+------+-----------------------+-----------------------------------|
+#+TBLFM: @7$3=vsum(@2..@6)
+
+Power over ethernet guides:
+- [[https://www.freetronics.com.au/pages/power-over-ethernet-for-arduino][Freetronics article on POE for arduino]]
+
+*** NCP1117
+- 5V fixed, 20V at the input
+- SOT223
+- 800 mA output  
+*** AZ1117IH-3.3TRG1
+- [[https://www.diodes.com/assets/Datasheets/AZ1117I.pdf][Datasheet]]
+- 1117 series
+- 15V in
+- Fixed 3.3V out
+- 800 mA
+- SOT223
+*** NCP164ASN330T1G
+- 5V input
+- Fixed 3.3V output
+- 300 mA output
+- SOT-23-5
+- [[https://www.digikey.com.au/en/products/detail/onsemi/NCP164ASN330T1G/15284210][Digikey product page]]
+  
+* DONE Schematic capture
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-04-26 Tue 08:11]
+:END:
+* DONE Choose housings
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-04-26 Tue 08:11]
+:END:
+* DONE BOM
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-04-26 Tue 08:11]
+:END:
+** Main controller board
+|--------------------------------------------------------+----------+---------------------+--------------+-----------------------------+------------------+---------|
+| Reference                                              | Quantity | Value               |    Footprint | Part no.                    | Notes            | Ordered |
+|--------------------------------------------------------+----------+---------------------+--------------+-----------------------------+------------------+---------|
+| C10                                                    |        1 | 4.7uF               |         0603 | CL10A475KP8NNNC             |                  | x       |
+| C17 C9                                                 |        2 | 10nF                |         0603 | GCM188R72A103KA37D          |                  | x       |
+| C21 C20                                                |        2 | 6.8nF               |         0603 | CL10B682JB8NNNC             |                  | x       |
+| C22                                                    |        1 | 33uF                | through-hole |                             |                  |         |
+| C23                                                    |        1 | 22nF                |         0603 | 399-C0603C223K1RAC7867CT-ND‎ |                  | x       |
+| C4 C3 C27 C28                                          |        4 | 18pF                |         0603 | CC0603JRNPO9BN180           |                  | x       |
+| C7 C18 C5 C1 C2 C6 C24 C32                             |        8 | 10uF                |         0603 |                             |                  | x       |
+| C8 C11 C12 C13 C14 C15 C16 C19 C25 C26 C33 C29 C31 C30 |       14 | 100nF               |         0603 |                             |                  | x       |
+|--------------------------------------------------------+----------+---------------------+--------------+-----------------------------+------------------+---------|
+| D1                                                     |        1 | D                   |              |                             | Protection diode |         |
+|--------------------------------------------------------+----------+---------------------+--------------+-----------------------------+------------------+---------|
+| FB1 FB4 FB2 FB3                                        |        4 | BLM21               |         0805 |                             |                  | x       |
+|--------------------------------------------------------+----------+---------------------+--------------+-----------------------------+------------------+---------|
+| J1                                                     |        1 | RJ45_jack_POE       |              | ARJM11C7-114-BA-EW2         | With magnetics   | x       |
+| J2                                                     |        1 | Barrel_Jack         |              | PJ-002AH                    | 5.5mm            | x       |
+| J3                                                     |        1 | Conn_02x03_Odd_Even |              | PH2-06-UA                   | 2.54mm           | x       |
+| J4                                                     |        1 | Conn_01x02          |              |                             |                  | x       |
+| J5                                                     |        1 | Conn_01x04          |              |                             |                  | x       |
+| J6                                                     |        1 | 6P6C                |              |                             |                  | x       |
+| JP5 JP4 JP2 JP1 JP3                                    |        5 | Jumper              |              |                             |                  | x       |
+|--------------------------------------------------------+----------+---------------------+--------------+-----------------------------+------------------+---------|
+| R10 R9 R8 R23                                          |        4 | 10k                 |         0603 |                             |                  | x       |
+| R11 R14 R12 R15 R5 R7 R1                               |        7 | 0                   |         0603 |                             |                  |         |
+| R13                                                    |        1 | 12k4                |         0603 |                             | Tol < 1%         | x       |
+| R19                                                    |        1 | 10                  |         0603 |                             |                  |         |
+| R2                                                     |        1 | 100k                |         0603 |                             |                  | x       |
+| R20 R18 R17 R16                                        |        4 | 49.9                |         0603 |                             |                  | x       |
+| R22 R21                                                |        2 | 330                 |         0603 |                             |                  |         |
+| R24 R27                                                |        2 | 47                  |         0603 |                             |                  |         |
+| R3                                                     |        1 | 1M                  |         0603 |                             |                  |         |
+| R4 R25 R26                                             |        3 | DNF                 |         0603 |                             |                  |         |
+| R6                                                     |        1 | 4.7k                |         0603 |                             |                  |         |
+|--------------------------------------------------------+----------+---------------------+--------------+-----------------------------+------------------+---------|
+| SW1 SW2                                                |        2 | SW_Push             |          6mm | jaycar SP0600               |                  |         |
+|--------------------------------------------------------+----------+---------------------+--------------+-----------------------------+------------------+---------|
+| TP2 TP1                                                |        2 | TestPoint           |          SMD | RCU-0C                      | TE-connectivity  | x       |
+|--------------------------------------------------------+----------+---------------------+--------------+-----------------------------+------------------+---------|
+| U1                                                     |        1 | NCP1117-5.0_SOT223  |      SOT-223 | ZLDO1117G50TA               |                  | x       |
+| U2                                                     |        1 | NCP1117-3.3_SOT223  |      SOT-223 | ZLDO1117G33TA               |                  | x       |
+| U3                                                     |        1 | +CAT811STBI-GT3+    |      SOT-143 | APX811-31UG-7               |                  | x       |
+| U4                                                     |        1 | W5500               |              | W5500                       | Ethernet phy     | x       |
+| U5                                                     |        1 | ATmega328-PU        |       DIP-28 |                             |                  |         |
+| U6                                                     |        1 | +P82B715+           |       TSSOP8 | PCA9517ADP                  | I2C redriver     | x       |
+| U7                                                     |        1 | +TXB0104D+          |      SOIC-14 | ‎TXS0104EDR‎                  | Level translator | x       |
+| Y1                                                     |        1 | 25MHz               |          SMD | ECS-250-18-5PX-F-TR         | 30ppm, 18pF      | x       |
+| Y2                                                     |        1 | 18MHz               |          SMD | ECS-180-S-5PX-TR            | 30ppm, 18pF      | x       |
+|--------------------------------------------------------+----------+---------------------+--------------+-----------------------------+------------------+---------|
+
+** Sensor breakout board
+|---------------------------------------+----------+------------+-----------+----------------+-------+---------|
+| Reference                             | Quantity | Value      | Footprint | Part no.       | Notes | Ordered |
+|---------------------------------------+----------+------------+-----------+----------------+-------+---------|
+| C1                                    |        1 | 10uF       |      0603 |                |       | x       |
+| C4                                    |        1 | 4.7uF      |      0603 |                |       | x       |
+| C5                                    |        1 | 10nF       |      0603 |                |       | x       |
+| C7                                    |        1 | 1uF        |      0603 |                |       | x       |
+| C8 C12 C9 C11 C10 C3 C2 C6            |        8 | 100nF      |      0603 |                |       | x       |
+|---------------------------------------+----------+------------+-----------+----------------+-------+---------|
+| J3                                    |        1 | 6P6C       |           |                |       | x       |
+| J4 J2 J6 J1 J5                        |        5 | Conn_01x04 |           |                |       | x       |
+| J7                                    |        1 | Conn_01x02 |           |                |       | x       |
+|---------------------------------------+----------+------------+-----------+----------------+-------+---------|
+| R11 R1 R3 R27 R25 R23 R33 R31 R29     |        9 | 0          |      0603 |                |       |         |
+| R12 R10                               |        2 | 39k        |      0603 |                |       | x       |
+| R13                                   |        1 | 1.6k       |      0603 |                |       | x       |
+| R17 R18                               |        2 | 100k       |      0603 |                |       | x       |
+| R19                                   |        1 | 775k       |      0603 |                |       | x       |
+| R5 R4                                 |        2 | 33k        |      0603 |                |       | x       |
+| R6 R7                                 |        2 | 1k         |      0603 |                |       | x       |
+| R8 R16 R2 R22 R24 R26 R28 R30 R32 R15 |       10 | DNF        |      0603 |                |       |         |
+| R9 R14 R20 R21                        |        4 | 10k        |      0603 |                |       | x       |
+| RV1                                   |        1 | 10k        |       SMD | TC33X-1-103E   |       | x       |
+|---------------------------------------+----------+------------+-----------+----------------+-------+---------|
+| TP4 TP1 TP2 TP3                       |        4 | RCU-0C     |           |                |       | x       |
+|---------------------------------------+----------+------------+-----------+----------------+-------+---------|
+| U1                                    |        1 | LMV324     |     TSSOP | LMV324IPWR     |       | x       |
+| U2                                    |        1 | +P82B715+  |           | PCA9517A       |       | x       |
+| U3                                    |        1 | LMV331     |    5-TSOP | LMV331SN3T1G   |       | x       |
+| U5 U4                                 |        2 | MC14040B   |   16-SOIC | MC14040BDR2G   |       | x       |
+| U6                                    |        1 | TCA9555DBR |   SSOP-24 | TCA9555DBT     |       | x       |
+| U7                                    |        1 | PCF8574    |   SOIC-16 | PCF8574T/3,512 |       | x       |
+|---------------------------------------+----------+------------+-----------+----------------+-------+---------|
+
+** Wind sensor board(s)
+|-----------+----------+------------+-----------+-------------+-------+---------|
+| Reference | Quantity | Value      | Footprint | Part no.    | Notes | Ordered |
+|-----------+----------+------------+-----------+-------------+-------+---------|
+| C3        |        1 | 10uF       |      0603 |             |       | x       |
+| C4 C2 C1  |        3 | 100nF      |      0603 |             |       | x       |
+| C5        |        1 | DNF        |      0603 |             |       |         |
+|-----------+----------+------------+-----------+-------------+-------+---------|
+| J1 J2     |        2 | Conn_01x04 |           |             |       | x       |
+| J3        |        1 | Conn_01x03 |           |             |       |         |
+|-----------+----------+------------+-----------+-------------+-------+---------|
+| R1 R4     |        2 | 10k        |      0603 |             |       | x       |
+| R2 R3     |        2 | DNF        |      0603 |             |       |         |
+|-----------+----------+------------+-----------+-------------+-------+---------|
+| U1        |        1 | DNF        |           | PCA9517A    |       | x       |
+| U2        |        1 | HMC1501    |    8-SOIC | HMC1501-TR  |       | x       |
+| U3        |        1 | AS5601     |    8-SOIC | AS5601-ASOT |       | x       |
+|-----------+----------+------------+-----------+-------------+-------+---------|
+
+** POE injector board
+|-------------+----------+-------------+--------------+-----------+--------------+---------|
+| Reference   | Quantity | Value       | Footprint    | Part no.  | Notes        | Ordered |
+|-------------+----------+-------------+--------------+-----------+--------------+---------|
+| F1          |        1 | Fuse        | through-hole | FC-203-22 | 5mm diameter | x       |
+|-------------+----------+-------------+--------------+-----------+--------------+---------|
+| J2 J1       |        2 | 8P8C jack   |              | RJHSE5E80 |              | x       |
+| J3          |        1 | Barrel_Jack |              | PJ-002AH  | 5.5mm        | x       |
+|-------------+----------+-------------+--------------+-----------+--------------+---------|
+| R1 R3 R2 R4 |        4 | 0           | 0603         |           |              |         |
+|-------------+----------+-------------+--------------+-----------+--------------+---------|
+
+** Temperature probe
+** Barometer and hygrometer
+| Description       | Quantity | Part no. | Notes | Ordered |
+|-------------------+----------+----------+-------+---------|
+| BME280 eval board |        1 | PIM472   |       |         |
+|-------------------+----------+----------+-------+---------|
+
+** Mechanical components
+| Description                    | Quantity | Part no.      | Notes                 | Ordered |
+|--------------------------------+----------+---------------+-----------------------+---------|
+| Cable gland                    |       10 | 50.007 PA7035 | 3-6.5mm dia           | x       |
+| Controller housing             |        1 | 1591XXGSFLBK  | Hammond box           | x       |
+| Wind sensor & breakout housing |        3 | RL6105        | 3cm (RL6115 4cm deep) | x       |
+| POE supply housing             |        1 | 1593KBK       |                       |         |
+| Barometer housing              |        1 | 1551MFLGY     | 3.5mm*3.5mm*1.9mm     | x       |
+|--------------------------------+----------+---------------+-----------------------+---------|
+
+** MISC
+- In-circuit serial programmer (ICSP) for AVR Atmega
+- Hookup wire for cables (26 / 24 AWG)
+  
+* DONE PCB layout
+:LOGBOOK:
+- State "DONE"       from "IN-PROGRESS" [2022-07-01 Fri 10:08]
+- State "IN-PROGRESS" from "TODO"       [2022-04-27 Wed 20:26] \\
+  - Started footpring associated on controller schematic
+:END:
+- PCBway [[https://www.pcbway.com/capabilities.html#:~:text=Leave%20min%20clearance%20of%201.6,between%20boards%20to%20be%20zero.&text=No%20extra%20charge.,-Advanced%20PCB%20Capabilities][capabilities table]]
+- Check whether PCBway plates through holes
+  - Yes, all through holes are plated (i.e. connected on both layers)
+  - Kicad plates through holes by default (see [[https://forum.kicad.info/t/through-hole-component-connected-from-the-top-and-soldered-from-the-bottom/491][this post]])
+** DONE Control board
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-07-01 Fri 10:07]
+:END:
+** DONE Sensor breakout board
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-07-01 Fri 10:08]
+:END:
+** DONE WInd sensor board
+:LOGBOOK:
+- State "DONE"       from "TODO"       [2022-07-01 Fri 10:08]
+:END:
+* TODO Design mechanical components
+** Design anemometer mechanical components
+** Design wind vane mechanical components
+** Design rain gauge mechanical components
+* IN-PROGRESS Microcontroller programming
+:LOGBOOK:
+- State "IN-PROGRESS" from "TODO"       [2022-07-01 Fri 10:08] \\
+  - Setup microchip studio project
+  - Can successfully program arduino uno in C through microchip studio
+  - SPI library done
+  - I2C library done
+  - W5100 library done
+    - Successfully implemented simply HTTP webserver
+:END:
+** TODO Environmental sensors
+** TODO Animometer
+** TODO Wind vane
+** TODO Rain gauge
+** IN-PROGRESS Ethernet phy
+:LOGBOOK:
+- State "IN-PROGRESS" from "TODO"       [2022-07-01 Fri 10:10]
+:END:
+* TODO Assembly
+** Cable assembly
+** Wind sensor mechanical assembly
+* TODO Mounting
+* TODO Web server database
+* TODO Web page dashboard
+* Debugging
+** Controller board
+Configuration:
+- Microcontroller unsocketed
+- arduino connected over SPI
+- SS from Arduino pin 10 to socket #16 on controller board
+
+W5500 DC levels
+| Pin no | Pin name | Expected (V) | Measured (V) |
+|--------+----------+--------------+--------------|
+|     28 | VDD      |          3.3 |              |
+|     32 | SCSn     |     0 or 3.3 |              |
+|     23 | RSVD     |          GND |              |
+|     22 | 1V20     |          1.2 |              |
+|     21 | AVDD     |          3.3 |              |
+|     20 | TOCAP    |              |              |
+|     18 | VBG      |          1.2 |              |
+|     17 | AVDD     |          3.3 |              |
+|     15 | AVDD     |          3.3 |              |
+|     11 | AVDD     |          3.3 |              |
+|     10 | EXRES1   |              |              |
+|      8 | AVDD     |          3.3 |              |
+|     37 | RSTn     |          3.3 |              |
+|     36 | INTn     |          3.3 |              |
+
+25 MHz oscillator waveforms
+- X0 (pin 31)
+- XI (pin 30)
+
+Captured SPI frame waveform
+-
+
+* Resources
+** Miscellaneous articles
+*** Project writeups
+**** [[https://www.toptal.com/c/how-i-made-a-fully-functional-arduino-weather-station-for-300][Arduino weather station with database - project writeup]]
+This writeup goes into detail on the software side, with C code snippets given for microcontroller programming. Detail regarding network streaming and SQL database setup is also given. Hardware details lacking - sensors are not specified
+**** [[http://cactus.io/projects/weather/arduino-weather-station][Arduino based weather station]]
+This article specifies which sensors are used
+*** Articles on environmental sensing
+**** [[https://www.ti.com/lit/eb/slyy161/slyy161.pdf?ts=1642395390117&ref_url=https%253A%252F%252Fwww.google.com%252F][Engineers guide to temperature sensing]]
+**** [[https://www.avnet.com/wps/portal/abacus/solutions/technologies/sensors/pressure-sensors/media-types/barometric/][Avnet Pressure sensors - the design engineers guide]]
+**** [[https://www.ti.com/lit/an/snoa967a/snoa967a.pdf?ts=1643160209600&ref_url=https%253A%252F%252Fwww.google.com%252F][TI guide for PCB temperature sensors]]
+**** [[https://www.st.com/resource/en/application_note/an5449-temperature-sensors-guidelines-for-system-integration-stmicroelectronics.pdf][STMicro application note on integration of temperature sensors]]
+*** Power over ethernet articles
+**** [[https://www.freetronics.com.au/pages/power-over-ethernet-for-arduino][POE for arduino ethernet hat]]
+- Freetronics article on general concepts
+**** [[https://www.freetronics.com.au/products/ethernet-shield-with-poe][Freetronics POE arduino hat product page]]

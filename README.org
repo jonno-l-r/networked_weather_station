@@ -1,0 +1,235 @@
+#+title: Networked Weather Monitoring Station
+#+options: h:4 num:t toc:t
+
+#+HEADER: :imagemagick yes :iminoptions -density 400
+#+HEADER: :fit yes :noweb yes
+#+begin_src latex :file (cond-exp "doc/media/system_diagram0") :results file raw :exports results
+  \import{doc/media}{system_diagram.pdf_tex}
+#+end_src
+
+#+CAPTION: High level system diagram
+#+LABEL: fig:doc/media/system_diagram0
+#+RESULTS:
+[[file:doc/media/system_diagram0.png]]
+
+* Overview
+[[file:doc/media/dashboard_scrot.PNG]]
+
+* Repository Structure
+The repository is organised into the following directories;
+#+begin_src plantuml :file doc/media/repo.png
+  @startuml
+  salt
+  {
+          {T
+          + root
+          ++ cad
+          +++ electrical
+          +++ mechanical
+          ++ release
+          +++ electrical
+          +++ mechanical
+          ++ src
+          +++ atmega328
+          +++ server
+          }
+  }
+  @enduml
+#+end_src
+
+#+RESULTS:
+[[file:doc/media/repo.png]]
+
+Where =cad= holds the electrical and mechanical CAD project files and libraries, =release= holds the exported designs (gerber files, bill of materials and schematics), and =src= holds all microcontroller and server source files and configuration.
+
+The =cad= part of the repository is organised as shown;
+#+begin_src plantuml :file doc/media/repo_cad.png
+  @startuml
+  salt
+  {
+          {T
+          + root
+          ++ cad
+          +++ electrical
+          ++++ <PCB-module-name>
+          +++++ <PCB-module-name>.pro
+          +++++ <PCB-module-name>.kicad_pcb
+          +++++ <PCB-module-name>.sch
+          +++ mechanical
+          +++ library
+          ++++ custom
+          +++++ kicad
+          ++++++ footprint
+          ++++++ symbol
+  }
+  }
+  @enduml
+#+end_src
+
+#+RESULTS:
+[[file:doc/media/repo_cad.png]]
+
+The =release= part of the repository is organised as shown below;
+#+begin_src plantuml :file doc/media/repo_release.png
+  @startuml
+  salt
+  {
+          {T
+          + release
+          ++ electrical
+          +++ <PCB-module-name>
+          ++++ gerber
+          ++++ bom.csv
+          ++++ schematic.csv
+          ++ mechanical
+          +++ <mechanical-assembly-name>
+          ++++ slicer
+          ++++ renders
+          ++++ bom.csv
+          }
+  }
+  @enduml
+#+end_src
+
+#+RESULTS:
+[[file:doc/media/repo_release.png]]
+
+=release= holds the outputs of the CAD projects in the =cad= directory. The release files are generated on each tagged commit, so the outputs in =release= on any given commit were generated from the projects in =cad= on the last /tagged/ commit.
+
+The =src= part of the repository is orgranised as shown;
+#+begin_src plantuml :file doc/media/repo_src.png
+  @startuml
+  salt
+  {
+          {T
+          + src
+          ++ atmega328
+          +++ C
+          ++ server
+          +++ compose.yml
+          +++ mariadb.Dockerfile
+          +++ php.Dockerfile
+          +++ crontab
+          +++ sql
+          ++++ db
+          ++++ init
+          +++ web
+          ++++ css
+          ++++ js
+          ++++ php
+          ++++ html
+          }
+  }
+  @enduml
+#+end_src
+
+#+RESULTS:
+[[file:doc/media/repo_src.png]]
+
+* Hardware Components
+** Sensors
+** Sensor Breakout Module
+** Station Control Module
+** PoE Injector Module
+
+* Hardware Bring up
+* Suggested Mounting
+* Server Bring up
+* Web Frontend
+* Web API
+API sources are filed under =src/server/web/php=. The controller is proxied through =main.php=.
+
+Weather records can be accessed programatically through a web API. The addressing scheme is =<server>/main.php/sensors/<endpoint>=. Data is returned as a JSON array of measurement records, where each array element represents a datapoint from a single sensor. The structure is outlined below;
+
+#+begin_example
+  [
+    {
+      "timestamp": <unix-timestamp> [int],
+      "sensor_id": <unique sensor identifier> [int],
+      "measurement": <measurement name> [string],
+      "sensor": <sensor part number> [string],
+      "value": <measurement value> [decimal],
+      "unit": <measurement unit> [string]
+    },
+
+    ...
+  ]
+#+end_example
+
+API endpoints are summarised below;
+
+** getLatest
+=main.php/sensors/getLatest=
+
+Get the most recent database record for all sensors.
+
+Example response:
+
+#+begin_example
+[
+  {
+    "timestamp": "1685657102",
+    "sensor_id": "10",
+    "measurement": "temperature",
+    "sensor": "BME280",
+    "value": "6.609",
+    "unit": "degree_c"
+  },
+  {
+    "timestamp": "1685657102",
+    "sensor_id": "11",
+    "measurement": "pressure",
+    "sensor": "BME280",
+    "value": "95009.032",
+    "unit": "Pa"
+  },
+  
+  ...
+]
+#+end_example
+
+** getBetween
+=main.php/sensors/getBetween/?t1=<int>&t2=<int>=
+
+| =t1= | Start timestamp (seconds) [int]              |
+| =t2= | Stop timestamp (seconds) [int] (=t2= > =t1=) |
+
+Return all sensor records between =t1= and =t2=.
+
+** getMaxBetween
+=main.php/sensors/getMaxBetween/?t1=<int>&t2=<int>&period=<int>=
+
+| =t1=     | Start timestamp (seconds) [int] |
+| =t2=     | Stop timestamp (seconds) [int]  |
+| =period= | Time span [int] (seconds)       |
+
+Return the maximum records for each sensor in chunks of time =period= between =t1= and =t2=. E.g. if =t1 = <start>=, =t2 = t1 + 60*60*24*7= and =period = 60*60*24=, the maximum records in each interval of 24 hours will be returned across one week (i.e. daily maximums across one week will be returned)
+
+** getMinBetween
+=main.php/sensors/getMinBetween/?t1=<int>&t2=<int>&period=<int>=
+
+Like =getMaxBetween=, but returns the /minimum/ records in intervals of =period= across =t2 - t1=.
+
+** getAvgBetween
+=main.php/sensors/getAvgBetween/?t1=<int>&t2=<int>&period=<int>=
+
+Returns the /mean/ of all records for each sensor in intervals of =period= across =t2 - t1=.
+
+** getOver
+=main.php/sensors/getOver/?t1=<int>&t2=<int>&id=<int>&=thresholds=<decimal>=
+
+| =t1=        | Start timestamp (seconds) [int] |
+| =t2=        | Stop timestamp (seconds) [int]  |
+| =id=        | Sensor ID [int]                 |
+| =threshold= | Record threshold [decimal]      |
+
+Return all records above =threshold= for the sensor =id= over the time span =t2 - t1=
+
+** getUnder
+=main.php/sensors/getUnder/?t1=<int>&t2=<int>&id=<int>&=thresholds=<decimal>=
+
+Like =getAbove=, but returns all records /below/ =threshold= for the sensor =id= over the time span =t2 - t1=
+
+
+* Appendix
+** BOM

@@ -1,0 +1,88 @@
+%% Creator: Inkscape 1.2.2 (732a01da63, 2022-12-09), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'system_diagram.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{564.07181859bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.87984451)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{system_diagram.pdf}}%
+    \put(0.77678029,0.3264809){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}MCU\end{tabular}}}}%
+    \put(0.86476922,0.37900691){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Ethernet\\controller\end{tabular}}}}%
+    \put(0.78597841,0.21892558){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}I2C\\line driver\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{system_diagram.pdf}}%
+    \put(0.21503634,0.21892562){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}I2C\\line driver\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{system_diagram.pdf}}%
+    \put(0.09515806,0.14469101){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Analogue\\processing\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{system_diagram.pdf}}%
+    \put(0.21821767,0.13622936){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Digitizer\end{tabular}}}}%
+    \put(0.87558262,0.29970241){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Power\\supply\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{system_diagram.pdf}}%
+    \put(0.34980845,0.19002504){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}RJ11 carrying\\power, buffered\\ I2C\end{tabular}}}}%
+    \put(0.78186666,0.64815696){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}RJ45 Carrying\\Ethernet and\\PoE\\\end{tabular}}}}%
+    \put(0.79575839,0.12962679){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\large Control box\\\large (splashproof\\\large housing)\end{tabular}}}}%
+    \put(0.57015476,0.86368135){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\Large Indoor Equipment\end{tabular}}}}%
+    \put(0.12944779,0.75212774){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\Large Exposed Equipment\end{tabular}}}}%
+    \put(0.10145378,0.05757864){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\large Sensor breakout\\\large box  (waterproof \\\large housing)\end{tabular}}}}%
+    \put(0.02394394,0.33751192){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Mechanical\\rain gauge\end{tabular}}}}%
+    \put(0.24769935,0.36707229){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Anemometer\end{tabular}}}}%
+    \put(0.190727,0.61924292){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Weather\\vane\end{tabular}}}}%
+    \put(0.38526175,0.49196973){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Thermometer\end{tabular}}}}%
+    \put(0.48580423,0.36497094){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Barometer,\\hygrometer\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{system_diagram.pdf}}%
+    \put(0.74324764,0.77773689){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}12 - 18V DC\end{tabular}}}}%
+    \put(0.68898497,0.69367722){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}PoE\\Injector\end{tabular}}}}%
+    \put(0.69312963,0.55193362){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Router\end{tabular}}}}%
+    \put(0.46355932,0.66861123){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Computer\end{tabular}}}}%
+    \put(0.56834441,0.81750079){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\small- Database server\\\small- Main webserver\\\small  hosting database API\\\small  and GUI frontend\end{tabular}}}}%
+    \put(0.73888337,0.47339551){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}\small - Auxiliary webserver\\\small  hosting sensor\\\small  API\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=7]{system_diagram.pdf}}%
+  \end{picture}%
+\endgroup%
