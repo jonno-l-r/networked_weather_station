@@ -1,0 +1,6 @@
+(sym_lib_table
+  (lib (name custom)(type Legacy)(uri C:/Users/Jonno/Documents/weather_logger/cad/controller/custom.lib)(options "")(descr "")(disabled))
+  (lib (name wind_sensors-rescue)(type Legacy)(uri ${KIPRJMOD}/wind_sensors-rescue.lib)(options "")(descr "")(disabled))
+  (lib (name custom_analogue)(type Legacy)(uri ${KIPRJMOD}/../../library/custom/cad/kicad/symbol/custom_IC_analogue.lib)(options "")(descr ""))
+  (lib (name custom_digital)(type Legacy)(uri ${KIPRJMOD}/../../library/custom/cad/kicad/symbol/custom_IC_digital.lib)(options "")(descr ""))
+)

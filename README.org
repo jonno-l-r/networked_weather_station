@@ -1,7 +1,7 @@
 #+title: Networked Weather Monitoring Station
 #+options: h:4 num:nil toc:t
 
-Full stack implementation of a networked weather monitoring station. The repository contains hardware designs, including printed circuit board (PCB) designs for the control and sensor breakout modules, mechanical assembly designs for the custom sensors, embedded sources for the microcontroller, and finally sources for a web API and GUI.
+This is a full stack implementation of a networked weather monitoring station. The repository contains hardware designs, including printed circuit board (PCB) designs for the control and sensor breakout modules, mechanical assembly designs for the custom sensors, embedded sources for the microcontroller, and finally sources for a web API and GUI.
 
 #+HEADER: :imagemagick yes :iminoptions -density 400
 #+HEADER: :fit yes :noweb yes
@@ -145,9 +145,14 @@ The =src= part of the repository is orgranised as shown;
 ** PoE Injector Module
 
 * Hardware Bring up
+** Powerup
+** Microcontroller programming
+** Testing
 
 * Suggested Mounting
 * Server Bring up
+** Docker
+
 * Web Frontend
 [[file:doc/media/dashboard_scrot.PNG]]
 
@@ -244,6 +249,3 @@ Return all records above =threshold= for the sensor =id= over the time span =t2 
 =main.php/sensors/getUnder/?t1=<int>&t2=<int>&id=<int>&=thresholds=<decimal>=
 
 Like =getAbove=, but returns all records /below/ =threshold= for the sensor =id= over the time span =t2 - t1=
-
-* Appendix
-** BOM

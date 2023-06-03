@@ -1,0 +1,6 @@
+Reference, Quantity, Value, Footprint, Datasheet
+F1 ,1,"Fuse","","~"
+J2 J1 ,2,"8P8C","","~"
+J3 ,1,"Barrel_Jack","","~"
+R1 R3 ,2,"0","Resistor_SMD:R_0603_1608Metric","~"
+R2 R4 ,2,"R","Resistor_SMD:R_0603_1608Metric","~"

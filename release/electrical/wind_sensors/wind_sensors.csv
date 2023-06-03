@@ -1,0 +1,8 @@
+Reference, Quantity, Value, Footprint, Datasheet
+C3 C6 ,2,"10uF","Capacitor_SMD:C_0603_1608Metric","~"
+C4 C1 C2 ,3,"100nF","Capacitor_SMD:C_0603_1608Metric","~"
+C5 C7 ,2,"DNF","Capacitor_SMD:C_0603_1608Metric","~"
+J1 J2 ,2,"Conn_01x04","Connector_Molex:Molex_KK-254_AE-6410-04A_1x04_P2.54mm_Vertical","~"
+J3 ,1,"Conn_01x03","Connector_Molex:Molex_KK-254_AE-6410-03A_1x03_P2.54mm_Vertical","~"
+U2 ,1,"HMC1501","Package_SO:SOIC-8_3.9x4.9mm_P1.27mm",""
+U3 ,1,"AS5601","Package_SO:SOIC-8_3.9x4.9mm_P1.27mm",""

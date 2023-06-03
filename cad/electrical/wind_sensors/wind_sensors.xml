@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="D">
+  <design>
+    <source>C:\Users\Jonno\Documents\projects\weather_logger\cad\electrical\wind_sensors\wind_sensors.sch</source>
+    <date>7/05/2023 9:16:10 PM</date>
+    <tool>Eeschema (5.1.6)-1</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>wind_sensors.sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="J1">
+      <value>Conn_01x04</value>
+      <footprint>Connector_Molex:Molex_KK-254_AE-6410-04A_1x04_P2.54mm_Vertical</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Connector_Generic" part="Conn_01x04" description="Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>634F3453</tstamp>
+    </comp>
+    <comp ref="U2">
+      <value>HMC1501</value>
+      <footprint>Package_SO:SOIC-8_3.9x4.9mm_P1.27mm</footprint>
+      <libsource lib="custom_analogue" part="HMC1501" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>6350E9DD</tstamp>
+    </comp>
+    <comp ref="J2">
+      <value>Conn_01x04</value>
+      <footprint>Connector_Molex:Molex_KK-254_AE-6410-04A_1x04_P2.54mm_Vertical</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Connector_Generic" part="Conn_01x04" description="Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>6350FDBA</tstamp>
+    </comp>
+    <comp ref="C5">
+      <value>DNF</value>
+      <footprint>Capacitor_SMD:C_0603_1608Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>63515984</tstamp>
+    </comp>
+    <comp ref="C4">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_0603_1608Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>63519CAC</tstamp>
+    </comp>
+    <comp ref="J3">
+      <value>Conn_01x03</value>
+      <footprint>Connector_Molex:Molex_KK-254_AE-6410-03A_1x03_P2.54mm_Vertical</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Connector_Generic" part="Conn_01x03" description="Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>6351D2E5</tstamp>
+    </comp>
+    <comp ref="U3">
+      <value>AS5601</value>
+      <footprint>Package_SO:SOIC-8_3.9x4.9mm_P1.27mm</footprint>
+      <libsource lib="custom_digital" part="AS5601" description=""/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>63518BD0</tstamp>
+    </comp>
+    <comp ref="C1">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_0603_1608Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>63494D2A</tstamp>
+    </comp>
+    <comp ref="C3">
+      <value>10uF</value>
+      <footprint>Capacitor_SMD:C_0603_1608Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>62A2CA47</tstamp>
+    </comp>
+    <comp ref="C2">
+      <value>100nF</value>
+      <footprint>Capacitor_SMD:C_0603_1608Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>62B7765F</tstamp>
+    </comp>
+    <comp ref="C6">
+      <value>10uF</value>
+      <footprint>Capacitor_SMD:C_0603_1608Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>62B77677</tstamp>
+    </comp>
+    <comp ref="C7">
+      <value>DNF</value>
+      <footprint>Capacitor_SMD:C_0603_1608Metric</footprint>
+      <datasheet>~</datasheet>
+      <libsource lib="Device" part="C" description="Unpolarized capacitor"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>62B85AB5</tstamp>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="Connector_Generic" part="Conn_01x03">
+      <description>Generic connector, single row, 01x03, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x03</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Connector_Generic" part="Conn_01x04">
+      <description>Generic connector, single row, 01x04, script generated (kicad-library-utils/schlib/autogen/connector/)</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>Connector*:*_1x??_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">Conn_01x04</field>
+      </fields>
+      <pins>
+        <pin num="1" name="Pin_1" type="passive"/>
+        <pin num="2" name="Pin_2" type="passive"/>
+        <pin num="3" name="Pin_3" type="passive"/>
+        <pin num="4" name="Pin_4" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="Device" part="C">
+      <description>Unpolarized capacitor</description>
+      <docs>~</docs>
+      <footprints>
+        <fp>C_*</fp>
+      </footprints>
+      <fields>
+        <field name="Reference">C</field>
+        <field name="Value">C</field>
+      </fields>
+      <pins>
+        <pin num="1" name="~" type="passive"/>
+        <pin num="2" name="~" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="custom_analogue" part="HMC1501">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">HMC1501</field>
+      </fields>
+      <pins>
+        <pin num="1" name="OUT+" type="passive"/>
+        <pin num="2" name="GND1" type="passive"/>
+        <pin num="3" name="NC" type="NotConnected"/>
+        <pin num="4" name="NC" type="NotConnected"/>
+        <pin num="5" name="VBRIDGE" type="passive"/>
+        <pin num="6" name="NC" type="NotConnected"/>
+        <pin num="7" name="GND2" type="passive"/>
+        <pin num="8" name="OUT-" type="passive"/>
+      </pins>
+    </libpart>
+    <libpart lib="custom_digital" part="AS5601">
+      <fields>
+        <field name="Reference">U</field>
+        <field name="Value">AS5601</field>
+      </fields>
+      <pins>
+        <pin num="1" name="VDD5V" type="power_in"/>
+        <pin num="2" name="VDD3V" type="power_in"/>
+        <pin num="3" name="PUSH" type="output"/>
+        <pin num="4" name="GND" type="power_in"/>
+        <pin num="5" name="B" type="output"/>
+        <pin num="6" name="SDA" type="BiDi"/>
+        <pin num="7" name="SCL" type="input"/>
+        <pin num="8" name="A" type="output"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="Connector_Generic">
+      <uri>C:\Program Files\KiCad\share\kicad\library/Connector_Generic.lib</uri>
+    </library>
+    <library logical="Device">
+      <uri>C:\Program Files\KiCad\share\kicad\library/Device.lib</uri>
+    </library>
+    <library logical="custom_analogue">
+      <uri>C:\Users\Jonno\Documents\projects\weather_logger\cad\electrical\wind_sensors/../../library/custom/cad/kicad/symbol/custom_IC_analogue.lib</uri>
+    </library>
+    <library logical="custom_digital">
+      <uri>C:\Users\Jonno\Documents\projects\weather_logger\cad\electrical\wind_sensors/../../library/custom/cad/kicad/symbol/custom_IC_digital.lib</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="/AMR+">
+      <node ref="U2" pin="1"/>
+      <node ref="J2" pin="3"/>
+    </net>
+    <net code="2" name="/AMR-">
+      <node ref="J2" pin="2"/>
+      <node ref="U2" pin="8"/>
+    </net>
+    <net code="3" name="/3V3_WV">
+      <node ref="C3" pin="1"/>
+      <node ref="J1" pin="2"/>
+      <node ref="C4" pin="1"/>
+      <node ref="U3" pin="2"/>
+      <node ref="C1" pin="1"/>
+    </net>
+    <net code="4" name="GND">
+      <node ref="J1" pin="4"/>
+      <node ref="J2" pin="1"/>
+      <node ref="C5" pin="2"/>
+      <node ref="C1" pin="2"/>
+      <node ref="U3" pin="4"/>
+      <node ref="J3" pin="3"/>
+      <node ref="C4" pin="2"/>
+      <node ref="U2" pin="7"/>
+      <node ref="U2" pin="2"/>
+      <node ref="C6" pin="2"/>
+      <node ref="C7" pin="2"/>
+      <node ref="C3" pin="2"/>
+      <node ref="C2" pin="2"/>
+    </net>
+    <net code="5" name="/SCL">
+      <node ref="J1" pin="3"/>
+      <node ref="U3" pin="7"/>
+    </net>
+    <net code="6" name="Net-(J3-Pad1)">
+      <node ref="U3" pin="8"/>
+      <node ref="J3" pin="1"/>
+    </net>
+    <net code="7" name="Net-(J3-Pad2)">
+      <node ref="U3" pin="5"/>
+      <node ref="J3" pin="2"/>
+    </net>
+    <net code="8" name="/SDA">
+      <node ref="U3" pin="6"/>
+      <node ref="J1" pin="1"/>
+    </net>
+    <net code="9" name="Net-(U3-Pad1)">
+      <node ref="U3" pin="1"/>
+    </net>
+    <net code="10" name="/3V3_A">
+      <node ref="C7" pin="1"/>
+      <node ref="C5" pin="1"/>
+      <node ref="J2" pin="4"/>
+      <node ref="C2" pin="1"/>
+      <node ref="U2" pin="5"/>
+      <node ref="C6" pin="1"/>
+    </net>
+    <net code="11" name="Net-(U2-Pad3)">
+      <node ref="U2" pin="3"/>
+    </net>
+    <net code="12" name="Net-(U2-Pad4)">
+      <node ref="U2" pin="4"/>
+    </net>
+    <net code="13" name="Net-(U2-Pad6)">
+      <node ref="U2" pin="6"/>
+    </net>
+    <net code="14" name="Net-(U3-Pad3)">
+      <node ref="U3" pin="3"/>
+    </net>
+  </nets>
+</export>

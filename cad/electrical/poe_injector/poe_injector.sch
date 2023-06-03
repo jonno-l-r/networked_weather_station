@@ -1,0 +1,226 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L Device:Fuse F1
+U 1 1 6240E537
+P 3400 3000
+F 0 "F1" H 3460 3046 50  0000 L CNN
+F 1 "Fuse" H 3460 2955 50  0000 L CNN
+F 2 "" V 3330 3000 50  0001 C CNN
+F 3 "~" H 3400 3000 50  0001 C CNN
+	1    3400 3000
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Connector:8P8C J2
+U 1 1 6240EE18
+P 1150 3200
+F 0 "J2" H 1207 3867 50  0000 C CNN
+F 1 "8P8C" H 1207 3776 50  0000 C CNN
+F 2 "" V 1150 3225 50  0001 C CNN
+F 3 "~" V 1150 3225 50  0001 C CNN
+	1    1150 3200
+	1    0    0    1   
+$EndComp
+$Comp
+L Connector:Barrel_Jack J3
+U 1 1 62411014
+P 4350 3100
+F 0 "J3" H 4407 3425 50  0000 C CNN
+F 1 "Barrel_Jack" H 4407 3334 50  0000 C CNN
+F 2 "" H 4400 3060 50  0001 C CNN
+F 3 "~" H 4400 3060 50  0001 C CNN
+	1    4350 3100
+	-1   0    0    -1  
+$EndComp
+Wire Wire Line
+	1550 2900 1750 2900
+Wire Wire Line
+	1550 3000 1750 3000
+Wire Wire Line
+	1550 3100 1750 3100
+Text Label 1750 2900 0    50   ~ 0
+Rx+
+Text Label 1750 3000 0    50   ~ 0
+Rx-
+Text Label 1750 3100 0    50   ~ 0
+Tx+
+Wire Wire Line
+	1550 3400 1750 3400
+Text Label 1750 3400 0    50   ~ 0
+Tx-
+Text Notes 800  2700 0    50   ~ 0
+Output (to controller)
+$Comp
+L Connector:8P8C J1
+U 1 1 624B4F2D
+P 1150 1600
+F 0 "J1" H 1207 2267 50  0000 C CNN
+F 1 "8P8C" H 1207 2176 50  0000 C CNN
+F 2 "" V 1150 1625 50  0001 C CNN
+F 3 "~" V 1150 1625 50  0001 C CNN
+	1    1150 1600
+	1    0    0    1   
+$EndComp
+Wire Wire Line
+	1550 1300 1750 1300
+Wire Wire Line
+	1550 1400 1750 1400
+Wire Wire Line
+	1550 1500 1750 1500
+Text Label 1750 1300 0    50   ~ 0
+Rx+
+Text Label 1750 1400 0    50   ~ 0
+Rx-
+Text Label 1750 1500 0    50   ~ 0
+Tx+
+Wire Wire Line
+	1550 1600 1750 1600
+Wire Wire Line
+	1550 1700 1750 1700
+Wire Wire Line
+	1550 1800 1750 1800
+Wire Wire Line
+	1550 1900 1750 1900
+Wire Wire Line
+	1550 2000 1750 2000
+Text Label 1750 1800 0    50   ~ 0
+Tx-
+Text Notes 800  1100 0    50   ~ 0
+Input (from router)
+NoConn ~ 1750 1600
+NoConn ~ 1750 1700
+NoConn ~ 1750 1900
+NoConn ~ 1750 2000
+Wire Wire Line
+	4050 3200 3900 3200
+Wire Wire Line
+	3900 3200 3900 3400
+$Comp
+L power:GND #PWR02
+U 1 1 624BCA2D
+P 3900 3400
+F 0 "#PWR02" H 3900 3150 50  0001 C CNN
+F 1 "GND" H 3905 3227 50  0000 C CNN
+F 2 "" H 3900 3400 50  0001 C CNN
+F 3 "" H 3900 3400 50  0001 C CNN
+	1    3900 3400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R1
+U 1 1 624C2ACC
+P 2600 2900
+F 0 "R1" V 2393 2900 50  0000 C CNN
+F 1 "0" V 2484 2900 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2530 2900 50  0001 C CNN
+F 3 "~" H 2600 2900 50  0001 C CNN
+	1    2600 2900
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	2200 3200 2200 2900
+Wire Wire Line
+	2200 2900 2450 2900
+Wire Wire Line
+	1550 3200 2200 3200
+Wire Wire Line
+	2300 3300 2300 3100
+Wire Wire Line
+	2300 3100 2450 3100
+Wire Wire Line
+	1550 3300 2300 3300
+Wire Wire Line
+	2200 3600 2200 3900
+Wire Wire Line
+	2200 3900 2450 3900
+Wire Wire Line
+	1550 3600 2200 3600
+Wire Wire Line
+	1550 3500 2300 3500
+Wire Wire Line
+	2300 3500 2300 3700
+Wire Wire Line
+	2300 3700 2450 3700
+Wire Wire Line
+	3050 2900 3050 3000
+Wire Wire Line
+	2750 2900 3050 2900
+Wire Wire Line
+	3050 3100 3050 3000
+Wire Wire Line
+	2750 3100 3050 3100
+Connection ~ 3050 3000
+Wire Wire Line
+	3050 3000 3250 3000
+Wire Wire Line
+	3550 3000 4050 3000
+$Comp
+L Device:R R2
+U 1 1 624C3D9B
+P 2600 3100
+F 0 "R2" V 2807 3100 50  0000 C CNN
+F 1 "0" V 2716 3100 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2530 3100 50  0001 C CNN
+F 3 "~" H 2600 3100 50  0001 C CNN
+	1    2600 3100
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R3
+U 1 1 624D5501
+P 2600 3700
+F 0 "R3" V 2393 3700 50  0000 C CNN
+F 1 "0" V 2484 3700 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2530 3700 50  0001 C CNN
+F 3 "~" H 2600 3700 50  0001 C CNN
+	1    2600 3700
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R4
+U 1 1 624D5507
+P 2600 3900
+F 0 "R4" V 2807 3900 50  0000 C CNN
+F 1 "0" V 2716 3900 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 2530 3900 50  0001 C CNN
+F 3 "~" H 2600 3900 50  0001 C CNN
+	1    2600 3900
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	2750 3700 3050 3700
+Wire Wire Line
+	3050 3700 3050 3900
+Wire Wire Line
+	3050 3900 2750 3900
+Wire Wire Line
+	3050 3900 3050 4050
+Connection ~ 3050 3900
+$Comp
+L power:GND #PWR01
+U 1 1 624D75C7
+P 3050 4050
+F 0 "#PWR01" H 3050 3800 50  0001 C CNN
+F 1 "GND" H 3055 3877 50  0000 C CNN
+F 2 "" H 3050 4050 50  0001 C CNN
+F 3 "" H 3050 4050 50  0001 C CNN
+	1    3050 4050
+	1    0    0    -1  
+$EndComp
+Text Notes 950  4000 0    50   ~ 0
+RJHSE5E80
+$EndSCHEMATC
