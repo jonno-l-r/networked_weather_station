@@ -128,6 +128,17 @@ The =src= part of the repository is orgranised as shown;
 
 * Hardware Components
 ** Sensors
+|-------------+----------+----------+-----------|
+| Sensor      | Part no. | Accuracy | Interface |
+|-------------+----------+----------+-----------|
+| Thermometer | MCP9808  | 0.25 °C  | I2C       |
+| Hygrometer  | BME280   | 3% RH    | I2C       |
+| Barometer   | BME280   | 1.5 hPa  | I2C       |
+| Wind vane   | Custom   | TBD      | I2C       |
+| Anemometer  | Custom   | TBD      | Analogue  |
+| Rain gauge  | Custom   | TBD      | Analogue  |
+|-------------+----------+----------+-----------|
+
 ** Sensor Breakout Module
 ** Station Control Module
 ** PoE Injector Module
@@ -136,6 +147,8 @@ The =src= part of the repository is orgranised as shown;
 * Suggested Mounting
 * Server Bring up
 * Web Frontend
+
+
 * Web API
 API sources are filed under =src/server/web/php=. The controller is proxied through =main.php=.
 
@@ -229,7 +242,6 @@ Return all records above =threshold= for the sensor =id= over the time span =t2 
 =main.php/sensors/getUnder/?t1=<int>&t2=<int>&id=<int>&=thresholds=<decimal>=
 
 Like =getAbove=, but returns all records /below/ =threshold= for the sensor =id= over the time span =t2 - t1=
-
 
 * Appendix
 ** BOM
