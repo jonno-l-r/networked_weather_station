@@ -1,5 +1,7 @@
 #+title: Networked Weather Monitoring Station
-#+options: h:4 num:t toc:t
+#+options: h:4 num:nil toc:t
+
+Full stack implementation of a networked weather monitoring station. The repository contains hardware designs, including printed circuit board (PCB) designs for the control and sensor breakout modules, mechanical assembly designs for the custom sensors, embedded sources for the microcontroller, and finally sources for a web API and GUI.
 
 #+HEADER: :imagemagick yes :iminoptions -density 400
 #+HEADER: :fit yes :noweb yes
@@ -13,11 +15,10 @@
 [[file:doc/media/system_diagram0.png]]
 
 * Overview
-[[file:doc/media/dashboard_scrot.PNG]]
 
 * Repository Structure
 The repository is organised into the following directories;
-#+begin_src plantuml :file doc/media/repo.png
+#+begin_src plantuml :file doc/media/repo.png :exports results
   @startuml
   salt
   {
@@ -43,7 +44,7 @@ The repository is organised into the following directories;
 Where =cad= holds the electrical and mechanical CAD project files and libraries, =release= holds the exported designs (gerber files, bill of materials and schematics), and =src= holds all microcontroller and server source files and configuration.
 
 The =cad= part of the repository is organised as shown;
-#+begin_src plantuml :file doc/media/repo_cad.png
+#+begin_src plantuml :file doc/media/repo_cad.png :exports results
   @startuml
   salt
   {
@@ -70,7 +71,7 @@ The =cad= part of the repository is organised as shown;
 [[file:doc/media/repo_cad.png]]
 
 The =release= part of the repository is organised as shown below;
-#+begin_src plantuml :file doc/media/repo_release.png
+#+begin_src plantuml :file doc/media/repo_release.png :exports results
   @startuml
   salt
   {
@@ -97,7 +98,7 @@ The =release= part of the repository is organised as shown below;
 =release= holds the outputs of the CAD projects in the =cad= directory. The release files are generated on each tagged commit, so the outputs in =release= on any given commit were generated from the projects in =cad= on the last /tagged/ commit.
 
 The =src= part of the repository is orgranised as shown;
-#+begin_src plantuml :file doc/media/repo_src.png
+#+begin_src plantuml :file doc/media/repo_src.png :exports results
   @startuml
   salt
   {
@@ -144,10 +145,11 @@ The =src= part of the repository is orgranised as shown;
 ** PoE Injector Module
 
 * Hardware Bring up
+
 * Suggested Mounting
 * Server Bring up
 * Web Frontend
-
+[[file:doc/media/dashboard_scrot.PNG]]
 
 * Web API
 API sources are filed under =src/server/web/php=. The controller is proxied through =main.php=.
