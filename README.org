@@ -15,7 +15,6 @@ This is a full stack implementation of a networked weather monitoring station. T
 [[file:doc/media/system_diagram0.png]]
 
 * Overview
-
 * Repository Structure
 The repository is organised into the following directories;
 #+begin_src plantuml :file doc/media/repo.png :exports results
@@ -150,6 +149,17 @@ The =src= part of the repository is orgranised as shown;
 ** Testing
 
 * Suggested Mounting
+#+HEADER: :imagemagick yes :iminoptions -density 150
+#+HEADER: :fit yes :noweb yes
+#+begin_src latex :file (cond-exp "doc/media/mounting0") :results file raw :exports results
+  \import{doc/media}{mounting.pdf_tex}
+#+end_src
+
+#+CAPTION: Sensor, hygrometer and thermometer mounting design
+#+LABEL: fig:doc/media/mounting0
+#+RESULTS:
+[[file:doc/media/mounting0.png]]
+
 * Server Bring up
 ** Docker
 
