@@ -155,7 +155,7 @@ The =src= part of the repository is orgranised as shown;
 ** Testing
 
 * Suggested Mounting
-#+HEADER: :imagemagick yes :iminoptions -density 150
+#+HEADER: :imagemagick yes :iminoptions -density 110
 #+HEADER: :fit yes :noweb yes
 #+begin_src latex :file (cond-exp "doc/media/mounting0") :results file raw :exports results
   \import{doc/media}{mounting.pdf_tex}
