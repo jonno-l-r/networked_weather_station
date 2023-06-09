@@ -3,6 +3,7 @@
 
 This is a full stack implementation of a networked weather monitoring station. The repository contains hardware designs, including printed circuit board (PCB) designs for the control and sensor breakout modules, mechanical assembly designs for the custom sensors, embedded sources for the microcontroller, and finally sources for a web API and GUI.
 
+* Overview
 #+HEADER: :imagemagick yes :iminoptions -density 400
 #+HEADER: :fit yes :noweb yes
 #+begin_src latex :file (cond-exp "doc/media/system_diagram0") :results file raw :exports results
@@ -14,7 +15,12 @@ This is a full stack implementation of a networked weather monitoring station. T
 #+RESULTS:
 [[file:doc/media/system_diagram0.png]]
 
-* Overview
+The system is comprised of three main elements; the sensor breakout module and associated sensors, the control module, and finally the host PC.
+
+The sensor breakout module acts as an interface between the sensors and the control module. It is intended to be in close proximity with the sensors themselves, and in a waterproof enclosure (see [[*Suggested Mounting]]). It interfaces with the controller via RJ11 with 6-pin modular connectors, and interfaces with the sensors via 6x1 pin headers.
+
+The controller module contains an Atmega32 microcontroller and a W5500 ethernet controller, which allows the sensors to be controlled over the LAN through an HTTP API. It also contains the system power supplies. Power is carried to the sensors from these supplies via the breakout module. The controller can be powered form a 6mm DC jack or through a primitive, DC form of PoE (power over ethernet). Instructions for the PoE injector are given in [[*PoE Injector Module]].
+
 * Repository Structure
 The repository is organised into the following directories;
 #+begin_src plantuml :file doc/media/repo.png :exports results
@@ -259,3 +265,4 @@ Return all records above =threshold= for the sensor =id= over the time span =t2 
 =main.php/sensors/getUnder/?t1=<int>&t2=<int>&id=<int>&=thresholds=<decimal>=
 
 Like =getAbove=, but returns all records /below/ =threshold= for the sensor =id= over the time span =t2 - t1=
+
