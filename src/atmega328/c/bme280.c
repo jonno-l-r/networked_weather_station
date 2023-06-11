@@ -2,7 +2,10 @@
  * bme280.c
  *
  * Created: 3/08/2022 8:32:53 PM
- *  Author: Jonno
+ *  Author: Jon. R
+ *
+ * Compensation based off the listings
+ * found on pages 25 and 26 of the datasheet
  */ 
 
 #include <stdio.h>
@@ -41,13 +44,13 @@ struct compensation {
 
 
 int32_t bme280_get_temperature(int32_t t_raw){
-	int32_t var1 = 0;
-	int32_t var2 = 0;
+	int32_t v1 = 0;
+	int32_t v2 = 0;
 	int32_t T = 0;
 	
-	var1 = (((t_raw>>3) - ((int32_t)compensation.dig_t1<<1))) * ((int32_t)compensation.dig_t2) >> 11;
-	var2 = (((((t_raw>>4) - ((int32_t)compensation.dig_t1)) * ((t_raw>>4) - ((int32_t)compensation.dig_t1))) >> 12) * ((int32_t)compensation.dig_t3)) >> 14;
-	t_fine = var1 + var2;
+	v1 = (((t_raw>>3) - ((int32_t)compensation.dig_t1<<1))) * ((int32_t)compensation.dig_t2) >> 11;
+	v2 = (((((t_raw>>4) - ((int32_t)compensation.dig_t1)) * ((t_raw>>4) - ((int32_t)compensation.dig_t1))) >> 12) * ((int32_t)compensation.dig_t3)) >> 14;
+	t_fine = v1 + v2;
 	T = (t_fine * 5 + 128) >> 8;
 
 	return T;
@@ -55,48 +58,48 @@ int32_t bme280_get_temperature(int32_t t_raw){
 
 
 uint32_t bme280_get_pressure(int32_t p_raw){
-	int64_t var1;
-	int64_t var2;
+	int64_t v1;
+	int64_t v2;
 	int64_t P;
 	
-	var1 = (int64_t)t_fine - 128000;
-	var2 = var1*var1 * (int64_t)compensation.dig_p6;
-	var2 = var2 + ((var1*(int64_t)compensation.dig_p5) << 17);
-	var2 = var2 + (((int64_t)compensation.dig_p4) << 35);
-	var1 = ((var1*var1 * (int64_t)compensation.dig_p3) >> 8) + ((var1 * (int64_t)compensation.dig_p2) << 12);
-	var1 = (((((int64_t)1) << 47) + var1)) * ((int64_t)compensation.dig_p1) >> 33;
+	v1 = (int64_t)t_fine - 128000;
+	v2 = v1*v1 * (int64_t)compensation.dig_p6;
+	v2 = v2 + ((v1*(int64_t)compensation.dig_p5) << 17);
+	v2 = v2 + (((int64_t)compensation.dig_p4) << 35);
+	v1 = ((v1*v1 * (int64_t)compensation.dig_p3) >> 8) + ((v1 * (int64_t)compensation.dig_p2) << 12);
+	v1 = (((((int64_t)1) << 47) + v1)) * ((int64_t)compensation.dig_p1) >> 33;
 	
-	if(var1 == 0){
+	if(v1 == 0){
 		return 0;
 	}
 
 	P = 1048576 - p_raw;
-	P = (((P << 31) - var2)*3125) / var1;
-	var1 = (((int64_t)compensation.dig_p9) * (P>>13) * (P>>13)) >> 25;
-	var2 = (((int64_t)compensation.dig_p8) * P) >> 19;
-	P = ((P + var1 + var2) >> 8) + (((int64_t)compensation.dig_p7) << 4);
+	P = (((P << 31) - v2)*3125) / v1;
+	v1 = (((int64_t)compensation.dig_p9) * (P>>13) * (P>>13)) >> 25;
+	v2 = (((int64_t)compensation.dig_p8) * P) >> 19;
+	P = ((P + v1 + v2) >> 8) + (((int64_t)compensation.dig_p7) << 4);
 	
 	return (uint32_t)P;
 }
 
 
 uint32_t bme280_get_humidity(int32_t h_raw){
-	int32_t v_x1_u32r;
-	v_x1_u32r = (t_fine - ((int32_t)76800));
+	int32_t v1;
+	v1 = (t_fine - ((int32_t)76800));
 
-	v_x1_u32r = (((((h_raw << 14) - (((int32_t)compensation.dig_h4) << 20) - \
-		(((int32_t)compensation.dig_h5) * v_x1_u32r)) + ((int32_t)16384)) >> 15) * \
-		(((((((v_x1_u32r * ((int32_t)compensation.dig_h6)) >> 10) * \
-		(((v_x1_u32r * ((int32_t)compensation.dig_h3)) >> 11) + ((int32_t)32768))) >> 10) + \
+	v1 = (((((h_raw << 14) - (((int32_t)compensation.dig_h4) << 20) - \
+		(((int32_t)compensation.dig_h5) * v1)) + ((int32_t)16384)) >> 15) * \
+		(((((((v1 * ((int32_t)compensation.dig_h6)) >> 10) * \
+		(((v1 * ((int32_t)compensation.dig_h3)) >> 11) + ((int32_t)32768))) >> 10) + \
 		((int32_t)2097152)) * ((int32_t)compensation.dig_h2) +8192) >> 14));
 	
-	v_x1_u32r = (v_x1_u32r - (((((v_x1_u32r >> 15) * (v_x1_u32r >> 15)) >> 7) *\
+	v1 = (v1 - (((((v1 >> 15) * (v1 >> 15)) >> 7) *\
 		((int32_t)compensation.dig_h1)) >> 4));
 		
-	v_x1_u32r = (v_x1_u32r < 0 ? 0 : v_x1_u32r);
-	v_x1_u32r = (v_x1_u32r > 419430400 ? 419430400 : v_x1_u32r);
+	v1 = (v1 < 0 ? 0 : v1);
+	v1 = (v1 > 419430400 ? 419430400 : v1);
 	
-	return (uint32_t)(v_x1_u32r>>12);
+	return (uint32_t)(v1>>12);
 }
 
 
@@ -182,7 +185,7 @@ void bme280_get_compensation(void){
 
 void bme280_get_measurements(int32_t *temp, uint32_t *pres, uint32_t *hum){
 	uint8_t data[8];
-	uint16_t status = 0;
+	// uint16_t status = 0;
 	int32_t t_raw = 0;
 	int32_t p_raw = 0;
 	int32_t h_raw = 0;

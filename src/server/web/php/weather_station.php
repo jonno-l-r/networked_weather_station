@@ -1,4 +1,7 @@
 <?php
+/*
+ * 2023 Jon Rabe, jonrabe@jonr.net
+ */
 
 namespace station;
 require_once 'weather_db.php';

@@ -2,7 +2,7 @@
  * w5500.h
  *
  * Created: 22/05/2022 9:47:10 PM
- *  Author: Jonno
+ *  Author: Jon. R
  */ 
 
 #ifndef W5500_H_

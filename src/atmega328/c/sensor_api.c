@@ -2,7 +2,7 @@
  * sensor_api.c
  *
  * Created: 13/08/2022 11:24:26 AM
- *  Author: Jonno
+ *  Author: Jon. R
  */ 
 
 #include <stdio.h>
@@ -34,7 +34,7 @@ int api_get_bme280(char* buf, int offset, int avg){
 	}
 	
 	i += sprintf(offset+buf+i, "[{\"id\":%d},", id);
-	i += sprintf(offset+buf+i, "{\"temperature\":%ld, \"div\":%d},", temp, 100*avg);
+	i += sprintf(offset+buf+i, "{\"temperature\":%d, \"div\":%d},", (int16_t)temp, 100*avg);
 	i += sprintf(offset+buf+i, "{\"pressure\":%lu, \"div\":%d},", pres, 256*avg);
 	i += sprintf(offset+buf+i, "{\"humidity\":%lu, \"div\":%d}]", hum, 1024*avg);
 		
@@ -68,6 +68,9 @@ int api_get_all(char* buf, int avg){
 	i += api_get_bme280(buf, i, avg);
 	i += sprintf(buf+i, ", \"MCP9808\" : ");
 	i += api_get_mcp9808(buf, i, avg);
+	
+	// Need a double null termination
+    // here, hence the warning...
 	i += sprintf(buf+i, "}\0");
 	
 	return i;

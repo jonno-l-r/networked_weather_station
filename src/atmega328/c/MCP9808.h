@@ -2,7 +2,7 @@
  * MCP9808.h
  *
  * Created: 31/07/2022 6:05:35 PM
- *  Author: Jonno
+ *  Author: Jon. R
  */ 
 
 
@@ -20,7 +20,7 @@
 #define REG_TEMP 0x5
 #define REG_ID 0x7
 
-uint16_t mcp9808_get_temperature(void);
+int16_t mcp9808_get_temperature(void);
 uint8_t mcp9808_get_id(void);
 
 #endif

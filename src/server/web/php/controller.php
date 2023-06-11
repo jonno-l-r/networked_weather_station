@@ -1,4 +1,9 @@
 <?php
+/*
+ * 2023 Jon Rabe, jonrabe@jonr.net
+ */
+
+
 namespace controller;
 require_once "weather_db.php";
 use ReadWeatherDB;

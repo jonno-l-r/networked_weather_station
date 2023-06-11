@@ -1,3 +1,8 @@
+/*
+ * 2023 Jon Rabe, jonrabe@jonr.net
+ */
+
+
 function LinePlot(
     data,
     id,

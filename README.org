@@ -156,6 +156,7 @@ The controller module contains an Atmega32 microcontroller and a W5500 ethernet 
 [[file:doc/media/photos/IMG_0128.JPG]]
 
 ** PoE Injector Module
+<TODO>
 
 * Hardware Bring Up
 ** Powerup
@@ -183,10 +184,12 @@ And on header J1 of the breakout module, verify;
 
 ** Microcontroller programming
 *** Configuration
+Dynamic DNS is not included in my implementation of the W5500 driver (see =src/atmega328/c/w5500.c=), so a static IP address must be configured. This is set from the main header, =src/atmega328/c/main.h=. Ensure you have reserved this IP address on the router.
 
+The default port for the control module HTTP server is 1000, but this can also be changed from =main.h=. Ensure these network properties have been configured before compiling the source and programming the control module.
 
 *** Compilation
-First, all sources under =src/atmega328= must be compiled to an =.elf=. Instructions for compiling with the Microchip Studio IDE (which comes bundled with the AVR GCC toolchain) are given below;
+First, all sources under =src/atmega328= must be compiled to a =.hex=. Instructions for compiling with the Microchip Studio IDE (which bundles the AVR GCC toolchain) are given below;
 
 - Open the IDE and create a new 'GCC C Executable' project
 - In the wizard, select 'Atmega' from the device family menu and then choose 'ATmega328P' from the device list
@@ -196,9 +199,9 @@ First, all sources under =src/atmega328= must be compiled to an =.elf=. Instruct
 To program the micrcontroller, an external programming tool will need to be installed (The free version of Microchip Studio doesn't include the programming tool), such as [[https://www.nongnu.org/avrdude/][AVRDude]]. Install AVRDude and ensure the executable is on the system path.
 
 *** Programming over UART
-If the microcontroller has a bootloader, it can be programmed over UART. A USB to UART bridge will be needed for this. If an Arduino is available, its USB to UART bridge may be used in place of a standalone bridge. Instruction for this will be given below;
+If the microcontroller has a bootloader, it can be programmed over UART. A USB to UART bridge will be needed for this. If an Arduino is available, its USB to UART bridge may be used in place of a standalone bridge. Instructions for this are given be given below;
 
-- On the Arduino, patch the reset socket to one of the GND sockets. This will hold the Arduino's microcontroller in reset and prevent it from interfering with the UART link
+- On the Arduino, patch the reset pin to one of the GND pins. This will hold the Arduino's microcontroller in reset and prevent it from interfering with the UART link
 - Wire the Arduino's RX pin to the TX pin on the control module (pin 2 of J4)
 - Wire the Arduino's TX pin to the RX pin on the control module (pin 1 of J4)
 - In Microchip Studio, select 'tools', 'external tools', 'Add'
@@ -231,7 +234,7 @@ After the control module has been programmed, connect the various I2C sensor mod
 
 Ensure the static IP address set in the control module source does not clash with other devices on the LAN. This address should be reserved in the router configuration.
 
-From a PC on the LAN, ping the control module address to verify the network connection. If the ping is successful, issue an HTTP GET request and verify that the results are reasonable;
+From a PC on the LAN, ping the control module address to verify the network connection. If the ping is successful, issue an HTTP GET request and verify that the results look reasonable;
 
 #+begin_src python :session :exports both :results output :cached yes :eval never
   import requests
@@ -348,6 +351,14 @@ The server should now be querying the weather station every five minutes and wri
 A JSON array of the latest database records should be returned. To view the Web GUI, go to =<server-addr>/html/dashboard.html=.
 
 ** Docker
+The server components can be run in docker containers, for convenience. Dockerfiles and compose.yml are provided under src/server. The setup is as follows;
+- Copy =src/server= to the server
+- Edit the =WEATHER_STATION_ADDRESS= property in =compose.yml=
+- In the =server= directory, run =docker-compose up -d --build=. This will build two containers; =weather= and =weawther_db=. =weather= containerises the web server, PHP interpreter and cron scheduler, and =weather_db= containerises the MySQL server.
+- Launch a bash shell on the =weather= container with =docker exec -it weather_weather bash=
+- In the new shell run =printenv > /etc/environment= to copy the container environment variables (set at build time) into the filesystem, then start the cron daemon with =service cron start=
+- Exit the shell with =ctrl-d=
+- The web server container is forwarded to port 80 on the host. The containerisation will not affect the addressing scheme.
 
 * Web Frontend
 [[file:doc/media/dashboard_scrot.PNG]]

@@ -2,7 +2,7 @@
  * tca9555.h
  *
  * Created: 3/08/2022 8:43:25 AM
- *  Author: Jonno
+ *  Author: Jon. R
  */ 
 
 #ifndef TCA9555_H_

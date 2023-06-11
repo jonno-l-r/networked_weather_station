@@ -2,7 +2,7 @@
  * w5500.c
  *
  * Created: 22/05/2022 11:03:47 AM
- *  Author: Jonno
+ *  Author: Jon. R
  */ 
 
 #include <avr/io.h>
@@ -78,12 +78,12 @@ uint16_t w5500_rx_rsr(int socket){
 uint16_t w5500_rx_size(int socket){
 	uint8_t reg = w5500_write(READ | get_socket_BSB(socket, SOCK_n), S0_RXBUF_SIZE, 0x0);
 	switch(reg){
-		case 0: return 0;
 		case 1: return 0x400;
 		case 2: return 0x800;
 		case 4: return 0x1000;
 		case 8: return 0x2000;
 		case 16: return 0x4000;
+		default: return 0;
 	}
 }
 
@@ -107,12 +107,12 @@ uint16_t w5500_tx_fsr(int socket){
 uint16_t w5500_tx_size(int socket){
 	uint8_t reg = w5500_write(READ | get_socket_BSB(socket, SOCK_n), S0_TXBUF_SIZE, 0x0);
 	switch(reg){
-		case 0: return 0;
 		case 1: return 0x400;
 		case 2: return 0x800;
 		case 4: return 0x1000;
 		case 8: return 0x2000;
 		case 16: return 0x4000;
+		default: return 0;		
 	}
 }
 
@@ -120,7 +120,7 @@ uint16_t w5500_tx_size(int socket){
 int w5500_tcp_rx(int socket, uint8_t* data){
 	uint16_t read_pt = 0;
 	int read_size = w5500_rx_rsr(socket);
-	uint16_t sock_size = w5500_rx_size(socket);
+	// uint16_t sock_size = w5500_rx_size(socket);
 	int offset = 0;
 	int i;
 
@@ -149,7 +149,7 @@ int w5500_tcp_rx(int socket, uint8_t* data){
 
 void w5500_tcp_tx(int socket, char* data, int data_size){
 	uint16_t free_size = w5500_tx_fsr(socket);
-	uint16_t sock_size = w5500_tx_size(socket);
+	// uint16_t sock_size = w5500_tx_size(socket);
 	uint16_t write_pt = 0;
 	int offset = 0;
 	

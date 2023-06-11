@@ -1,3 +1,8 @@
+/*
+ * 2023 Jon Rabe, jonrabe@jonr.net
+ */
+
+
 function WeatherLinePlot(
     {
         x_map = d => d.timestamp*1000,

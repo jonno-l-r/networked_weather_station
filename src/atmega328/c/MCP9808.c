@@ -2,7 +2,7 @@
  * MCP9080 I2C temperature sensor driver
  *
  * Created: 31/07/2022 5:55:27 PM
- *  Author: Jonno
+ *  Author: Jon. R
  */ 
 
 
@@ -42,21 +42,25 @@ uint8_t mcp9808_get_id(void){
 }
 
 
-uint16_t mcp9808_get_temperature(void){
+int16_t mcp9808_get_temperature(void){
 	/*
 	 * Returns a temperature reading
 	 * offset by +4 bits (/16)
 	 */
+	uint16_t reg;
+	int16_t temp;
+	uint8_t sign;
 	
-	uint16_t temperature = mcp9808_read(REG_TEMP);
-	uint8_t error = (temperature & 0xE000) >> 8;
-	uint8_t sign = (temperature & 0x1000) >> 8;
-	temperature = temperature & 0xFFF;
+	reg = mcp9808_read(REG_TEMP);
+	sign = (reg & 0x1000) >> 12;
+	temp = (int16_t)reg & 0xFFF;
 	
 	if (sign){
 		//TA < 0°C
-		temperature = (256<<8) - temperature;
+		return temp - (256<<4);
 	}
 	
-	return temperature;
+	else {
+		return temp;
+	}
 }

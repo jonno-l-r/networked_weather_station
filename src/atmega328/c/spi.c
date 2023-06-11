@@ -1,7 +1,6 @@
 /*
- * SPI communication protocol - master configuration
  * Created: 18/05/2022 9:10:52 PM
- *  Author: Jonno
+ *  Author: Jon. R
  */ 
 
 #include "spi.h"

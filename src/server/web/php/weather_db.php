@@ -1,4 +1,8 @@
 <?php
+/*
+ * 2023 Jon Rabe, jonrabe@jonr.net
+ */
+
 
 class WeatherDB {
     private $measurement_name;

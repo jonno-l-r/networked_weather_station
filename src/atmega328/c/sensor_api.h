@@ -2,7 +2,7 @@
  * sensor_api.h
  *
  * Created: 13/08/2022 11:51:27 AM
- *  Author: Jonno
+ *  Author: Jon. R
  */ 
 
 #ifndef SENSOR_API_H_

@@ -1,3 +1,8 @@
+/*
+ * 2023 Jon Rabe, jonrabe@jonr.net
+ */
+
+
 const API_ROOT = "../php/main.php/sensors/";
 const UNIT_MAP = {
     "degree_c": '\u2103',

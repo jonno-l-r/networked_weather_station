@@ -2,7 +2,7 @@
  * spi.h
  *
  * Created: 18/05/2022 9:27:25 PM
- *  Author: Jonno
+ *  Author: Jon. R
  */ 
 
 #ifndef SPI_H_

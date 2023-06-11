@@ -1,4 +1,8 @@
 <?php
+/*
+ * 2023 Jon Rabe, jonrabe@jonr.net
+ */
+
 
 namespace main;
 require_once "controller.php";

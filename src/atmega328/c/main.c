@@ -2,9 +2,10 @@
  * main.c
  *
  * Created: 15/05/2022 7:51:12 PM
- *  Author: Jonno
+ *  Author: Jon. R
  */ 
 
+// TODO set using compiler option
 #define F_CPU 18000000UL
 
 #include <stdio.h>
@@ -13,35 +14,30 @@
 #include <avr/pgmspace.h>
 #include <util/delay.h>
 #include <stdint.h>
-#include "string.h"
-#include "usart.h"
+#include "main.h"
 #include "http_server.h"
 #include "sensor_api.h"
+// #include "string.h"
+// #include "usart.h"
 
-
-FILE usart0_str = FDEV_SETUP_STREAM(USART0SendByte, USART0ReceiveByte, _FDEV_SETUP_RW);
+// For USART
+// FILE usart0_str = FDEV_SETUP_STREAM(USART0SendByte, USART0ReceiveByte, _FDEV_SETUP_RW);
 
 
 int main(void){
 	int data_size;
 	char data[512];
-	int averages = 10;
 	
-	uint8_t ip_addr[] = {192, 168, 1, 200};
-	uint8_t subnet_mask[] = {255, 255, 255, 0};
-	uint8_t mac_addr[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
-	uint8_t gateway[] = {192, 168, 1, 1};
-	uint16_t port = 1000;
+	// Bring up USART for testing (need to include usart.h)
+	// USART0Init();
+	// stdin=stdout=&usart0_str;
 	
-	// Test
-	USART0Init();
-	stdin=stdout=&usart0_str;
-	data_size = api_get_all(data, averages);
-	printf("size: %d\n%s", data_size, data);
+	data_size = api_get_all(data, AVERAGES);
+	// printf("size: %d\n%s", data_size, data);
 	
 	tcp_init(mac_addr, subnet_mask, gateway, ip_addr, port);
 	while (1){
-		data_size = api_get_all(data, averages);
+		data_size = api_get_all(data, AVERAGES);
 		
 		tcp_open();
 		tcp_listen();
