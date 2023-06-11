@@ -15,11 +15,11 @@ This is a full stack implementation of a networked weather monitoring station. T
 #+RESULTS:
 [[file:doc/media/system_diagram0.png]]
 
-The system is comprised of three main elements; the sensor breakout module and associated sensors, the control module, and finally the host PC.
+The system is comprised of three main elements; the sensor breakout module and associated sensors, the control module, and the host PC.
 
-The sensor breakout module acts as an interface between the sensors and the control module. It is intended to be in close proximity with the sensors themselves, and in a waterproof enclosure (see [[*Suggested Mounting]]). It interfaces with the controller via RJ11 with 6-pin modular connectors, and interfaces with the sensors via 6x1 pin headers.
+All sensors are connected to the breakout module (which is intended to be in close proximity to the sensor cluster). The breakout module is connected to the controller via a single RJ11 link. The controller should be housed in a relatively protected environment. The controller connects to a network switch or router via a power over ethernet injector.
 
-The controller module contains an Atmega32 microcontroller and a W5500 ethernet controller, which allows the sensors to be controlled over the LAN through an HTTP API. It also contains the system power supplies. Power is carried to the sensors from these supplies via the breakout module. The controller can be powered form a 6mm DC jack or through a primitive, DC form of PoE (power over ethernet). Instructions for the PoE injector are given in [[*PoE Injector Module]].
+The PC queries the controller over the network at regular intervals, processing the data from the sensors to extrapolate measurements and recording the results into a database. The PC also hosts a web API for the database, along with a web GUI to plot measurement history and current observations.
 
 * Repository Structure
 The repository is organised into the following directories;
@@ -146,15 +146,152 @@ The =src= part of the repository is orgranised as shown;
 |-------------+----------+----------+-----------|
 
 ** Sensor Breakout Module
+The sensor breakout module acts as an interface between the sensors and the control module. It is intended to be in close proximity with the sensors themselves, and in a waterproof enclosure (see [[*Suggested Mounting]]). It interfaces with the controller via RJ11 with 6-pin modular connectors, and interfaces with the sensors via 6x1 pin headers.
+
+[[file:doc/media/photos/IMG_0135.JPG]]
+
 ** Station Control Module
+The controller module contains an Atmega32 microcontroller and a W5500 ethernet controller, which allows the sensors to be controlled over the LAN through an HTTP API. It also contains the system power supplies. Power is carried to the sensors from these supplies via the breakout module. The controller can be powered form a 6mm DC jack or through a primitive, DC form of PoE (power over ethernet). Instructions for the PoE injector are given in [[*PoE Injector Module]].
+
+[[file:doc/media/photos/IMG_0128.JPG]]
+
 ** PoE Injector Module
 
-* Hardware Bring up
+* Hardware Bring Up
 ** Powerup
+For testing, it is convenient to power the control module via the 6mm jack (J2). Connect a jumper to JP4, and ensure no jumper is connected to JP5. Apply 12V to J2. With a voltmeter;
+- Verify 5V is present between pin 2 and pin 6 of J3
+- Verify 3.3V is present between pin 2 and pin 4 of J5
+
+Next, depress SW2 and verify the following with the voltmeter (while still holding down the switch);
+- Pin 1 of U5 is low
+- Pin 2 of SW1 is low
+Then release SW1 and ensure the voltage at both these points goes high.
+
+If an oscilloscope is available, verify the following with the proble in 10x mode, the timebase set to 0.1us / division and the range set to 100mV / division
+- Probe pin 2 of Y1 and verify that the frequency of the signal is 25 MHz
+- Probe pin 2 of Y2 and verify that the frequency of the signal is 18 MHz
+
+Connect J7 on the control module to Jx on the breakout module via the RJ11 cable. On the control module, Verify the following with the voltmeter;
+- 3.3V is present between pin 3 and pin 4 of J5
+- 3.3V is present between pin 1 and pin 4 of J5
+
+And on header J1 of the breakout module, verify;
+- 3.3V is present between pins 2 and 4
+- 3.3V is present between pins 3 and 4
+- 3.3V is present between pins 1 and 4
+
 ** Microcontroller programming
+*** Configuration
+
+
+*** Compilation
+First, all sources under =src/atmega328= must be compiled to an =.elf=. Instructions for compiling with the Microchip Studio IDE (which comes bundled with the AVR GCC toolchain) are given below;
+
+- Open the IDE and create a new 'GCC C Executable' project
+- In the wizard, select 'Atmega' from the device family menu and then choose 'ATmega328P' from the device list
+- Import the sources and header files from =src/atmega328/c/= into the new project
+- Build the project
+
+To program the micrcontroller, an external programming tool will need to be installed (The free version of Microchip Studio doesn't include the programming tool), such as [[https://www.nongnu.org/avrdude/][AVRDude]]. Install AVRDude and ensure the executable is on the system path.
+
+*** Programming over UART
+If the microcontroller has a bootloader, it can be programmed over UART. A USB to UART bridge will be needed for this. If an Arduino is available, its USB to UART bridge may be used in place of a standalone bridge. Instruction for this will be given below;
+
+- On the Arduino, patch the reset socket to one of the GND sockets. This will hold the Arduino's microcontroller in reset and prevent it from interfering with the UART link
+- Wire the Arduino's RX pin to the TX pin on the control module (pin 2 of J4)
+- Wire the Arduino's TX pin to the RX pin on the control module (pin 1 of J4)
+- In Microchip Studio, select 'tools', 'external tools', 'Add'
+  - Set the entry title to 'UART'
+  - Set the command to =<path>\avrdude.exe=
+  - Set the arguments to =-C <path>\avrdude.conf -patmega328p -carduino -P\\.\<serial-addr> -b115200 -D -Uflash:w:"$(ProjectDir)Debug\$(TargetName).hex":i= where
+    - =path= is the path to the avrdude executable and config file
+    - =serial-addr= is the serial address of the Arduino's USB - UART bridge
+  - Save the new configuration
+
+The control module can now be programmed over UART.
+
+*** Programming over ISP
+If the microcontroller doesn't have a bootloader, it will need to be programmed over the ISP interface. Either an AVR compatible ISP programmer or an Arduino is needed for this. Instructions for programming over ISP with an Arduino are given below;
+
+- Use the Arduino IDE to program the ISP sketch to the Arduino (see file, examples, ArduinoISP)
+- Wire the SCLK, MOSI and MISO pins to the ISP header of the control module (header J3)
+- In the Microchip Studio IDE, select 'tools', 'external tools', 'Add'
+  - Set the entry title to 'Arduino ISP'
+  - Set the command to =<path>\avrdude.exe=
+  - Set the arguments to =-F -v -p m328p -c arduino -P <serial-addr> -b 19200 -U flash:w:"$(ProjectDir)Debug\$(ItemFileName).hex":i -C"<path>\avrdude.conf"= where
+    - =serial-addr= is the serial address of the Arduino
+    - =path= is the path to the AVRDude executable and config file
+    - Save the new configuration.
+
+The control module can now be programmed over ISP.
+
 ** Testing
+After the control module has been programmed, connect the various I2C sensor modules to the 4 pin headers of the breakout module, then connect the breakout module to the sensor module via the RJ11 link. Connect the control module to the network and issue a reset by pressing SW2.
+
+Ensure the static IP address set in the control module source does not clash with other devices on the LAN. This address should be reserved in the router configuration.
+
+From a PC on the LAN, ping the control module address to verify the network connection. If the ping is successful, issue an HTTP GET request and verify that the results are reasonable;
+
+#+begin_src python :session :exports both :results output :cached yes :eval never
+  import requests
+  from pprint import pprint
+
+  data = requests.get("http://<ip-addr>:1000").json()
+  pprint(data)
+#+end_src
+
+#+RESULTS:
+: {'BME280': [{'id': 96},
+:             {'div': 1000, 'temperature': 2863},
+:             {'div': 2560, 'pressure': 242870758},
+:             {'div': 10240, 'humidity': 743179}],
+:  'MCP9808': [{'id': 4}, {'div': 160, 'temperature': 620}]}
+
+Then to extract the actual measurements, divide the result by =div=, as shown below;
+
+#+begin_src python :session :exports both :results output cached yes
+  def measPrint(measurement, unit):
+      return lambda d: (
+          print(
+              measurement,
+              round(d[measurement] / d["div"], 2),
+              unit
+          )\
+          if measurement in d and 'div' in d\
+          else None
+      )
+
+  print_temp = measPrint("temperature", "deg C")
+  print_hum = measPrint("humidity", "%")
+  print_pres = measPrint("pressure", "Pa (un-normalised)")
+
+  for sensor in data:
+      print("\n%s"%sensor)
+      for meas in data[sensor]:
+          print_temp(meas)
+          print_hum(meas)
+          print_pres(meas)
+#+end_src
+
+#+RESULTS:
+: 
+: BME280
+: temperature 2.86 deg C
+: pressure 94871.39 Pa (un-normalised)
+: humidity 72.58 %
+: 
+: MCP9808
+: temperature 3.88 deg C
+
+The results look valid.
 
 * Suggested Mounting
+The diagram below illustrates the mounting scheme used for the temperature, humidity and pressure sensors. This mounting configuration ensures:
+- The thermometer is exposed to air currents, but not direct radiation
+- The hygrometer and barometer are exposed to the open atmosphere, but not precipitation
+- The breakout module is fully shielded from the atmosphere
+
 #+HEADER: :imagemagick yes :iminoptions -density 110
 #+HEADER: :fit yes :noweb yes
 #+begin_src latex :file (cond-exp "doc/media/mounting0") :results file raw :exports results
@@ -166,7 +303,50 @@ The =src= part of the repository is orgranised as shown;
 #+RESULTS:
 [[file:doc/media/mounting0.png]]
 
+The MCP9808 PCB was wrapped in soft white rubber tubing, sealed at each end with silicone. This assembly forms the external temperature probe. The BME280 PCB was placed into a small plastic enclosure, which had a hole drilled into the bottom to expose the sensor to the atmosphere. This enclosure was then mounted to the roof of the main enclosure, as shown.
+
+Note the rubber tube running down the main enclosure, which ducts any residual water that penetrates the thermometer baffles down to the hole at the bottom, away from the internal sensors and breakout module.
+
+The breakout module is housed in a fully sealed enclosure, with all cables ducted through a waterproof cable gland.
+[[file:doc/media/photos/IMG_0131.JPG]]
+
+The following photo was taken during testing. The black enclosure is the control module housing;
+[[file:doc/media/photos/IMG_0125.JPG]]
+
 * Server Bring up
+The following software must be installed on the server
+- PHP 8+
+- MariaDB 10+
+- Apache Web Server
+
+Set up a new user account through the MariaDB monitor, then log out. Log back in as root and run the database initialisation script in =src/server/sql/init/init.sql=.
+
+Copy the contents of =src/server/web= to the web hosting directory. Apache's default is =/var/www/html=. Next, the following environment variables must be set;
+
+#+begin_src sh :eval never
+  MARIADB_USER="<db-user-name>"
+  MARIADB_PASSWORD="<db-password>"
+  MARIADB_DATABASE="weather"
+  WEATHER_STATION_ADDRESS="http://<control-module-address>:1000"
+  TZ="<your-timezone>"
+#+end_src
+
+where =<db-user-name>= and =<db-password>= are the credentials of the database account created earlier.
+
+Database updates will be scheduled on a cron job. =/src/server/web/php/weather_station.php= is the source to be executed. Running this will write a single measurement datapoint from each sensor into the database. Add the following entry to the root cron table;
+
+#+begin_src sh :eval never
+  ,*/5 * * * * /usr/local/bin/php <web-server-root>/php/weather_station.php
+#+end_src
+
+where =web-server-root= is the path to =src/server/web= on the server. To ensure the cron environment can see the environment variables set earlier, copy them into =/etc/environment=.
+
+The server should now be querying the weather station every five minutes and writing measurements into the MySQL database. After some data has accumulated, start the apache daemon and go to the following address from a web browser (on a different machine, or use =localhost= if testing on the server);
+
+=<server-addr>/php/main.php/sensors/getLatest=
+
+A JSON array of the latest database records should be returned. To view the Web GUI, go to =<server-addr>/html/dashboard.html=.
+
 ** Docker
 
 * Web Frontend
