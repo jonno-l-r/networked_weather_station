@@ -9,18 +9,16 @@
 #ifndef MCP9808_H_
 #define MCP9808_H_
 
-// Device address
-#define MCP_ADDRESS 0x30
 
-// Op codes
-#define MCP_READ 0x1
-#define MCP_WRITE 0x0
+// Device address
+#define MCP_ADDRESS 0x18
 
 // Register addresses
 #define REG_TEMP 0x5
 #define REG_ID 0x7
 
-int16_t mcp9808_get_temperature(void);
-uint8_t mcp9808_get_id(void);
+uint8_t mcp9808_read(uint8_t reg, uint16_t* val);
+uint8_t mcp9808_get_temperature(int16_t* temperature);
+uint8_t mcp9808_get_id(uint16_t* id);
 
 #endif

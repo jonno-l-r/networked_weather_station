@@ -18,7 +18,7 @@
 crontab file
 #+name: crontab
 #+begin_src sh :tangle crontab
-  ,*/5 * * * * /usr/local/bin/php /var/www/html/php/weather_station.php
+  ,*/2 * * * * /usr/local/bin/php /var/www/html/php/weather_station.php
 #+end_src
 
 Note: Must run =printenv >> /etc/environemnt= to copy environment variables into filesystem for access by cron

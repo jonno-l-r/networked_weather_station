@@ -14,9 +14,10 @@
 #include <avr/pgmspace.h>
 #include <util/delay.h>
 #include <stdint.h>
-#include "twi.h"
+#include "lib_twi.h"
 #include "bme280.h"
 #include "usart.h"
+#include "twi.h"
 
 
 int32_t t_fine = 0;
@@ -41,6 +42,7 @@ struct compensation {
 	int16_t dig_h5;
 	int8_t dig_h6;
 } compensation = {0};
+int is_init = 0;
 
 
 int32_t bme280_get_temperature(int32_t t_raw){
@@ -103,60 +105,49 @@ uint32_t bme280_get_humidity(int32_t h_raw){
 }
 
 
-void bme280_write(uint8_t reg, uint8_t data){
-	twi_init();
-	
-	twi_start();
-	
-	twi_write(((uint8_t) BME_ADDRESS) | ((uint8_t) BME_WRITE));
-	twi_write(reg);
-	twi_write(data);
-	
-	twi_stop();
+uint8_t bme280_write(uint8_t reg, uint8_t byte){
+	return lib_twi_write_byte(BME_ADDRESS, reg, byte);
 }
 
 
-uint16_t bme280_read(uint8_t reg){
-	uint8_t byte;
-	
-	twi_init();
-	
-	twi_start();
-	twi_write(((uint8_t) BME_ADDRESS) | ((uint8_t) BME_WRITE));
-	twi_write(reg);
-	
-	twi_start();
-	twi_write(BME_ADDRESS | ((uint8_t) BME_READ));
-	byte = twi_read_nack();
-	
-	twi_stop();
-	
-	return byte;
+uint8_t bme280_read(uint8_t reg, uint8_t* byte){
+	return lib_twi_read_byte(BME_ADDRESS, reg, byte);
 }
 
 
-void bme280_burst_read(uint8_t start_reg, int len, uint8_t *data){
-	twi_init();
-	
-	twi_start();
-	twi_write(((uint8_t) BME_ADDRESS) | ((uint8_t) BME_WRITE));
-	twi_write(start_reg);
-	
-	twi_start();
-	twi_write(BME_ADDRESS | ((uint8_t) BME_READ));
-	
-	for (int i=0; i<len-1; i++){
-		data[i] = twi_read_ack();
-	}
-	data[len-1] = twi_read_nack();
-	
-	twi_stop();
+uint8_t bme280_burst_read(uint8_t start_reg, int len, uint8_t *data){
+	return lib_twi_read_bytes(BME_ADDRESS, start_reg, len, data);
 }
 
 
-void bme280_get_compensation(void){
+uint8_t _bme280_wait_read(uint8_t reg, uint8_t byte, uint8_t mask, uint8_t(*test)(uint8_t b, uint8_t _b)){
+	uint8_t status = 0;
+	uint8_t _byte;
+	
+	do {
+		status |= bme280_read(reg, &_byte);
+		_byte &= mask;
+	} while (test(_byte, byte) && (status==0));
+	
+	return status;
+}
+
+
+uint8_t _bme280_is_equal(uint8_t byte_in, uint8_t byte_test) {
+	return byte_in == byte_test;
+};
+
+
+uint8_t _bme280_is_not_equal(uint8_t byte_in, uint8_t byte_test) {
+	return byte_in != byte_test;
+};
+
+
+uint8_t bme280_get_compensation(void){
+	uint8_t status;
 	uint8_t data[26];
-	bme280_burst_read(0x88, 26, data);
+	
+	status = bme280_burst_read(0x88, 26, data);
 	
 	compensation.dig_t1 = (((uint16_t)data[1]) << 8) | ((uint16_t)data[0]);
 	compensation.dig_t2 = (int16_t) ((((uint16_t)data[3]) << 8) | ((uint16_t)data[2]));
@@ -180,43 +171,61 @@ void bme280_get_compensation(void){
 	compensation.dig_h4 = (int16_t) (((uint16_t)data[3]) << 4) | ((uint8_t)data[4] & 0x0F);
 	compensation.dig_h5 = (int16_t) (((uint16_t)data[5]) << 4) | ((uint8_t)data[4] & 0xF0);
 	compensation.dig_h6 = (int8_t)data[6];
+	
+	return status;
 }
 
 
-void bme280_get_measurements(int32_t *temp, uint32_t *pres, uint32_t *hum){
+uint8_t bme280_init(void){
+	uint8_t status;
+	
+	// reset
+	status = bme280_write(0xE0, 0xB6);
+	status |= _bme280_wait_read(0xE0, 0, 0xFF, _bme280_is_not_equal);
+	
+	// Control humidity reg
+	status |= bme280_write(0xF2, 0x01);
+	printf("status: %d\n, twi status: 0x%x", status, twi_get_status());
+	twi_debug();
+	status |= _bme280_wait_read(0xF2, 0x01, 0xFF, _bme280_is_not_equal);
+	printf("status: %d\n, twi status: 0x%x", status, twi_get_status());
+	
+	// Set pres. and temp. oversampling = 1x
+	status |= bme280_write(0xF4, 0x24);
+	status |= _bme280_wait_read(0xF4, 0x24, 0xFF, _bme280_is_not_equal);
+	printf("status %d\n", status);
+	
+	// Disable IIR filter
+	status |= bme280_write(0xF5, 0x00);
+	status |= _bme280_wait_read(0xF5, 0, 0xFF, _bme280_is_not_equal);
+	printf("status %d\n", status);
+	
+	// Get compensation data
+	status |= _bme280_wait_read(0xF3, 1, 0x8, _bme280_is_equal);
+	status |= bme280_get_compensation();
+	printf("status %d\n", status);
+	
+	if (!status) is_init = 1;
+	
+	return status;
+}
+
+
+uint8_t bme280_get_measurements(int32_t *temp, uint32_t *pres, uint32_t *hum){
+	uint8_t status = 0;
 	uint8_t data[8];
-	// uint16_t status = 0;
 	int32_t t_raw = 0;
 	int32_t p_raw = 0;
 	int32_t h_raw = 0;
 	
-	// reset
-	bme280_write(0xE0, 0xB6);
-	while (bme280_read(0xE0) != 0);
-	
-	// Control humidity reg
-	bme280_write(0xF2, 0x01);
-	while (bme280_read(0xF2) != 0x01);
-	
-	// Set pres. and temp. oversampling = 1x
-	bme280_write(0xF4, 0x24);
-	while (bme280_read(0xF4) != 0x24);
-	
-	// Disable IIR filter
-	bme280_write(0xF5, 0x00);
-	while (bme280_read(0xF5) != 0);
-	
-	// Get compensation data
-	while (bme280_read(0xF3) & 8);
-	bme280_get_compensation();
-	
+	if (!is_init) status = bme280_init();
 	
 	// Trigger measurement by entering forced mode
-	bme280_write(0xF4, 0x26);
-	while (bme280_read(0xF3) & 1);
+	status |= bme280_write(0xF4, 0x26);
+	status |= _bme280_wait_read(0xF3, 1, 1, _bme280_is_equal);
 	
 	// Get raw measurement data (0xF7 - 0xFE)
-	bme280_burst_read(0xF7, 8, data);
+	status |= bme280_burst_read(0xF7, 8, data);
 	
 	p_raw = (int32_t)((((uint32_t)data[0]) << 12) | (((uint32_t)data[1]) << 4) | (((uint32_t)data[2]) >> 4));
 	t_raw = (int32_t)((((uint32_t)data[3]) << 12) | (((uint32_t)data[4]) << 4) | (((uint32_t)data[5]) >> 4));
@@ -226,9 +235,11 @@ void bme280_get_measurements(int32_t *temp, uint32_t *pres, uint32_t *hum){
 	*temp = bme280_get_temperature(t_raw);
 	*pres = bme280_get_pressure(p_raw);
 	*hum = bme280_get_humidity(h_raw);
+	
+	return status;
 }
 
 
-uint8_t bme280_get_id(void){
-	return bme280_read(0xD0);
+uint8_t bme280_get_id(uint8_t* id){
+	return bme280_read(0xD0, id);
 }
