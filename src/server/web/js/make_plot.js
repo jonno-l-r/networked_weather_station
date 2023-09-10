@@ -49,9 +49,9 @@ function plotRawRecords(range, on_request=()=>{}){
         "t1": (Date.now()/1000) - 60*60*range
     };
 
-    let plotter = WeatherLinePlot(
+    let plotter = WeatherLinePlot({
         y_map: (d) => normalise[d.sensor_id](d.value)
-    );
+    });
 
     request(API_ROOT+"getBetween", "GET", data).then(
         (data) => {

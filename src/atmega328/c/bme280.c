@@ -43,6 +43,7 @@ struct compensation {
 	int8_t dig_h6;
 } compensation = {0};
 int is_init = 0;
+int is_error = 0;
 
 
 int32_t bme280_get_temperature(int32_t t_raw){
@@ -106,16 +107,19 @@ uint32_t bme280_get_humidity(int32_t h_raw){
 
 
 uint8_t bme280_write(uint8_t reg, uint8_t byte){
+	_delay_ms(10);
 	return lib_twi_write_byte(BME_ADDRESS, reg, byte);
 }
 
 
 uint8_t bme280_read(uint8_t reg, uint8_t* byte){
+	_delay_ms(10);
 	return lib_twi_read_byte(BME_ADDRESS, reg, byte);
 }
 
 
 uint8_t bme280_burst_read(uint8_t start_reg, int len, uint8_t *data){
+	_delay_ms(10);
 	return lib_twi_read_bytes(BME_ADDRESS, start_reg, len, data);
 }
 
@@ -185,27 +189,23 @@ uint8_t bme280_init(void){
 	
 	// Control humidity reg
 	status |= bme280_write(0xF2, 0x01);
-	printf("status: %d\n, twi status: 0x%x", status, twi_get_status());
-	twi_debug();
 	status |= _bme280_wait_read(0xF2, 0x01, 0xFF, _bme280_is_not_equal);
-	printf("status: %d\n, twi status: 0x%x", status, twi_get_status());
 	
 	// Set pres. and temp. oversampling = 1x
 	status |= bme280_write(0xF4, 0x24);
 	status |= _bme280_wait_read(0xF4, 0x24, 0xFF, _bme280_is_not_equal);
-	printf("status %d\n", status);
 	
 	// Disable IIR filter
 	status |= bme280_write(0xF5, 0x00);
 	status |= _bme280_wait_read(0xF5, 0, 0xFF, _bme280_is_not_equal);
-	printf("status %d\n", status);
 	
 	// Get compensation data
 	status |= _bme280_wait_read(0xF3, 1, 0x8, _bme280_is_equal);
 	status |= bme280_get_compensation();
-	printf("status %d\n", status);
 	
 	if (!status) is_init = 1;
+	is_error = status;
+	_delay_ms(10);
 	
 	return status;
 }
@@ -218,7 +218,7 @@ uint8_t bme280_get_measurements(int32_t *temp, uint32_t *pres, uint32_t *hum){
 	int32_t p_raw = 0;
 	int32_t h_raw = 0;
 	
-	if (!is_init) status = bme280_init();
+	if (!is_init || is_error) status = bme280_init();
 	
 	// Trigger measurement by entering forced mode
 	status |= bme280_write(0xF4, 0x26);
@@ -235,6 +235,8 @@ uint8_t bme280_get_measurements(int32_t *temp, uint32_t *pres, uint32_t *hum){
 	*temp = bme280_get_temperature(t_raw);
 	*pres = bme280_get_pressure(p_raw);
 	*hum = bme280_get_humidity(h_raw);
+	
+	is_error = status;
 	
 	return status;
 }

@@ -1,1 +1,1 @@
-*/2 * * * * /usr/local/bin/php /var/www/html/php/weather_station.php
+*/2 * * * * /usr/local/bin/php /var/www/html/php/new_record.php

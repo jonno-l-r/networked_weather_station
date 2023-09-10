@@ -25,6 +25,7 @@ services:
       - MARIADB_USER=${MARIADB_USER:-utest}
       - MARIADB_PASSWORD=${MARIADB_PASSWORD:-utest}
       - MARIADB_DATABASE=weather
+      - MARIADB_DATABASE_TABLE_NAME=canberra_data
       - WEATHER_STATION_ADDRESS=http://192.168.1.200:1000
       - TZ=Australia/Canberra
   db:

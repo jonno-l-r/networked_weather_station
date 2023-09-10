@@ -69,8 +69,8 @@ class WriteWeatherDB extends WeatherDB {
     private $query;
 
     const data_query = "INSERT INTO "
-                     .WeatherDB::data_table
-                     ." (timestamp, sensor_id, value) VALUES (?,?,?)";
+                      .WeatherDB::data_table
+                      ." (timestamp, sensor_id, value) VALUES (?,?,?)";
 
 
     public function __construct(){
@@ -88,16 +88,17 @@ class WriteWeatherDB extends WeatherDB {
     }
 
 
-    public function writeMeasurements($data){
+    public function writeMeasurement($measurement, $sensor, $value){
         $this->timestamp = time();
         $success = (bool)$this->data_stmt;
 
         if ($this->data_stmt){
-            foreach($data as $ID=>$value){
-                $this->measurement_id = $ID;
-                $this->value = $value;
-                $success &= $this->data_stmt->execute();
-            }
+            $this->measurement_id = $this->getMeasurementID(
+                $measurement,
+                $sensor
+            );
+            $this->value = $value;
+            $success &= $this->data_stmt->execute();
         }
 
         return $success;
@@ -144,14 +145,14 @@ class ReadWeatherDB extends WeatherDB {
     public function getLatest(){
         return $this->_queryTable(
             "SELECT x.timestamp, x.sensor_id, s.measurement, s.sensor, y.value, s.unit "
-            . "FROM " . WeatherDB::metadata_table . " s, "
-            . "(SELECT sensor_id, MAX(timestamp) as timestamp "
-            . "FROM " . WeatherDB::data_table . " "
-            . "GROUP BY sensor_id) AS x "
-            . "JOIN ". WeatherDB::data_table ." y "
-            . "ON x.sensor_id = y.sensor_id "
-            . "AND x.timestamp = y.timestamp "
-            . "WHERE s.id = x.sensor_id"
+          . "FROM " . WeatherDB::metadata_table . " s, "
+          . "(SELECT sensor_id, MAX(timestamp) as timestamp "
+          . "FROM " . WeatherDB::data_table . " "
+          . "GROUP BY sensor_id) AS x "
+          . "JOIN ". WeatherDB::data_table ." y "
+          . "ON x.sensor_id = y.sensor_id "
+          . "AND x.timestamp = y.timestamp "
+          . "WHERE s.id = x.sensor_id"
         );
     }
 
@@ -161,10 +162,10 @@ class ReadWeatherDB extends WeatherDB {
 
         return $this->_queryTable(
             "SELECT c.timestamp, c.sensor_id, s.measurement, s.sensor, c.value, s.unit "
-            . "FROM " . WeatherDB::data_table . " c, " . WeatherDB::metadata_table . " s "
-            . "WHERE s.id = c.sensor_id "
-            . "AND c.timestamp BETWEEN "
-            . (int)$t1 . " AND " . (int)$t2
+          . "FROM " . WeatherDB::data_table . " c, " . WeatherDB::metadata_table . " s "
+          . "WHERE s.id = c.sensor_id "
+          . "AND c.timestamp BETWEEN "
+          . (int)$t1 . " AND " . (int)$t2
         );
     }
 
@@ -174,16 +175,16 @@ class ReadWeatherDB extends WeatherDB {
 
         return $this->_queryTable(
             "SELECT x.timestamp, x.sensor_id, s.measurement, s.sensor, x.value, s.unit "
-            . "FROM " . WeatherDB::metadata_table . " s, "
-            . "(SELECT timestamp, sensor_id, " . self::sanitize[$func] . "(value) as value "
-            . "FROM " . WeatherDB::data_table . " "
-            . "WHERE timestamp BETWEEN "
-            . (int)$t1 . " AND " . (int)$t2 . " "
-            . "GROUP BY sensor_id) AS x "
-            . "JOIN " . WeatherDB::data_table . " y "
-            . "ON x.timestamp = y.timestamp "
-            . "AND x.sensor_id = y.sensor_id "
-            . "WHERE s.id = y.sensor_id"
+          . "FROM " . WeatherDB::metadata_table . " s, "
+          . "(SELECT timestamp, sensor_id, " . self::sanitize[$func] . "(value) as value "
+          . "FROM " . WeatherDB::data_table . " "
+          . "WHERE timestamp BETWEEN "
+          . (int)$t1 . " AND " . (int)$t2 . " "
+          . "GROUP BY sensor_id) AS x "
+          . "JOIN " . WeatherDB::data_table . " y "
+          . "ON x.timestamp = y.timestamp "
+          . "AND x.sensor_id = y.sensor_id "
+          . "WHERE s.id = y.sensor_id"
         );
     }    
 
@@ -227,11 +228,11 @@ class ReadWeatherDB extends WeatherDB {
 
         return $this->_queryTable(
             "SELECT c.sensor_id, s.measurement, s.sensor, AVG(value) as value, s.unit "
-            . "FROM " . WeatherDB::data_table . " c, " . WeatherDB::metadata_table . " s "
-            . "WHERE timestamp BETWEEN "
-            . (int)$t1 . " AND " . (int)$t2 . " "
-            . "AND s.id = c.sensor_id "
-            . "GROUP BY sensor_id "
+          . "FROM " . WeatherDB::data_table . " c, " . WeatherDB::metadata_table . " s "
+          . "WHERE timestamp BETWEEN "
+          . (int)$t1 . " AND " . (int)$t2 . " "
+          . "AND s.id = c.sensor_id "
+          . "GROUP BY sensor_id "
         );
     }
 
@@ -241,11 +242,11 @@ class ReadWeatherDB extends WeatherDB {
 
         return $this->_queryTable(
             "SELECT timestamp, sensor_id, value "
-            . "FROM " . WeatherDB::data_table . " "
-            . "WHERE timestamp BETWEEN "
-            . (int)$t1 . " AND " . (int)$t2 . " "
-            . "AND sensor_id = " . (int)$id . " "
-            . "AND value " . self::sanitize[$operator] . (float)$threshold
+          . "FROM " . WeatherDB::data_table . " "
+          . "WHERE timestamp BETWEEN "
+          . (int)$t1 . " AND " . (int)$t2 . " "
+          . "AND sensor_id = " . (int)$id . " "
+          . "AND value " . self::sanitize[$operator] . (float)$threshold
         );
     }
 

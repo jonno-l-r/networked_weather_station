@@ -18,7 +18,7 @@
 crontab file
 #+name: crontab
 #+begin_src sh :tangle crontab
-  ,*/2 * * * * /usr/local/bin/php /var/www/html/php/weather_station.php
+  ,*/2 * * * * /usr/local/bin/php /var/www/html/php/new_record.php
 #+end_src
 
 Note: Must run =printenv >> /etc/environemnt= to copy environment variables into filesystem for access by cron
@@ -92,6 +92,7 @@ DB initialisation script
         - MARIADB_USER=${MARIADB_USER:-utest}
         - MARIADB_PASSWORD=${MARIADB_PASSWORD:-utest}
         - MARIADB_DATABASE=weather
+        - MARIADB_DATABASE_TABLE_NAME=canberra_data
         - WEATHER_STATION_ADDRESS=http://192.168.1.200:1000
         - TZ=Australia/Canberra
     db:

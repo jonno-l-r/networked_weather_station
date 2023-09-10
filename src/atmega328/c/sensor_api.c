@@ -40,11 +40,11 @@ int api_get_bme280(char* buf, int offset, int avg){
 		success = !bme280_get_id(&id);
 	}
 	
-	i += sprintf(offset+buf+i, "[{\"id\":%d},", id);
-	i += sprintf(offset+buf+i, "{\"success\":%d},", success);
-	i += sprintf(offset+buf+i, "{\"temperature\":%d, \"div\":%d},", (int16_t)temp, 100*avg);
-	i += sprintf(offset+buf+i, "{\"pressure\":%lu, \"div\":%d},", pres, 256*avg);
-	i += sprintf(offset+buf+i, "{\"humidity\":%lu, \"div\":%d}]", hum, 1024*avg);
+	i += sprintf(offset+buf+i, "{\"id\":%d,", id);
+	i += sprintf(offset+buf+i, "\"success\":%d,", success);
+	i += sprintf(offset+buf+i, "\"temperature\":{\"data\":%d, \"div\":%d},", (int16_t)temp, 100*avg);
+	i += sprintf(offset+buf+i, "\"pressure\":{\"data\":%lu, \"div\":%d},", pres, 256*avg);
+	i += sprintf(offset+buf+i, "\"humidity\":{\"data\":%lu, \"div\":%d}}", hum, 1024*avg);
 		
 	return i;
 }
@@ -70,9 +70,9 @@ int api_get_mcp9808(char* buf, int offset, int avg){
 		success = !mcp9808_get_id(&id);
 	}
 	
-	i += sprintf(offset+buf+i, "[{\"id\":%d},", id);
-	i += sprintf(offset+buf+i, "{\"success\":%d},", success);
-	i += sprintf(offset+buf+i, "{\"temperature\":%d, \"div\":%d}]", temp, 16*avg);
+	i += sprintf(offset+buf+i, "{\"id\":%d,", id);
+	i += sprintf(offset+buf+i, "\"success\":%d,", success);
+	i += sprintf(offset+buf+i, "\"temperature\":{\"data\":%d, \"div\":%d}}", temp, 16*avg);
 	
 	return i;
 }
