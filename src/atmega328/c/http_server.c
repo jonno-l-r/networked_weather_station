@@ -9,7 +9,7 @@
 #include <util/delay.h>
 #include "w5500.h"
 #include "http_server.h"
-#include "usart.h"
+// #include "usart.h"
 
 
 char header[] = "HTTP/1.1 200 OK\nContent-Type: application/json\n\n";
@@ -27,20 +27,20 @@ void tcp_init(uint8_t* mac_addr, uint8_t* subnet_mask, uint8_t* gateway, uint8_t
 	w5500_assign_network_addr(IP_ADDR, ip_addr, 4);
 	
 	w5500_tcp_init(socket, port);
+	w5500_tx_set_size(socket, tx_buf_size);
+	w5500_rx_set_size(socket, rx_buf_size);
 }
 
 
 void tcp_open(void){
 	w5500_set_command(socket, OPEN);
 	while(w5500_get_status(socket) != SOCK_INIT);	
-	printf("Open\n");
 }
 
 
 void tcp_listen(void){
 	w5500_set_command(socket, LISTEN);
 	while(w5500_get_status(socket) != SOCK_LISTEN);	
-	printf("Listening\n");
 }
 
 
@@ -48,27 +48,33 @@ int tcp_wait_established(void){
 	while(w5500_get_status(socket) != SOCK_ESTABLISHED){
 		if(w5500_get_status(socket) == SOCK_CLOSED){
 			// Probably timed out
-			printf("Closed\n");
 			return 1;
 		}
 	}
 	
 	_delay_ms(1);
 	tcp_send(header, sizeof(header)-1);
-	printf("Established\n");
 	return 0;
 }
 
 
 void tcp_send(char* data, int size){
 	if(w5500_get_status(socket) == SOCK_ESTABLISHED){
-		w5500_tcp_tx(socket, data, size);
+		w5500_tcp_tx(socket, (uint8_t*)data, size);
 	}	
+}
+
+
+uint16_t tcp_receive(char* data, uint16_t data_size){
+	if(w5500_get_status(socket) == SOCK_ESTABLISHED){
+		return w5500_tcp_rx(socket, (uint8_t*)data, data_size);
+	}
+	
+	return 0;
 }
 
 
 void tcp_end(void){
 	w5500_set_command(socket, DISCON);
 	while(w5500_get_status(socket) != SOCK_CLOSED);
-	printf("Closed\n");
 }

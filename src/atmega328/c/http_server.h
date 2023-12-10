@@ -14,6 +14,7 @@ void tcp_open(void);
 void tcp_listen(void);
 int tcp_wait_established(void);
 void tcp_send(char* data, int size);
+uint16_t tcp_receive(char* data, uint16_t data_size);
 void tcp_end(void);
 
 

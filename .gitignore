@@ -1,0 +1,26 @@
+# Misc directories
+resources/
+datasheets/
+debug/
+src/server/log/
+src/server/sql/
+
+!src/server/sql/init/init.sql
+!src/server/log/.gitignore
+
+# Media
+doc/media/*.pdf
+doc/media/*.pdf_tex
+
+# LTSPICE
+*.RAW
+
+# Kicad
+*-bak
+*-backups
+*-cache*
+*-bak*
+_autosave*
+
+# Misc
+*.zip

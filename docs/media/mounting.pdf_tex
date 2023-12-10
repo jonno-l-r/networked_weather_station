@@ -1,0 +1,84 @@
+%% Creator: Inkscape 1.2.2 (732a01da63, 2022-12-09), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'mounting.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{343.98048bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,1.23012117)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{mounting.pdf}}%
+    \put(0.02775891,0.46339655){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Waterproof\\cable gland\end{tabular}}}}%
+    \put(0.08273522,0.21431971){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Sensor \\breakout\\PCB\end{tabular}}}}%
+    \put(0.14810489,1.14709431){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Thermometer\\baffles\end{tabular}}}}%
+    \put(0.63199814,0.29575513){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Residual\\water flow\end{tabular}}}}%
+    \put(0.03385758,0.34837332){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Sealed\\PCB \\enclosure\end{tabular}}}}%
+    \put(0.00276606,0.74416952){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Barometer\\and hygrometer\\sensor cluster\end{tabular}}}}%
+    \put(0.02004342,0.83879329){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Right angle\\bracket\end{tabular}}}}%
+    \put(0.62716897,0.77400792){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Fasterner\end{tabular}}}}%
+    \put(0.68479287,0.88410855){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}hollow \\spacers\end{tabular}}}}%
+    \put(0.03969412,0.58930413){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Vent /\\cable duct\end{tabular}}}}%
+    \put(0.31450849,0.17405053){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Vent / cable\\duct\end{tabular}}}}%
+    \put(0.66259804,0.60145207){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Tubing\end{tabular}}}}%
+    \put(0.58120411,0.10057013){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}RJ11 to main\\controller \\housing\end{tabular}}}}%
+    \put(0.42361374,1.21309844){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Precipitation\end{tabular}}}}%
+    \put(0.853696,1.00939326){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Air flow\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{mounting.pdf}}%
+    \put(0.59580298,1.16653851){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Sealed\\thermometer\\assembly\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{mounting.pdf}}%
+    \put(0.65630735,0.51481138){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}Cabling\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=4]{mounting.pdf}}%
+    \put(0.681367,0.44469336){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}90mm PVC\\pipe\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=5]{mounting.pdf}}%
+    \put(0.1952462,0.10045659){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}90mm\\PVC endcap\\fitting\end{tabular}}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=6]{mounting.pdf}}%
+    \put(0.96729457,0.96783225){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}     \end{tabular}}}}%
+    \put(0.43932675,0.00323648){\makebox(0,0)[lt]{\lineheight{1.25}\smash{\begin{tabular}[t]{l}. \end{tabular}}}}%
+  \end{picture}%
+\endgroup%

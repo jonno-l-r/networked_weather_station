@@ -21,7 +21,10 @@ crontab file
   ,*/2 * * * * /usr/local/bin/php /var/www/html/php/new_record.php
 #+end_src
 
-Note: Must run =printenv >> /etc/environemnt= to copy environment variables into filesystem for access by cron
+Note:
+- Must run =printenv >> /etc/environemnt= to copy environment variables into filesystem for access by cron.
+- Remove windows linespaces from crontab!
+- Ensure DNS is working properly in containers (=/etc/resolv.d=)
 
 * MariaDB
 #+name: mariadb-dockerfile

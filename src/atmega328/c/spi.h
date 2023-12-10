@@ -9,11 +9,12 @@
 #define SPI_H_
 #include <avr/io.h>
 
-void spi_init(void);
-void spi_ss(uint8_t);
-uint8_t spi_txrx(uint8_t data);
 
-void spi_write_multi(uint8_t* data, int len);
+void spi_init(void);
+void spi_set_chip_select(uint8_t level);
+void spi_write(uint8_t byte);
 uint8_t spi_read(void);
+uint8_t spi_collision(void);
+
 
 #endif /* SPI_H_ */

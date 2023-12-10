@@ -9,6 +9,7 @@
 #define TWI_H_
 #include <avr/io.h>
 
+// TWI Status codes
 // SLAW = slave write
 // SLAR = slave read
 #define TWSR_MASK 0xf8

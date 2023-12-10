@@ -19,32 +19,30 @@
 #include "sensor_api.h"
 // #include "usart.h"
 #include "mcp9808.h"
+#include "w5500.h"
 
 // For USART
 // FILE usart0_str = FDEV_SETUP_STREAM(USART0SendByte, USART0ReceiveByte, _FDEV_SETUP_RW);
 
 
-int main(void){
-	int data_size;
+int main(void){	
+	uint16_t data_size;
 	char data[512];
-	uint16_t temp = 0;
-	int status;
 	
 	// Bring up USART for testing (need to include usart.h)
 	// USART0Init();
 	// stdin=stdout=&usart0_str;
 	
 	data_size = api_get_all(data, AVERAGES);
-	// printf("%s\n", data);
 	
 	tcp_init(mac_addr, subnet_mask, gateway, ip_addr, port);
+	
 	while (1){
 		data_size = api_get_all(data, AVERAGES);
-		
 		tcp_open();
 		tcp_listen();
 		tcp_wait_established();
-
+		
 		tcp_send(data, data_size);
 		
 		tcp_end();

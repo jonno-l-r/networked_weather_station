@@ -16,7 +16,7 @@
 
 
 int api_get_bme280(char* buf, int offset, int avg){
-	uint8_t success;
+	uint8_t success = 0;
 	int32_t temp = 0;
 	uint32_t pres = 0;
 	uint32_t hum = 0;
@@ -54,7 +54,7 @@ int api_get_mcp9808(char* buf, int offset, int avg){
 	int16_t temp = 0;
 	int16_t _temp;
 	uint16_t id = 0;
-	uint8_t success;
+	uint8_t success = 0;
 	int i = 0;
 	
 	for (int i=0; i<avg; i++){

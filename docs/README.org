@@ -1,3 +1,15 @@
+# -*- org-confirm-babel-evaluate: nil -*-
+#+FILETAGS: :project:electronics:microcontroller:
+#+html_head: <link rel="stylesheet" type="text/css" href="../../shared/css/article.css"/>
+#+options: h:4 num:t toc:t
+#+author: J. Rabe
+#+email: jonno1.l.r@gmail.com
+
+#+begin_src emacs-lisp :results list :wrap tags :exports results
+  org-file-tags
+#+end_src
+
+#+DATE: [2023-12-03 Sun 15:12]
 #+title: Networked Weather Monitoring Station
 #+options: h:4 num:nil toc:t
 
@@ -6,14 +18,14 @@ This is a full stack implementation of a networked weather monitoring station. T
 * Overview
 #+HEADER: :imagemagick yes :iminoptions -density 400
 #+HEADER: :fit yes :noweb yes
-#+begin_src latex :file (cond-exp "doc/media/system_diagram0") :results file raw :exports results
-  \import{doc/media}{system_diagram.pdf_tex}
+#+begin_src latex :file (cond-exp "media/system_diagram0") :results file raw :exports results
+  \import{media}{system_diagram.pdf_tex}
 #+end_src
 
 #+CAPTION: High level system diagram
-#+LABEL: fig:doc/media/system_diagram0
+#+LABEL: fig:media/system_diagram0
 #+RESULTS:
-[[file:doc/media/system_diagram0.png]]
+[[file:media/system_diagram0.png]]
 
 The system is comprised of three main elements; the sensor breakout module and associated sensors, the control module, and the host PC.
 
@@ -23,7 +35,7 @@ The PC queries the controller over the network at regular intervals, processing 
 
 * Repository Structure
 The repository is organised into the following directories;
-#+begin_src plantuml :file doc/media/repo.png :exports results
+#+begin_src plantuml :file media/repo.png :exports results
   @startuml
   salt
   {
@@ -44,12 +56,12 @@ The repository is organised into the following directories;
 #+end_src
 
 #+RESULTS:
-[[file:doc/media/repo.png]]
+[[file:media/repo.png]]
 
 Where =cad= holds the electrical and mechanical CAD project files and libraries, =release= holds the exported designs (gerber files, bill of materials and schematics), and =src= holds all microcontroller and server source files and configuration.
 
 The =cad= part of the repository is organised as shown;
-#+begin_src plantuml :file doc/media/repo_cad.png :exports results
+#+begin_src plantuml :file media/repo_cad.png :exports results
   @startuml
   salt
   {
@@ -73,10 +85,10 @@ The =cad= part of the repository is organised as shown;
 #+end_src
 
 #+RESULTS:
-[[file:doc/media/repo_cad.png]]
+[[file:media/repo_cad.png]]
 
 The =release= part of the repository is organised as shown below;
-#+begin_src plantuml :file doc/media/repo_release.png :exports results
+#+begin_src plantuml :file media/repo_release.png :exports results
   @startuml
   salt
   {
@@ -98,12 +110,12 @@ The =release= part of the repository is organised as shown below;
 #+end_src
 
 #+RESULTS:
-[[file:doc/media/repo_release.png]]
+[[file:media/repo_release.png]]
 
 =release= holds the outputs of the CAD projects in the =cad= directory. The release files are generated on each tagged commit, so the outputs in =release= on any given commit were generated from the projects in =cad= on the last /tagged/ commit.
 
 The =src= part of the repository is orgranised as shown;
-#+begin_src plantuml :file doc/media/repo_src.png :exports results
+#+begin_src plantuml :file media/repo_src.png :exports results
   @startuml
   salt
   {
@@ -130,7 +142,7 @@ The =src= part of the repository is orgranised as shown;
 #+end_src
 
 #+RESULTS:
-[[file:doc/media/repo_src.png]]
+[[file:media/repo_src.png]]
 
 * Hardware Components
 ** Sensors
@@ -148,12 +160,12 @@ The =src= part of the repository is orgranised as shown;
 ** Sensor Breakout Module
 The sensor breakout module acts as an interface between the sensors and the control module. It is intended to be in close proximity with the sensors themselves, and in a waterproof enclosure (see [[*Suggested Mounting]]). It interfaces with the controller via RJ11 with 6-pin modular connectors, and interfaces with the sensors via 6x1 pin headers.
 
-[[file:doc/media/photos/IMG_0135.JPG]]
+[[file:media/photos/IMG_0135.JPG]]
 
 ** Station Control Module
 The controller module contains an Atmega32 microcontroller and a W5500 ethernet controller, which allows the sensors to be controlled over the LAN through an HTTP API. It also contains the system power supplies. Power is carried to the sensors from these supplies via the breakout module. The controller can be powered form a 6mm DC jack or through a primitive, DC form of PoE (power over ethernet). Instructions for the PoE injector are given in [[*PoE Injector Module]].
 
-[[file:doc/media/photos/IMG_0128.JPG]]
+[[file:media/photos/IMG_0128.JPG]]
 
 ** PoE Injector Module
 <TODO>
@@ -297,24 +309,24 @@ The diagram below illustrates the mounting scheme used for the temperature, humi
 
 #+HEADER: :imagemagick yes :iminoptions -density 110
 #+HEADER: :fit yes :noweb yes
-#+begin_src latex :file (cond-exp "doc/media/mounting0") :results file raw :exports results
-  \import{doc/media}{mounting.pdf_tex}
+#+begin_src latex :file (cond-exp "media/mounting0") :results file raw :exports results
+  \import{media}{mounting.pdf_tex}
 #+end_src
 
 #+CAPTION: Sensor, hygrometer and thermometer mounting design
-#+LABEL: fig:doc/media/mounting0
+#+LABEL: fig:media/mounting0
 #+RESULTS:
-[[file:doc/media/mounting0.png]]
+[[file:media/mounting0.png]]
 
 The MCP9808 PCB was wrapped in soft white rubber tubing, sealed at each end with silicone. This assembly forms the external temperature probe. The BME280 PCB was placed into a small plastic enclosure, which had a hole drilled into the bottom to expose the sensor to the atmosphere. This enclosure was then mounted to the roof of the main enclosure, as shown.
 
 Note the rubber tube running down the main enclosure, which ducts any residual water that penetrates the thermometer baffles down to the hole at the bottom, away from the internal sensors and breakout module.
 
 The breakout module is housed in a fully sealed enclosure, with all cables ducted through a waterproof cable gland.
-[[file:doc/media/photos/IMG_0131.JPG]]
+[[file:media/photos/IMG_0131.JPG]]
 
 The following photo was taken during testing. The black enclosure is the control module housing;
-[[file:doc/media/photos/IMG_0125.JPG]]
+[[file:media/photos/IMG_0125.JPG]]
 
 * Server Bring up
 The following software must be installed on the server
@@ -361,7 +373,7 @@ The server components can be run in docker containers, for convenience. Dockerfi
 - The web server container is forwarded to port 80 on the host. The containerisation will not affect the addressing scheme.
 
 * Web Frontend
-[[file:doc/media/dashboard_scrot.PNG]]
+[[file:media/dashboard_scrot.PNG]]
 
 * Web API
 API sources are filed under =src/server/web/php=. The controller is proxied through =main.php=.
